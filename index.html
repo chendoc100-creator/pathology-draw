@@ -77,7 +77,7 @@ h1{font-size:1.5rem;margin:0;font-weight:700}
 <main>
   <div class="top">
     <h1>病理抽號器</h1>
-    <div class="who"><span class="st" id="acct">載入中…</span></div>
+    <div class="who"><span class="st" id="acct">載入中…</span><button type="button" id="login" hidden>用 Google 登入</button></div>
   </div>
   <div class="notice" id="notice" hidden></div>
   <div class="tabs" role="tablist">
@@ -142,27 +142,57 @@ async function init(){
   try{localStorage.setItem('pd.meta',JSON.stringify(meta))}catch(e){}
   let pers=null;try{pers=navigator.storage&&navigator.storage.persisted?await navigator.storage.persisted():null}catch(e){}
   $('diag').textContent='儲存檢查：本機儲存'+(lok?'可寫入':'被封鎖')+(lok?'；這個瀏覽器在本頁開啟第 '+meta.loads+' 次（自 '+meta.since+'）':'')+(pers===null?'':'；持久儲存 '+(pers?'是':'否'))+'；來源 '+location.origin;
-  let user=null,db=null,id=null;
-  try{user=await window.claude.use('user');db=await window.claude.use('db');id=user&&await user.id()}catch(e){}
-  if(!(db&&id)){
-    $('acct').textContent=window.claude?'未登入':'本機模式';
-    note(!lok?'這個瀏覽器封鎖了本機儲存（常見於無痕模式、App 內建瀏覽器、Safari 封鎖跨網站資料），進度關掉頁面就會消失。請用下方「備份碼」自己保存。'
-      :first?'第一次在這個瀏覽器開啟本頁（或瀏覽器沒有保留上次的資料）。進度會先存在這個瀏覽器；若下次打開進度不見，代表此瀏覽器不保留（無痕模式、App 內建瀏覽器、Safari 跨網站限制等），請改用一般瀏覽器或用下方「備份碼」。'
-      :'進度存在這個瀏覽器（同一個瀏覽器重開會保留；換裝置用下方「備份碼」）。'
-    );
-    renderAll();return}
-  let nm='';try{nm=(await user.me()).name||''}catch(e){}
-  const who='已登入'+(nm?'：'+nm:'');
-  const canW=await user.can('data.write').catch(()=>null);
-  docRef=db.doc('data/users/'+id+'/progress');
-  let exists=false;
-  try{const snap=await docRef.get();exists=snap.exists;if(exists)st=clean(snap.data())}catch(e){}
-  try{if(!exists)await docRef.set(st);$('acct').textContent=who+'，進度存在你的帳號（只有你看得到）';note('')}
-  catch(e){
+  note(!lok?'這個瀏覽器封鎖了本機儲存（無痕模式、App 內建瀏覽器等）。請用 Google 登入，或用下方「備份碼」。'
+    :'未登入：進度只存在這個瀏覽器。用 Google 登入就能跨裝置保存。');
+  $('acct').textContent='未登入';
+  try{await fbLoad()}catch(e){note('雲端登入元件載入失敗（可能是網路問題），進度先存在這個瀏覽器。');$('login').hidden=true;return}
+  $('login').hidden=false;
+  fb.au.onAuthStateChanged(fb.auth,onUser);
+}
+const FB='https://www.gstatic.com/firebasejs/10.14.1/';
+const CFG={apiKey:"AIzaSyC1V6sxv106LZcaWZ3aSxtnBhzHL6aez2U",authDomain:"pathology-draw.firebaseapp.com",projectId:"pathology-draw",storageBucket:"pathology-draw.firebasestorage.app",messagingSenderId:"1077378446876",appId:"1:1077378446876:web:3297bee90fa287e7c211d9"};
+let fb=null,fbUser=null;
+async function fbLoad(){
+  const [a,au,fs]=await Promise.all([import(FB+'firebase-app.js'),import(FB+'firebase-auth.js'),import(FB+'firebase-firestore.js')]);
+  const app=a.initializeApp(CFG);
+  fb={au,fs,auth:au.getAuth(app),db:fs.getFirestore(app)};
+}
+const uni=(x,y)=>[...new Set([...(x||[]),...(y||[])])];
+async function onUser(u){
+  fbUser=u;
+  if(!u){docRef=null;$('login').textContent='用 Google 登入';$('acct').textContent='未登入';return}
+  $('login').textContent='登出';
+  $('acct').textContent='登入中…';
+  const ref=fb.fs.doc(fb.db,'progress',u.uid);
+  try{
+    const snap=await fb.fs.getDoc(ref);
+    if(snap.exists()){const c=clean(snap.data());
+      st=clean({seen:uni(c.seen,st.seen),review:uni(c.review,st.review),rseen:uni(c.rseen,st.rseen),last:c.last,rlast:c.rlast})}
+    docRef={set:o=>fb.fs.setDoc(ref,o)};
+    save();
+    $('acct').textContent='已登入：'+(u.displayName||u.email||'Google 帳號')+'（進度存雲端，只有你看得到）';
+    note('');
+  }catch(e){
     docRef=null;
-    $('acct').textContent=who+'（只能檢視）';
-    note('這個帳號是「只能檢視」，無法存到雲端。進度暫存在這個瀏覽器；需要跨裝置請改用下方「備份碼」，或請擁有者提高你的權限。')}
-  renderAll();
+    $('acct').textContent='已登入：'+(u.displayName||u.email||'');
+    note('雲端讀寫失敗（'+(e.code||e.message)+'），進度暫存在這個瀏覽器。');
+  }
+  current=null;setPool(pool);renderAll();
+}
+async function loginClick(){
+  if(!fb)return;
+  if(fbUser){
+    await fb.au.signOut(fb.auth);
+    st=clean(null);try{localStorage.removeItem(LKEY)}catch(e){}
+    current=null;setPool(pool);renderAll();
+    note('已登出，這台裝置上的進度已清除（雲端資料還在，再登入就會回來）。');
+    return}
+  const p=new fb.au.GoogleAuthProvider();p.setCustomParameters({prompt:'select_account'});
+  try{await fb.au.signInWithPopup(fb.auth,p)}
+  catch(e){
+    if(e.code==='auth/popup-blocked'||e.code==='auth/operation-not-supported-in-this-environment'){try{await fb.au.signInWithRedirect(fb.auth,p)}catch(e2){note('登入失敗：'+(e2.code||e2.message))}}
+    else if(e.code!=='auth/popup-closed-by-user'&&e.code!=='auth/cancelled-popup-request')note('登入失敗：'+(e.code||e.message));
+  }
 }
 /* ---------- one slide row (used by the draw card and both lists) ---------- */
 function mk(id,opt){
@@ -306,6 +336,7 @@ $('bk-c').onclick=async()=>{showCode();const t=$('bk-t');t.select();let ok=false
   try{await navigator.clipboard.writeText(t.value);ok=true}catch(e){try{ok=document.execCommand('copy')}catch(e2){}}
   $('bk-m').textContent=ok?'已複製。':'無法自動複製，請長按／Ctrl+C 複製上面那串。'};
 $('bk-i').onclick=()=>{try{st=readCode($('bk-t').value);save();current=null;setPool(pool);renderAll();$('bk-m').textContent='已還原。'}catch(e){$('bk-m').textContent='備份碼格式不對。'}};
+$('login').onclick=loginClick;
 init();
 </script>
 </body></html>
