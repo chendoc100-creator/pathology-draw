@@ -1,0 +1,311 @@
+<!doctype html><html lang="zh-Hant"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><style>:root{color-scheme:light}body{margin:0}[hidden]{display:none!important}</style></head><body><title>病理抽號器</title>
+<style>
+/* Layout: single centered column; header with profile + tabs, one big slide-number card, action row, answer panel. */
+:root{
+  --bg:#f5f1f3; --card:#ffffff; --fg:#241c2b; --muted:#6d6275; --line:#ddd3dc;
+  --hema:#4a3a78; --hema-fg:#ffffff; --eosin:#c2506f; --soft:#ece6f2; --ans:#faf3f6;
+  --font:"Times New Roman","標楷體","DFKai-SB","BiauKai","Kaiti TC","KaiTi",serif;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --bg:#18141d; --card:#221c29; --fg:#efe8f1; --muted:#a699ad; --line:#3a3043;
+  --hema:#a994e0; --hema-fg:#18141d; --eosin:#e88aa5; --soft:#2f2740; --ans:#2a2130; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#18141d; --card:#221c29; --fg:#efe8f1; --muted:#a699ad; --line:#3a3043;
+  --hema:#a994e0; --hema-fg:#18141d; --eosin:#e88aa5; --soft:#2f2740; --ans:#2a2130; color-scheme:dark}
+body{background:var(--bg);color:var(--fg);font-family:var(--font);font-size:18px;padding-inline:16px;padding-block:20px}
+main{max-width:720px;margin:0 auto;display:flex;flex-direction:column;gap:16px}
+button,select,input{font:inherit;color:inherit}
+button{cursor:pointer}
+:focus-visible{outline:2px solid var(--eosin);outline-offset:2px}
+.top{display:flex;flex-wrap:wrap;gap:8px 12px;align-items:center;justify-content:space-between}
+h1{font-size:1.5rem;margin:0;font-weight:700}
+.who{display:flex;gap:6px;flex-wrap:wrap;align-items:center}
+.who select,.who input{background:var(--card);border:1px solid var(--line);border-radius:4px;padding:6px 8px;min-width:0;max-width:11rem}
+.who button{background:var(--soft);border:1px solid var(--line);border-radius:4px;padding:6px 10px}
+.tabs{display:flex;gap:0;border-bottom:2px solid var(--line)}
+.tab{background:none;border:0;padding:10px 18px;color:var(--muted);border-bottom:3px solid transparent;margin-bottom:-2px;font-weight:700}
+.tab[aria-selected="true"]{color:var(--hema);border-bottom-color:var(--hema)}
+.stat{color:var(--muted);font-size:.95rem;display:flex;justify-content:space-between;flex-wrap:wrap;gap:4px 12px}
+.bar{height:6px;background:var(--soft);border-radius:3px;overflow:hidden}
+.bar i{display:block;height:100%;background:var(--hema);width:0}
+.card{background:var(--card);border:1px solid var(--line);border-radius:6px;padding:24px 20px;display:flex;flex-direction:column;gap:16px}
+.num{font-size:clamp(2.4rem,11vw,4rem);font-weight:700;letter-spacing:.02em;line-height:1.1;font-variant-numeric:tabular-nums}
+.num small{font-size:.5em;font-weight:400;color:var(--muted)}
+.badge{display:inline-block;font-size:.9rem;padding:2px 10px;border-radius:12px;background:var(--soft);color:var(--hema);vertical-align:middle;margin-left:8px;font-weight:700}
+.badge.on{background:var(--eosin);color:#fff}
+.tag{font-size:.9rem;color:var(--muted)}
+.empty{color:var(--muted)}
+.row{display:flex;flex-wrap:wrap;gap:8px}
+.btn{border:1px solid var(--hema);background:transparent;color:var(--hema);border-radius:4px;padding:9px 16px;font-weight:700}
+.btn.primary{background:var(--hema);color:var(--hema-fg)}
+.btn.warn{border-color:var(--eosin);color:var(--eosin)}
+.btn[disabled]{opacity:.4;cursor:default}
+.ans{background:var(--ans);border:1px solid var(--line);border-radius:4px;display:flex;flex-direction:column}
+.ans>div{padding:12px 14px;min-width:0;overflow-wrap:anywhere}
+.ans>div+div{border-top:1px solid var(--line)}
+.lab{font-size:.8rem;letter-spacing:.08em;color:var(--muted);display:block;margin-bottom:4px}
+.pre{white-space:pre-wrap;line-height:1.55}
+.chips{display:flex;flex-wrap:wrap;gap:6px}
+.chip{background:var(--soft);border-radius:12px;padding:2px 10px;font-size:.9rem;font-variant-numeric:tabular-nums}
+.msg{color:var(--eosin);font-size:.95rem;min-height:1.2em}
+
+.who .st{font-size:.9rem;color:var(--muted)}
+.fm{display:flex;flex-direction:column;gap:8px}
+.fm label{font-size:.85rem;color:var(--muted)}
+.fm input,.fm textarea{width:100%;box-sizing:border-box;background:var(--card);border:1px solid var(--line);border-radius:4px;padding:8px 10px;font:inherit}
+.fm textarea{min-height:5.5rem;resize:vertical}
+.res{border:1px solid var(--line);border-radius:4px;padding:10px 14px;display:flex;flex-direction:column;gap:6px;background:var(--ans)}
+.ok{color:#2e7d4f;font-weight:700}.no{color:var(--eosin);font-weight:700}
+.reset{background:none;border:0;color:var(--muted);text-decoration:underline;padding:0;font-size:.9rem}
+.notice{background:var(--soft);border-radius:4px;padding:8px 12px;font-size:.95rem}
+
+.seg{display:flex;gap:0}
+.seg button{background:var(--card);border:1px solid var(--hema);color:var(--hema);padding:6px 16px;font-weight:700}
+.seg button:first-child{border-radius:4px 0 0 4px}.seg button:last-child{border-radius:0 4px 4px 0;border-left:0}
+.seg button[aria-pressed="true"]{background:var(--hema);color:var(--hema-fg)}
+.lst{display:flex;flex-direction:column}
+.it{border-bottom:1px solid var(--line);padding:12px 0;display:flex;flex-direction:column;gap:10px}
+.it:first-child{padding-top:0}
+.it .head{font-weight:700;font-size:1.25rem;font-variant-numeric:tabular-nums}
+.it .head small{font-weight:400;color:var(--muted);font-size:.8em}
+.it.big .head{font-size:clamp(2.4rem,11vw,4rem);line-height:1.1}
+.it.big .head small{font-size:.5em}
+.it.big{border:0;padding:0}
+.btn.sm{padding:5px 12px;font-size:.95rem}
+.ptl{display:flex;flex-direction:column;gap:4px}
+</style>
+<main>
+  <div class="top">
+    <h1>病理抽號器</h1>
+    <div class="who"><span class="st" id="acct">載入中…</span></div>
+  </div>
+  <div class="notice" id="notice" hidden></div>
+  <div class="tabs" role="tablist">
+    <button class="tab" role="tab" id="t-draw" aria-selected="true">抽號</button>
+    <button class="tab" role="tab" id="t-seen" aria-selected="false">已抽 (<span id="sc">0</span>)</button>
+    <button class="tab" role="tab" id="t-rev" aria-selected="false">複習 (<span id="rc">0</span>)</button>
+  </div>
+
+  <section id="v-draw" class="card">
+    <div class="row" style="justify-content:space-between;align-items:center">
+      <div class="seg" role="group" aria-label="抽號範圍">
+        <button type="button" id="p-all" aria-pressed="true">全部</button>
+        <button type="button" id="p-rev" aria-pressed="false">複習 (<span id="rc2">0</span>)</button>
+      </div>
+      <button class="reset" id="reset" type="button">重設進度</button>
+    </div>
+    <div class="stat"><span id="prog"></span></div>
+    <div class="bar"><i id="barfill"></i></div>
+    <div class="row"><button class="btn primary" id="draw" type="button">抽下一張</button></div>
+    <div class="msg" id="msg"></div>
+    <div id="slot"><div class="empty">按「抽下一張」開始。沒抽過的片子會先出現。</div></div>
+  </section>
+
+  <section id="v-seen" class="card" hidden><div class="lst" id="l-seen"></div></section>
+  <section id="v-rev" class="card" hidden><div class="lst" id="l-rev"></div></section>
+  <details class="notice" id="bk">
+    <summary>備份碼：換裝置時貼上就能還原進度</summary>
+    <div class="fm" style="margin-top:8px">
+      <textarea id="bk-t" aria-label="備份碼" placeholder="PD-…"></textarea>
+      <div class="row"><button type="button" class="btn sm" id="bk-g">顯示目前備份碼</button><button type="button" class="btn sm" id="bk-c">複製</button><button type="button" class="btn sm" id="bk-i">用這串還原（覆蓋目前進度）</button></div>
+      <div class="msg" id="bk-m"></div>
+      <div class="tag" id="diag"></div>
+    </div>
+  </details>
+</main>
+<script>
+const DATA=[{"id": "PA0001", "n": "", "dxfull": "Infective endocarditis", "dx": "Infective endocarditis", "organ": "", "desc": "", "note": ""}, {"id": "PA0004", "n": "", "dxfull": "Myocardial infarction", "dx": "Myocardial infarction", "organ": "", "desc": "", "note": ""}, {"id": "PA0008", "n": "10", "dxfull": "Congestive splenomegaly, spleen", "dx": "Congestive splenomegaly", "organ": "spleen", "desc": "*1. Red pulp expansion\n*2. Red pulp congestion (& fibrosis — not obvious in this slide)\n*3. Dilated sinusoids\nOther finding: Gamna-Gandy bodies", "note": ""}, {"id": "PA0015", "n": "17", "dxfull": "Aspergillosis, lung", "dx": "Aspergillosis", "organ": "lung", "desc": "*1. Fungal hyphae with septa and acute-angle branching\n2. Chronic inflammation\n3. Fibrosis\n4. Anthracosis", "note": ""}, {"id": "PA0017", "n": "18", "dxfull": "Anthracosis, lung", "dx": "Anthracosis", "organ": "lung", "desc": "*1. Dark black pigments in macrophages/histiocytes\nSection review 1.1 wording: \"Dark black pigments in histiocytes\" or \"Accumulation of black anthracotic pigments in histiocytes\" (same for lymph node)", "note": ""}, {"id": "PA0022", "n": "9", "dxfull": "Mucormycosis, spleen", "dx": "Mucormycosis", "organ": "spleen", "desc": "*1. Aseptate hyphae with wide-angle branching\n*2. “Necrotizing” granulomatous inflammation — \"necrotizing\" preferred, since \"caseating\" is easily misread as tuberculosis\n 3. May have infarct（此片無）", "note": ""}, {"id": "PA0044", "n": "29", "dxfull": "Chronic sinusitis, maxillary sinus (nasal cavity / paranasal sinus / sinonasal tract)", "dx": "Chronic sinusitis", "organ": "maxillary sinus (nasal cavity / paranasal sinus / sinonasal tract)", "desc": "*1. Submucosal mixed inflammatory cell infiltrate of lymphocytes, plasma cells, and eosinophils (histiocytes and neutrophils few in this slide)\n*2. Submucosal edema\n3. Basement membrane thickening (focal only in this slide)", "note": ""}, {"id": "PA0057", "n": "", "dxfull": "Actinomycosis", "dx": "Actinomycosis", "organ": "", "desc": "", "note": ""}, {"id": "PA0059", "n": "41", "dxfull": "Hemorrhoid, anus", "dx": "Hemorrhoid", "organ": "anus", "desc": "*1. Dilated and congested submucosal vessels\n2. Thrombosis (fibrin + platelet + RBC)\n3. Organization & recanalization of thrombus", "note": ""}, {"id": "PA0074", "n": "58", "dxfull": "Steatosis (fatty change), liver", "dx": "Steatosis (fatty change)", "organ": "liver", "desc": "*1. Lipid droplets in hepatocytes\n① Large droplets (macrovesicular): distend the hepatocyte and push the nucleus aside\n② Small droplets (microvesicular): multiple small vacuoles, nucleus stays central", "note": ""}, {"id": "PA0076", "n": "61", "dxfull": "Nutmeg liver (centrilobular [zone 3] congestion and necrosis / congestive hepatopathy)", "dx": "Nutmeg liver (centrilobular [zone 3] congestion and necrosis / congestive hepatopathy)", "organ": "liver", "desc": "*1. Centrilobular [zone 3] congestion (main finding in this slide)\n2. Centrilobular [zone 3] hepatocyte necrosis (only focal in this slide)", "note": ""}, {"id": "PA0081", "n": "65", "dxfull": "Fat necrosis, pancreas", "dx": "Fat necrosis", "organ": "pancreas", "desc": "*1. Shadowy outlines of necrotic fat cells\n*2. Basophilic calcium deposits (\"saponification\")\n3. Inflammation\nAlso in this slide:\n• acute interstitial pancreatitis (traumatic pancreatitis) — acute inflammatory infiltrate into pancreatic parenchyma, mostly in outer part\n• hemorrhage (RBC and fibrin)\n• trauma by clinical history", "note": ""}, {"id": "PA0096", "n": "76", "dxfull": "(1) Infarct / infarction; (2) Acute tubular necrosis, kidney", "dx": "(1) Infarct / infarction; (2) Acute tubular necrosis", "organ": "kidney", "desc": "*1. Wedge-shaped coagulative necrosis (localized, clear border; glomeruli + tubules)\n− acute tubular necrosis\n2. Thrombosis (in renal vessel)", "note": ""}, {"id": "PA0097", "n": "77", "dxfull": "Acute tubular necrosis (ATN), kidney", "dx": "Acute tubular necrosis (ATN)", "organ": "kidney", "desc": "*1. Tubular epithelial coagulative necrosis\n*① Dead cells with preserved cellular outlines (\"ghost cells\")\n*② Cytoplasmic eosinophilia; may be glassy, may be vacuolated\n*③ Nuclear changes: karyolysis (loss), pyknosis (shrinkage), karyorrhexis (fragmentation)\n2. An inflammatory infiltrate", "note": ""}, {"id": "PA0141", "n": "", "dxfull": "Molluscum contagiosum", "dx": "Molluscum contagiosum", "organ": "", "desc": "", "note": ""}, {"id": "PA0143", "n": "119", "dxfull": "Suture granuloma, skin", "dx": "Suture granuloma", "organ": "skin", "desc": "*1. Center: suture\n*2. Periphery: granulomatous inflammation\n① (Epithelioid) macrophages/histiocytes\n② Multinucleated giant cells\n③ Lymphocytes, plasma cells (eosinophils)\n④ Fibrosis/scar: collagen deposition, fibroblast/myofibroblast proliferation\n3. Other finding: fat necrosis (subcutis)", "note": ""}, {"id": "PA0144", "n": "120", "dxfull": "Intradermal (melanocytic) nevus, skin", "dx": "Intradermal (melanocytic) nevus", "organ": "skin", "desc": "*1. Nests & cords of proliferative melanocytes (nevus cells) in the dermis\n*2. Brown-black melanin pigmentation\n3. (Adipocytic metaplasia) — suggests a longer-standing nevus\nSupporting (DDx with melanoma): maturation with descent; no cytologic atypia", "note": ""}, {"id": "PA0162", "n": "138", "dxfull": "Encephalomalacia, cerebrum (brain)", "dx": "Encephalomalacia", "organ": "cerebrum (brain)", "desc": "*1. Focal liquefactive necrosis: loss of the original structure → loosening of the tissue\n2. Neutrophil infiltration or \"microabscess\" may be present\n3. Reactive gliosis: gemistocytic astrocytes\n*4. Gitter cells: histiocytes with phagocytosed myelin", "note": ""}, {"id": "PA0175", "n": "", "dxfull": "Cryptococcosis", "dx": "Cryptococcosis", "organ": "", "desc": "", "note": ""}, {"id": "PA0198", "n": "144", "dxfull": "Caseating granulomatous inflammation, lung", "dx": "Caseating granulomatous inflammation", "organ": "lung", "desc": "*1. Center: caseous necrosis — a structureless collection of lysed cells & amorphous granular debris (complete loss of cellular details)\n*2. Periphery: granulomatous inflammation\n*① Epithelioid macrophages (histiocytes)\n② Langhans giant cells (usually but not always present)\n③ Lymphocytes\n④ Fibrosis\nAlso in this slide: anthracosis (black pigment in histiocytes; see PA0017)", "note": ""}, {"id": "PA0201", "n": "147", "dxfull": "Candidiasis, esophagus", "dx": "Candidiasis", "organ": "esophagus", "desc": "*1. Fungal yeasts and pseudohyphae\n2. Hyperkeratosis, parakeratosis\n3. Chronic inflammation\n4. Bacterial clumps", "note": ""}, {"id": "PA0202", "n": "148", "dxfull": "Chronic ulcer, stomach", "dx": "Chronic ulcer", "organ": "stomach", "desc": "*1. Mucosal defect with fibrinous necrosis (fibrin + cell debris) and neutrophil-predominant infiltrate\n*2. Granulation tissue: loose ECM with edema, capillary proliferation, mixed inflammatory cells (lymphocytes, plasma cells, eosinophils, histiocytes, neutrophils)\n*3. Fibrosis/scar: collagen deposition, fibroblast/myofibroblast proliferation\n4. Other finding: fibrinous inflammation on the serosal surface", "note": ""}, {"id": "PA0203", "n": "", "dxfull": "Amebiasis", "dx": "Amebiasis", "organ": "", "desc": "", "note": ""}, {"id": "PA0206", "n": "150", "dxfull": "Amebiasis, appendix", "dx": "Amebiasis", "organ": "appendix", "desc": "*1. Round microorganisms (trophozoites):\n① Foamy cytoplasm\n② Round, eccentric nucleus\n③ Ingested red blood cells\n*2. Ulcer with inflamed granulation tissue and acute suppurative inflammation (transmural neutrophil infiltration)", "note": ""}, {"id": "PA0208", "n": "152", "dxfull": "Melanosis coli, large intestine", "dx": "Melanosis coli", "organ": "large intestine", "desc": "*1. Yellow-brown ceroid-laden macrophages in the lamina propria", "note": ""}, {"id": "PA0211", "n": "153", "dxfull": "Hemosiderosis, liver", "dx": "Hemosiderosis", "organ": "liver", "desc": "*1. Golden yellow-brown, refractile hemosiderin accumulation in hepatocytes (some in macrophages)\n*2. Ballooning change (hepatocytes)\n*3. Mallory-Denk bodies", "note": ""}, {"id": "PA0214", "n": "156", "dxfull": "Obstructive cholestasis, liver", "dx": "Obstructive cholestasis", "organ": "liver", "desc": "*1. Green-brown bile pigments in hepatocytes and dilated canaliculi\n*2. Portal edema, prominent ductular reaction & neutrophil infiltration (\"pericholangitis\") — triad of obstructive cholestasis\n3. Swelling of periportal hepatocytes (\"feathery degeneration\")", "note": ""}, {"id": "PA0215", "n": "157", "dxfull": "Cardiac sclerosis (congestive hepatic fibrosis), liver", "dx": "Cardiac sclerosis (congestive hepatic fibrosis)", "organ": "liver", "desc": "*1. Centrilobular congestion (and necrosis)\n*2. Centrilobular [zone 3] fibrosis — key difference from nutmeg liver\nMay have bridging fibrosis: \"central to central\" fibrosis; \"central to portal\" fibrosis", "note": ""}, {"id": "PA0216", "n": "158", "dxfull": "Malaria pigment (hemozoin), liver", "dx": "Malaria pigment (hemozoin)", "organ": "liver", "desc": "*1. Brown-black malaria pigments in macrophages (Kupffer cells) and hepatocytes\n*2. Sinusoid dilation", "note": ""}, {"id": "PA0218", "n": "160", "dxfull": "Cytomegalovirus (CMV) infection or cytomegaloviral (CMV) nephritis, kidney", "dx": "Cytomegalovirus (CMV) infection or cytomegaloviral (CMV) nephritis", "organ": "kidney", "desc": "*1. Infected cells:\n*① Cytomegaly (Cellular and nuclear enlargement)\n*② Large intranuclear basophilic inclusions with halos (\"owl's eye\")\n③ Small intracytoplasmic basophilic inclusions\n2. Chronic inflammation (this slide; other cases may show mainly acute inflammation)\n3. Tubular injury", "note": ""}, {"id": "PA0220", "n": "162", "dxfull": "Nodular hyperplasia, prostate (clinical term: benign prostatic hypertrophy, BPH)", "dx": "Nodular hyperplasia", "organ": "prostate (clinical term: benign prostatic hypertrophy, BPH)", "desc": "*1. Nodules of cystically dilated hyperplastic glands → epithelial infoldings → papillae\n2. ± Stromal cell hyperplasia (not obvious in this slide)\n*3. Presence of both acinar & basal cells (bilayered glandular epithelium)\n*4. No cytologic atypia", "note": ""}, {"id": "PA0243", "n": "", "dxfull": "Cryptococcosis", "dx": "Cryptococcosis", "organ": "", "desc": "", "note": ""}, {"id": "PA0251", "n": "39", "dxfull": "Actinomycosis, ovary (slide is occupied by lesion; no identifiable ovarian tissue) （放射菌）", "dx": "Actinomycosis", "organ": "ovary (slide is occupied by lesion; no identifiable ovarian tissue) （放射菌）", "desc": "*1. Sulfur granules: clumped colonies of bacteria in center (basophilic) with eosinophilic periphery with club-like projections (Splendore-Hoeppli phenomenon)\n*2. Acute and chronic inflammation with abscess formation\n3. May show granulomatous inflammation (suppurative granulomatous inflammation) （此片無）", "note": ""}, {"id": "PA0255", "n": "80", "dxfull": "Condyloma acuminatum, skin（尖型濕疣，菜花）", "dx": "Condyloma acuminatum", "organ": "skin（尖型濕疣，菜花）", "desc": "*1. Papillomatosis (papillary architecture with fibrovascular cores)\n*2. Koilocytosis\n3. Acanthosis\n4. Hyperkeratosis\n5. Parakeratosis", "note": ""}, {"id": "PA0261", "n": "", "dxfull": "Pneumocystis jirovecii pneumonia (PJP)", "dx": "Pneumocystis jirovecii pneumonia (PJP)", "organ": "", "desc": "", "note": ""}, {"id": "PA0270", "n": "37", "dxfull": "Acute suppurative appendicitis, appendix", "dx": "Acute suppurative appendicitis", "organ": "appendix", "desc": "*1. Mucosal and mural neutrophil infiltration, involving muscularis propria (± lymphocytes, plasma cells, eosinophils, histiocytes)\n2. Mucosal ulceration (mucosal defect + fibrinoid necrosis)\n3. Luminal and mural abscess (neutrophil collection + cell debris)\n4. Fibrinous inflammation on the serosal surface (fibrin + inflammatory cells)", "note": ""}, {"id": "PA0271", "n": "117", "dxfull": "Molluscum contagiosum, skin", "dx": "Molluscum contagiosum", "organ": "skin", "desc": "*1. A cup-like lesion with a crater\n2. Epidermal hyperplasia\n*3. Molluscum bodies (Henderson-Patterson bodies) in the crater: large, eosinophilic to basophilic intracytoplasmic inclusions that push aside the nucleus", "note": ""}, {"id": "PA0287", "n": "", "dxfull": "Aspergillosis", "dx": "Aspergillosis", "organ": "", "desc": "", "note": ""}, {"id": "PA0302", "n": "191", "dxfull": "Pneumocystis jirovecii pneumonia (PJP), lung", "dx": "Pneumocystis jirovecii pneumonia (PJP)", "organ": "lung", "desc": "*1. Foamy, granular, eosinophilic exudate in the alveolar spaces\n2. Interstitial thickening and inflammation\n3. Other finding: focal ossification", "note": ""}, {"id": "PA0306", "n": "4", "dxfull": "Infective endocarditis, heart valve", "dx": "Infective endocarditis", "organ": "heart valve", "desc": "*1. Valve destruction with necrosis\n*2. Vegetation: fibrin, bacterial clumps, and inflammatory infiltrate (neutrophilic or lymphohistiocytic)\n3. Inflamed granulation tissue\n4. (In chronic lesion) organization and calcification", "note": "PA0306 (4), aortic valve (exam list) — lecture slides label this case PA0001 (4), mitral valve"}, {"id": "PA0313", "n": "196", "dxfull": "Necrotizing enterocolitis (NEC), intestine/colon", "dx": "Necrotizing enterocolitis (NEC)", "organ": "intestine/colon", "desc": "*1. Coagulative necrosis with hemorrhage — mucosal and transmural (impending perforation)\n2. Chronic changes: strictures, crypt distortion, reactive epithelial cells (absent in this slide)", "note": ""}, {"id": "PA0316", "n": "198", "dxfull": "Cryptococcosis, lung", "dx": "Cryptococcosis", "organ": "lung", "desc": "*1. Numerous round to oval, refractile, thick-walled fungal yeasts (narrow-based budding)\n2. Focal necrosis\n3. Granulomatous inflammation (vaguely-formed granuloma / macrophage infiltration with scattered multinucleated giant cells)\n4. Infiltration of lymphocytes and plasma cells\n5. Intraalveolar fibrin deposition\n6. Fibrosis\n7. Soft-bubble like", "note": ""}, {"id": "PA0332", "n": "", "dxfull": "Herpes virus infection", "dx": "Herpes virus infection", "organ": "", "desc": "", "note": ""}, {"id": "PA0335", "n": "6", "dxfull": "Myocardial infarction (this slide: remote / healed), heart", "dx": "Myocardial infarction (this slide: remote / healed)", "organ": "heart", "desc": "General MI description (Section review 1.1):\n*1. Cardiomyocyte coagulative necrosis\n*① Dead cells with preserved cellular outlines\n*② Cytoplasmic eosinophilia\n*③ Nuclear changes: karyolysis, pyknosis, karyorrhexis\n2. Interstitial edema and hemorrhage\n3. An inflammatory infiltrate (neutrophils or macrophages)\n4. Granulation tissue (capillary and fibroblast proliferation)\n5. Fibrosis / scar formation (dense collagen deposition)\nThis slide (PA0335, remote MI):\n*1. Multifocal fibrosis replacing myocytes (remote change); slightly increased mononuclear inflammatory cells\n2. Granulation tissue, focal (hard to find; recent change): neovascularization (capillary proliferation), hemorrhage\n3. Myocyte vacuolization, especially subendocardial areas (sublethal ischemic change)\n4. Hypertrophic changes of cardiomyocytes (patient background): increased cell and nuclear size\nAlso: lipofuscin (perinuclear, normal aging)", "note": "PA0335 (6) — 69M; listed as PA0004 (6) Myocardial infarction, heart in Section review 1.2"}, {"id": "PA0354", "n": "145", "dxfull": "Herpes virus infection, oral cavity (mouth floor)", "dx": "Herpes virus infection", "organ": "oral cavity (mouth floor)", "desc": "*1. Cytopathic effects compatible with herpes infection (3M):\n① Multinucleation\n② Margination of chromatin\n③ Molding of nuclei\n2. Ulcer with neutrophil infiltration and necrotic debris", "note": "PA0354 (145) — updated teaching slide (exam list earlier: PA0332 (145), herpes virus infection, skin)"}];
+const BYID=Object.fromEntries(DATA.map(d=>[d.id,d]));
+const LKEY='pathdraw.v2';
+let st={seen:[],review:[],rseen:[],last:'',rlast:''};
+let docRef=null,writing=Promise.resolve();
+let tab='draw',pool='all',current=null,wasSeen=false;
+const live=new Set();
+const $=id=>document.getElementById(id);
+const esc=s=>String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const byNum=(a,b)=>parseInt(a.slice(2))-parseInt(b.slice(2));
+function clean(o){const b={seen:[],review:[],rseen:[],last:'',rlast:''};if(o){for(const k of ['seen','review','rseen'])if(Array.isArray(o[k]))b[k]=o[k].filter(x=>BYID[x]);b.last=o.last||'';b.rlast=o.rlast||''}return b}
+function save(){
+  try{localStorage.setItem(LKEY,JSON.stringify(st))}catch(e){}
+  if($('bk').open)showCode();
+  if(docRef){const snap=JSON.parse(JSON.stringify(st));
+    writing=writing.then(()=>docRef.set(snap)).catch(()=>{$('notice').hidden=false;$('notice').textContent='雲端儲存失敗，進度暫時只存在這個瀏覽器。請確認帳號有寫入權限，或用下方「備份碼」。'})}
+}
+function localOK(){try{localStorage.setItem('pd.t','1');localStorage.removeItem('pd.t');return true}catch(e){return false}}
+function note(t){$('notice').hidden=!t;$('notice').textContent=t||''}
+async function init(){
+  let local=null;try{local=JSON.parse(localStorage.getItem(LKEY))}catch(e){}
+  st=clean(local);renderAll();
+  const lok=localOK();
+  let meta=null;try{meta=JSON.parse(localStorage.getItem('pd.meta'))}catch(e){}
+  const first=!meta;meta=meta||{since:new Date().toLocaleDateString('sv'),loads:0};meta.loads++;
+  try{localStorage.setItem('pd.meta',JSON.stringify(meta))}catch(e){}
+  let pers=null;try{pers=navigator.storage&&navigator.storage.persisted?await navigator.storage.persisted():null}catch(e){}
+  $('diag').textContent='儲存檢查：本機儲存'+(lok?'可寫入':'被封鎖')+(lok?'；這個瀏覽器在本頁開啟第 '+meta.loads+' 次（自 '+meta.since+'）':'')+(pers===null?'':'；持久儲存 '+(pers?'是':'否'))+'；來源 '+location.origin;
+  let user=null,db=null,id=null;
+  try{user=await window.claude.use('user');db=await window.claude.use('db');id=user&&await user.id()}catch(e){}
+  if(!(db&&id)){
+    $('acct').textContent=window.claude?'未登入':'本機模式';
+    note(!lok?'這個瀏覽器封鎖了本機儲存（常見於無痕模式、App 內建瀏覽器、Safari 封鎖跨網站資料），進度關掉頁面就會消失。請用下方「備份碼」自己保存。'
+      :first?'第一次在這個瀏覽器開啟本頁（或瀏覽器沒有保留上次的資料）。進度會先存在這個瀏覽器；若下次打開進度不見，代表此瀏覽器不保留（無痕模式、App 內建瀏覽器、Safari 跨網站限制等），請改用一般瀏覽器或用下方「備份碼」。'
+      :'進度存在這個瀏覽器（同一個瀏覽器重開會保留；換裝置用下方「備份碼」）。'
+    );
+    renderAll();return}
+  let nm='';try{nm=(await user.me()).name||''}catch(e){}
+  const who='已登入'+(nm?'：'+nm:'');
+  const canW=await user.can('data.write').catch(()=>null);
+  docRef=db.doc('data/users/'+id+'/progress');
+  let exists=false;
+  try{const snap=await docRef.get();exists=snap.exists;if(exists)st=clean(snap.data())}catch(e){}
+  try{if(!exists)await docRef.set(st);$('acct').textContent=who+'，進度存在你的帳號（只有你看得到）';note('')}
+  catch(e){
+    docRef=null;
+    $('acct').textContent=who+'（只能檢視）';
+    note('這個帳號是「只能檢視」，無法存到雲端。進度暫存在這個瀏覽器；需要跨裝置請改用下方「備份碼」，或請擁有者提高你的權限。')}
+  renderAll();
+}
+/* ---------- one slide row (used by the draw card and both lists) ---------- */
+function mk(id,opt){
+  opt=opt||{};
+  const d=BYID[id],online=!d.n;
+  const el=document.createElement('div');el.className='it'+(opt.big?' big':'');
+  el.innerHTML='<div class="head">'+d.id+(online?'<span class="badge on">線上</span>':' <small>('+esc(d.n)+')</small>')+(opt.seen?'<span class="badge">已抽過</span>':'')+'</div>'+
+   '<div class="row"><button type="button" class="btn sm q">作答</button><button type="button" class="btn sm r">顯示答案</button><button type="button" class="btn sm warn v">加入複習</button></div>'+
+   '<div class="fm f" hidden><label>診斷</label><input class="a-dx" autocomplete="off">'+
+   (online?'':'<label>器官</label><input class="a-og" autocomplete="off"><label>描述（英文關鍵字，一行一點或用逗號分開）</label><textarea class="a-ds"></textarea>')+
+   '<div class="row"><button type="button" class="btn sm primary g">批改</button></div></div>'+
+   '<div class="res-w" hidden></div><div class="ans-w" hidden></div>';
+  const q=el.querySelector('.q'),r=el.querySelector('.r'),v=el.querySelector('.v'),f=el.querySelector('.f'),rw=el.querySelector('.res-w'),aw=el.querySelector('.ans-w');
+  q.onclick=()=>{f.hidden=!f.hidden;if(!f.hidden)f.querySelector('.a-dx').focus()};
+  r.onclick=()=>{aw.hidden=!aw.hidden;r.textContent=aw.hidden?'顯示答案':'隱藏答案';
+    if(!aw.hidden){let h='<div class="ans"><div><span class="lab">診斷</span>'+esc(online?d.dx:d.dxfull)+'</div>';
+      if(!online)h+='<div><span class="lab">說明</span><div class="pre">'+esc(d.desc)+(d.note?'\n\n備註：'+esc(d.note):'')+'</div></div>';
+      aw.innerHTML=h+'</div>'}};
+  el.querySelector('.g').onclick=()=>{rw.innerHTML=gradeHTML(d,f);rw.hidden=false};
+  v.onclick=()=>toggleRev(id);
+  const obj={el,id,upd(){v.textContent=st.review.includes(id)?'移出複習':'加入複習'}};
+  obj.upd();live.add(obj);return obj;
+}
+function toggleRev(id){
+  const i=st.review.indexOf(id);
+  if(i>=0){st.review.splice(i,1);const k=st.rseen.indexOf(id);if(k>=0)st.rseen.splice(k,1)}
+  else st.review.push(id);
+  save();counts();live.forEach(o=>o.upd());
+  if(tab==='rev')listRev();
+  if(pool==='rev')progress();
+}
+function counts(){$('sc').textContent=st.seen.length;$('rc').textContent=st.review.length;$('rc2').textContent=st.review.length}
+function fillList(box,ids,emptyMsg){
+  live.forEach(o=>{if(!document.body.contains(o.el)||(o.el.closest('#slot')==null))live.delete(o)});
+  box.innerHTML='';
+  if(!ids.length){box.innerHTML='<div class="empty">'+emptyMsg+'</div>';return}
+  ids.slice().sort(byNum).forEach(id=>box.appendChild(mk(id).el));
+}
+function listSeen(){fillList($('l-seen'),st.seen,'還沒有抽過的片子。')}
+function listRev(){fillList($('l-rev'),st.review,'複習清單是空的。在任何一張旁邊按「加入複習」。')}
+/* ---------- draw ---------- */
+const poolIds=()=>pool==='all'?DATA.map(d=>d.id):st.review.slice();
+const seenArr=()=>pool==='all'?st.seen:st.rseen;
+function progress(){
+  const p=poolIds(),s=seenArr().filter(x=>p.includes(x)).length;
+  $('prog').textContent='已抽 '+s+' / '+p.length;
+  $('barfill').style.width=(p.length?s/p.length*100:0)+'%';
+}
+function draw(){
+  const p=poolIds();$('msg').textContent='';
+  if(!p.length){$('msg').textContent='複習清單是空的。';return}
+  const seen=seenArr(),lk=pool==='all'?'last':'rlast';
+  let c=p.filter(x=>!seen.includes(x));
+  if(!c.length){c=p.slice();$('msg').textContent='全部都抽過了，現在隨機重複。'}
+  const nl=c.filter(x=>x!==st[lk]);if(nl.length)c=nl;
+  const id=c[Math.floor(Math.random()*c.length)];
+  wasSeen=seen.includes(id);
+  if(!wasSeen)seen.push(id);
+  if(pool==='rev'&&!st.seen.includes(id))st.seen.push(id);
+  st[lk]=id;current=id;save();counts();progress();
+  live.forEach(o=>{if(o.big)live.delete(o)});
+  const o=mk(id,{big:true,seen:wasSeen});o.big=true;
+  $('slot').innerHTML='';$('slot').appendChild(o.el);
+}
+/* ---------- grading (approximate, tolerant of typos) ---------- */
+const norm=s=>s.toLowerCase().replace(/[^a-z0-9\s]/g,' ').replace(/\s+/g,' ').trim();
+const stem=w=>w.length>4?w.replace(/(es|s)$/,''):w;
+function lev(a,b){const m=a.length,n=b.length;if(!m)return n;if(!n)return m;let p=Array.from({length:n+1},(_,j)=>j);
+  for(let i=1;i<=m;i++){const c=[i];for(let j=1;j<=n;j++)c[j]=Math.min(p[j]+1,c[j-1]+1,p[j-1]+(a[i-1]===b[j-1]?0:1));p=c}return p[n]}
+const sim=(a,b)=>{const m=Math.max(a.length,b.length);return m?1-lev(a,b)/m:1};
+function tokHit(t,tokens){t=stem(t);return tokens.some(u=>{u=stem(u);return u===t||(t.length>=6&&u.length>=6&&lev(t,u)<=2)||(t.length>=4&&u.length>=4&&lev(t,u)<=1)||(t.length>=8&&u.length>=8&&t.slice(0,7)===u.slice(0,7))})}
+function segs(text){return text.split(/[;,()\/]|\bor\b/i).map(norm).filter(x=>x&&!/^\d+$/.test(x)).concat([norm(text)])}
+function matchField(ans,text){
+  const a=norm(ans);if(!a||!text)return false;
+  const at=a.split(' ');
+  return segs(text).some(sg=>{
+    if(sim(a,sg)>=0.8)return true;
+    const w=sg.split(' ').filter(x=>x.length>=3);
+    return w.length>0&&w.every(x=>tokHit(x,at))&&at.length>=Math.min(w.length,2)
+  });
+}
+const STOP=new Set('with and the of in or to by for from that this are not may also slide some more less than their into only most both each other'.split(' '));
+function keyPoints(desc){
+  return desc.split('\n').filter(l=>/^\*/.test(l.trim())).map(l=>l.replace(/^\*\s*(\d+\.)?\s*[①②③④⑤]?\s*/,'').trim()).filter(Boolean);
+}
+function gradeHTML(d,f){
+  const online=!d.n,val=c=>{const e=f.querySelector(c);return e?e.value:''};
+  const mark=(ok,label,right)=>'<div><span class="'+(ok?'ok':'no')+'">'+(ok?'✓ ':'✗ ')+label+'</span>　正確：'+esc(right)+'</div>';
+  const dxOk=matchField(val('.a-dx'),d.dx+' '+(d.dxfull!==d.dx?d.dxfull:''));
+  let h='<div class="res">'+mark(dxOk,'診斷',d.dx);
+  if(!online){
+    const ogOk=matchField(val('.a-og'),d.organ);
+    h+=mark(ogOk,'器官',d.organ);
+    const raw=val('.a-ds'),at=norm(raw).split(' ').filter(Boolean);
+    const lines=d.desc.split('\n').map(l=>l.replace(/^\*/,'').trim()).filter(Boolean);
+    const ltoks=[];
+    let n=0,body=lines.map(l=>{
+      const toks=norm(l).split(' ').filter(w=>w.length>=3&&!STOP.has(w));
+      ltoks.push(...toks);
+      const big=toks.filter(w=>w.length>=4);
+      const m=big.filter(w=>tokHit(w,at));
+      const ok=m.length>=2||(m.length===1&&m[0].length>=8)||(big.length===1&&m.length===1);
+      if(ok)n++;
+      return '<div>'+(ok?'<span class="ok">✓ </span>':'　')+esc(l)+'</div>'}).join('');
+    h+='<div class="lab" style="margin-top:6px">描述（✓ = 有寫到，關鍵字比對僅供參考）　'+n+' / '+lines.length+'</div><div class="ptl pre">'+body+'</div>';
+    const extra=raw.split(/[\n;,，；]+/).map(x=>x.trim()).filter(x=>x).filter(x=>{
+      const pt=norm(x).split(' ').filter(w=>w.length>=3&&!STOP.has(w));
+      return pt.length&&!pt.some(w=>tokHit(w,ltoks))});
+    if(extra.length)h+='<div class="lab" style="margin-top:6px">未判定（說明裡找不到對應）</div><div class="ptl pre">'+extra.map(esc).join('\n')+'</div>';
+  }
+  return h+'</div>';
+}
+/* ---------- chrome ---------- */
+function showTab(t){
+  tab=t;
+  for(const k of ['draw','seen','rev']){$('t-'+k).setAttribute('aria-selected',k===t);$('v-'+k).hidden=k!==t}
+  if(t==='seen')listSeen();if(t==='rev')listRev();
+}
+function renderAll(){counts();progress();if(tab==='seen')listSeen();if(tab==='rev')listRev()}
+for(const k of ['draw','seen','rev'])$('t-'+k).onclick=()=>showTab(k);
+$('draw').onclick=draw;
+function setPool(p){pool=p;$('p-all').setAttribute('aria-pressed',p==='all');$('p-rev').setAttribute('aria-pressed',p==='rev');
+  current=null;$('msg').textContent='';progress();
+  $('slot').innerHTML='<div class="empty">'+(p==='all'?'按「抽下一張」開始。沒抽過的片子會先出現。':(st.review.length?'按「抽下一張」開始複習。':'複習清單是空的。'))+'</div>'}
+$('p-all').onclick=()=>setPool('all');$('p-rev').onclick=()=>setPool('rev');
+let armed=false;
+$('reset').onclick=()=>{
+  if(!armed){armed=true;$('reset').textContent='再按一次確認重設';setTimeout(()=>{armed=false;$('reset').textContent='重設進度'},4000);return}
+  armed=false;$('reset').textContent='重設進度';
+  if(pool==='all')st.seen=[];else st.rseen=[];save();counts();setPool(pool)};
+const ORDER=DATA.map(d=>d.id);
+function enc(arr){let n=0n;arr.forEach(id=>{const i=ORDER.indexOf(id);if(i>=0)n|=1n<<BigInt(i)});return n.toString(36)}
+function dec(t){let n=0n;for(const ch of t){const v=parseInt(ch,36);if(isNaN(v))throw 0;n=n*36n+BigInt(v)}return ORDER.filter((_,i)=>(n>>BigInt(i))&1n)}
+function makeCode(){return 'PD-'+enc(st.seen)+'-'+enc(st.review)+'-'+enc(st.rseen)}
+function readCode(c){const p=c.trim().split('-');if(p[0]!=='PD'||p.length!==4)throw 0;
+  return clean({seen:dec(p[1]),review:dec(p[2]),rseen:dec(p[3])})}
+function showCode(){$('bk-t').value=makeCode()}
+$('bk').addEventListener('toggle',()=>{if($('bk').open)showCode()});
+$('bk-g').onclick=()=>{showCode();$('bk-t').select();$('bk-m').textContent='把這串存起來（備忘錄、傳給自己都可以）。'};
+$('bk-c').onclick=async()=>{showCode();const t=$('bk-t');t.select();let ok=false;
+  try{await navigator.clipboard.writeText(t.value);ok=true}catch(e){try{ok=document.execCommand('copy')}catch(e2){}}
+  $('bk-m').textContent=ok?'已複製。':'無法自動複製，請長按／Ctrl+C 複製上面那串。'};
+$('bk-i').onclick=()=>{try{st=readCode($('bk-t').value);save();current=null;setPool(pool);renderAll();$('bk-m').textContent='已還原。'}catch(e){$('bk-m').textContent='備份碼格式不對。'}};
+init();
+</script>
+</body></html>
