@@ -179,6 +179,7 @@ async function onUser(u){
   }
   current=null;setPool(pool);renderAll();
 }
+const INAPP=/Line\/|FBAN|FBAV|Instagram|MicroMessenger|; wv\)|WebView|GSA\//i.test(navigator.userAgent);
 async function loginClick(){
   if(!fb)return;
   if(fbUser){
@@ -187,11 +188,13 @@ async function loginClick(){
     current=null;setPool(pool);renderAll();
     note('已登出，這台裝置上的進度已清除（雲端資料還在，再登入就會回來）。');
     return}
+  if(INAPP){note('你現在是在 App 內建的瀏覽器（例如 LINE、IG、FB）開啟，Google 不允許在這裡登入。請點右上角「⋯」選「用 Safari / Chrome 開啟」，再按登入。');return}
   const p=new fb.au.GoogleAuthProvider();p.setCustomParameters({prompt:'select_account'});
   try{await fb.au.signInWithPopup(fb.auth,p)}
   catch(e){
-    if(e.code==='auth/popup-blocked'||e.code==='auth/operation-not-supported-in-this-environment'){try{await fb.au.signInWithRedirect(fb.auth,p)}catch(e2){note('登入失敗：'+(e2.code||e2.message))}}
-    else if(e.code!=='auth/popup-closed-by-user'&&e.code!=='auth/cancelled-popup-request')note('登入失敗：'+(e.code||e.message));
+    if(e.code==='auth/popup-closed-by-user'||e.code==='auth/cancelled-popup-request')return;
+    if(e.code==='auth/popup-blocked')note('登入視窗被瀏覽器擋住了。請允許這個網站的彈出式視窗，再按一次登入。');
+    else note('登入失敗（'+(e.code||e.message)+'）。請改用 Safari 或 Chrome 開啟本網址再試。');
   }
 }
 /* ---------- one slide row (used by the draw card and both lists) ---------- */
