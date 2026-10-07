@@ -265,14 +265,14 @@ function lev(a,b){const m=a.length,n=b.length;if(!m)return n;if(!n)return m;let 
 const sim=(a,b)=>{const m=Math.max(a.length,b.length);return m?1-lev(a,b)/m:1};
 function tokHit(t,tokens){t=stem(t);return tokens.some(u=>{u=stem(u);return u===t||(t.length>=6&&u.length>=6&&lev(t,u)<=2)||(t.length>=4&&u.length>=4&&lev(t,u)<=1)||(t.length>=8&&u.length>=8&&t.slice(0,7)===u.slice(0,7))})}
 function segs(text){return text.split(/[;,()\/]|\bor\b/i).map(norm).filter(x=>x&&!/^\d+$/.test(x)).concat([norm(text)])}
-function matchField(ans,text){
-  const a=norm(ans);if(!a||!text)return false;
+function matchField(ans,texts){
+  const a=norm(ans);if(!a)return false;
   const at=a.split(' ');
-  return segs(text).some(sg=>{
+  return [].concat(texts).filter(Boolean).some(text=>segs(text).some(sg=>{
     if(sim(a,sg)>=0.8)return true;
-    const w=sg.split(' ').filter(x=>x.length>=3);
-    return w.length>0&&w.every(x=>tokHit(x,at))&&at.length>=Math.min(w.length,2)
-  });
+    const w=[...new Set(sg.split(' ').filter(x=>x.length>=3))];
+    return w.length>0&&w.every(x=>tokHit(x,at))
+  }));
 }
 const STOP=new Set('with and the of in or to by for from that this are not may also slide some more less than their into only most both each other'.split(' '));
 function keyPoints(desc){
@@ -281,7 +281,7 @@ function keyPoints(desc){
 function gradeHTML(d,f){
   const online=!d.n,val=c=>{const e=f.querySelector(c);return e?e.value:''};
   const mark=(ok,label,right)=>'<div><span class="'+(ok?'ok':'no')+'">'+(ok?'✓ ':'✗ ')+label+'</span>　正確：'+esc(right)+'</div>';
-  const dxOk=matchField(val('.a-dx'),d.dx+' '+(d.dxfull!==d.dx?d.dxfull:''));
+  const dxOk=matchField(val('.a-dx'),[d.dx]);
   let h='<div class="res">'+mark(dxOk,'診斷',d.dx);
   if(!online){
     const ogOk=matchField(val('.a-og'),d.organ);
