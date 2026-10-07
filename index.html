@@ -147,11 +147,10 @@ async function init(){
   $('acct').textContent='未登入';
   try{await fbLoad()}catch(e){note('雲端登入元件載入失敗（可能是網路問題），進度先存在這個瀏覽器。');$('login').hidden=true;return}
   $('login').hidden=false;
-  fb.au.getRedirectResult(fb.auth).catch(e=>note('登入失敗（'+(e.code||e.message)+'）。請改用 Safari 或 Chrome 開啟本網址再試。'));
   fb.au.onAuthStateChanged(fb.auth,onUser);
 }
 const FB='https://www.gstatic.com/firebasejs/10.14.1/';
-const CFG={apiKey:"AIzaSyC1V6sxv106LZcaWZ3aSxtnBhzHL6aez2U",authDomain:"chendoc100-creator.github.io",projectId:"pathology-draw",storageBucket:"pathology-draw.firebasestorage.app",messagingSenderId:"1077378446876",appId:"1:1077378446876:web:3297bee90fa287e7c211d9"};
+const CFG={apiKey:"AIzaSyC1V6sxv106LZcaWZ3aSxtnBhzHL6aez2U",authDomain:"pathology-draw.firebaseapp.com",projectId:"pathology-draw",storageBucket:"pathology-draw.firebasestorage.app",messagingSenderId:"1077378446876",appId:"1:1077378446876:web:3297bee90fa287e7c211d9"};
 let fb=null,fbUser=null;
 async function fbLoad(){
   const [a,au,fs]=await Promise.all([import(FB+'firebase-app.js'),import(FB+'firebase-auth.js'),import(FB+'firebase-firestore.js')]);
@@ -180,7 +179,6 @@ async function onUser(u){
   }
   current=null;setPool(pool);renderAll();
 }
-const INAPP=/Line\/|FBAN|FBAV|Instagram|MicroMessenger|; wv\)|WebView|GSA\//i.test(navigator.userAgent);
 async function loginClick(){
   if(!fb)return;
   if(fbUser){
@@ -189,16 +187,11 @@ async function loginClick(){
     current=null;setPool(pool);renderAll();
     note('已登出，這台裝置上的進度已清除（雲端資料還在，再登入就會回來）。');
     return}
-  if(INAPP){note('你現在是在 App 內建的瀏覽器（例如 LINE、IG、FB）開啟，Google 不允許在這裡登入。請點右上角「⋯」選「用 Safari / Chrome 開啟」，再按登入。');return}
   const p=new fb.au.GoogleAuthProvider();p.setCustomParameters({prompt:'select_account'});
-  const mobile=/Android|iPhone|iPad|iPod/i.test(navigator.userAgent)||(navigator.maxTouchPoints>1&&/Mac/.test(navigator.platform));
-  try{
-    if(mobile){await fb.au.signInWithRedirect(fb.auth,p);return}
-    await fb.au.signInWithPopup(fb.auth,p)}
+  try{await fb.au.signInWithPopup(fb.auth,p)}
   catch(e){
-    if(e.code==='auth/popup-closed-by-user'||e.code==='auth/cancelled-popup-request')return;
-    if(e.code==='auth/popup-blocked'){try{await fb.au.signInWithRedirect(fb.auth,p);return}catch(e2){e=e2}}
-    note('登入失敗（'+(e.code||e.message)+'）。請改用 Safari 或 Chrome 開啟本網址再試。');
+    if(e.code==='auth/popup-blocked'||e.code==='auth/operation-not-supported-in-this-environment'){try{await fb.au.signInWithRedirect(fb.auth,p)}catch(e2){note('登入失敗：'+(e2.code||e2.message))}}
+    else if(e.code!=='auth/popup-closed-by-user'&&e.code!=='auth/cancelled-popup-request')note('登入失敗：'+(e.code||e.message));
   }
 }
 /* ---------- one slide row (used by the draw card and both lists) ---------- */
