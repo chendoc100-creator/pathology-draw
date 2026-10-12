@@ -1,0 +1,33 @@
+name: test
+on: { workflow_call: {} }
+permissions: { contents: write }
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with: { node-version: 22, cache: npm }
+      - uses: actions/setup-java@v4
+        with: { distribution: temurin, java-version: 21 }
+      - run: npm ci && npm i -g firebase-tools@15
+      - run: npx playwright install --with-deps chromium firefox webkit
+      - run: npm run build
+      - name: Security rules tests
+        run: |
+          mkdir -p ci-out
+          set -o pipefail
+          firebase emulators:exec --only firestore,auth --project demo-pd "node --test test/rules.test.mjs" 2>&1 | tee ci-out/rules.log
+      - name: Browser tests (Chromium, Firefox, WebKit/iPhone, Android)
+        if: always()
+        run: |
+          firebase emulators:exec --only firestore,auth --project demo-pd "bash -c 'python3 -m http.server 5055 --directory dist >/dev/null 2>&1 & sleep 1; node test/ui.mjs'" 2>&1 | tail -80
+          test "$(cat ci-out/status.txt)" = PASS
+      - name: Publish results to ci-results branch
+        if: always()
+        run: |
+          cd ci-out
+          git init -q && git checkout -q -b ci-results
+          git add -A && git -c user.name=ci -c user.email=ci@localhost commit -qm "results ${GITHUB_SHA::7}"
+          git push -qf "https://x-access-token:${{ github.token }}@github.com/${{ github.repository }}" ci-results
