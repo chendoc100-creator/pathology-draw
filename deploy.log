@@ -1,0 +1,24 @@
+
+[1m[37m===[39m Deploying to 'pathology-draw'...[22m
+
+[36m[1mi [22m[39m deploying [1mfirestore, hosting[22m
+[36m[1mi  firestore:[22m[39m ensuring required API [1mfirestore.googleapis.com[22m is enabled...
+[32m[1m✔  firestore:[22m[39m required API [1mfirestore.googleapis.com[22m is enabled
+[36m[1mi  firestore:[22m[39m ensuring required API [1mfirestore.googleapis.com[22m is enabled...
+[36m[1mi  cloud.firestore:[22m[39m checking [1mfirestore.rules[22m for compilation errors...
+[32m[1m✔  cloud.firestore:[22m[39m rules file [1mfirestore.rules[22m compiled successfully
+[36m[1mi  firestore:[22m[39m latest version of [1mfirestore.rules[22m already up to date, skipping upload...
+[36m[1mi  hosting[pathology-draw]:[22m[39m beginning deploy...
+[36m[1mi  hosting[pathology-draw]:[22m[39m found 4 files in [1mdist[22m
+[36m[1mi  hosting:[22m[39m upload complete
+[32m[1m✔  hosting[pathology-draw]:[22m[39m file upload complete
+[32m[1m✔  firestore:[22m[39m released rules [1mfirestore.rules[22m to [1mcloud.firestore[22m
+[36m[1mi  hosting[pathology-draw]:[22m[39m finalizing version...
+[32m[1m✔  hosting[pathology-draw]:[22m[39m version finalized
+[36m[1mi  hosting[pathology-draw]:[22m[39m releasing new version...
+[32m[1m✔  hosting[pathology-draw]:[22m[39m release complete
+
+[32m[1m✔ [22m[39m [1m[4mDeploy complete![24m[22m
+
+[1mProject Console:[22m https://console.firebase.google.com/project/pathology-draw/overview
+[1mHosting URL:[22m https://pathology-draw.web.app
