@@ -6,7 +6,6 @@ on:
     branches: [main]
     paths: ['bootstrap/start.txt']
 permissions: { contents: write, id-token: write }
-concurrency: { group: ci, cancel-in-progress: false }
 jobs:
   setup:
     runs-on: ubuntu-latest
@@ -51,7 +50,6 @@ jobs:
           mkdir -p ci-out; cp ci-out/setup.txt /tmp/setup.txt 2>/dev/null || echo "setup did not run" > /tmp/setup.txt
           git fetch -q origin main && git checkout -q -B main origin/main
           git rm -rq --ignore-unmatch bootstrap
-          if [ -f .github/wif.json ] || git diff --quiet HEAD -- .github/wif.json; then :; fi
           git add -A .github/wif.json 2>/dev/null || true
           git commit -qm "Keyless deploy identity; remove bootstrap files" || true
           git push -q "https://x-access-token:${{ github.token }}@github.com/${{ github.repository }}" main
