@@ -1,0 +1,18 @@
+== enable APIs
+== deploy service account (no keys are created)
+granted roles/firebasehosting.admin
+granted roles/firebaserules.admin
+granted roles/datastore.user
+granted roles/serviceusage.serviceUsageConsumer
+granted roles/firebase.viewer
+== workload identity pool (only main branch of chendoc100-creator/pathology-draw may deploy)
+provider projects/1077378446876/locations/global/workloadIdentityPools/github/providers/repo
+== web API key: allow only the new site
+before: {"browserKeyRestrictions":{"allowedReferrers":["https://chendoc100-creator.github.io/*","https://pathology-draw.firebaseapp.com/*"]},"apiTargets":[{"service":"firestore.googleapis.com"},{"service":"identitytoolkit.googleapis.com"},{"service":"securetoken.googleapis.com"}]}
+after:  {"browserKeyRestrictions":{"allowedReferrers":["https://pathology-draw.firebaseapp.com/*","https://pathology-draw.web.app/*"]},"apiTargets":[{"service":"firestore.googleapis.com"},{"service":"identitytoolkit.googleapis.com"},{"service":"securetoken.googleapis.com"}]}
+== sign-in authorized domains
+before: ["localhost","pathology-draw.firebaseapp.com","pathology-draw.web.app","chendoc100-creator.github.io"]
+after:  ["pathology-draw.firebaseapp.com","pathology-draw.web.app"]
+== seed slide list if missing
+projects/pathology-draw/databases/(default)/documents/content/slides
+== done
