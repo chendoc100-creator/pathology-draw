@@ -63,6 +63,8 @@
     <section id="v-adm" class="card" hidden>
       <h2>同學回報</h2>
       <div id="a-rep" class="lst"></div>
+      <h2>看片權限</h2>
+      <div id="a-acc" class="lst"></div>
       <h2>片子資料</h2>
       <div class="row"><input id="a-q" class="inp" placeholder="搜尋片號或診斷" autocomplete="off"><button type="button" class="btn sm primary" id="a-new">新增片子</button></div>
       <div id="a-form"></div>
@@ -84,6 +86,20 @@
   </div>
   <div class="sc-save"><select id="sc-line" aria-label="要存給哪一點"></select><button type="button" class="btn sm primary" id="sc-sv">把目前視野存給這一點</button></div>
   <div class="sc-info" id="sc-info"></div>
+</div>
+<div id="ss" hidden role="dialog" aria-modal="true" aria-label="看片">
+  <div class="sc-top"><span id="ss-t"></span><button type="button" id="ss-x" class="btn sm">關閉</button></div>
+  <div id="ss-lock" class="ss-lock" hidden></div>
+  <div class="sc-field" id="ss-f"><img id="ss-img" alt="" draggable="false"><svg id="ss-svg" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none"></svg><div class="sc-ptr" id="ss-ptr" hidden></div></div>
+  <div class="sc-ctl" id="ss-ctl">
+    <div class="seg" id="ss-obj" role="group" aria-label="物鏡"><button type="button" data-o="4">4×</button><button type="button" data-o="10">10×</button><button type="button" data-o="40">40×</button></div>
+    <button type="button" class="btn sm" id="ss-pt" aria-pressed="false">指針</button>
+  </div>
+  <div class="sc-tools" id="ss-tools"></div>
+  <div class="sc-info" id="ss-scale"></div>
+  <div class="sc-pts" id="ss-pts"></div>
+  <div class="sc-info" id="ss-info"></div>
+  <div class="sc-info small">影像來源：台大 EBM 數位玻片，僅供修課複習，請勿外流。</div>
 </div>
 <script src="app.js"></script>
 </body>

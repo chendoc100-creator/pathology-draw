@@ -98,12 +98,12 @@ mark{background:rgba(255,226,40,.6);color:inherit;padding:0 1px;border-radius:2p
 .rep{border:1px solid var(--line);border-radius:4px;padding:8px 12px;display:flex;flex-direction:column;gap:6px}
 a.btn{text-decoration:none;display:inline-block}
 .hid .ansblk{filter:blur(6px);cursor:pointer}
-#scope{position:fixed;top:0;left:0;right:0;bottom:0;z-index:50;background:#111;color:#eee;display:flex;flex-direction:column;align-items:center;gap:10px;padding:12px 12px 20px;overflow-y:auto;box-sizing:border-box}
-#scope[hidden]{display:none!important}
-#scope .btn{color:#ddd;border-color:#888}
-#scope .seg button{background:#222;border-color:#bbb;color:#ddd}
-#scope .seg button[aria-pressed="true"]{background:#ddd;color:#111}
-#scope .btn[aria-pressed="true"]{background:#ddd;color:#111}
+#scope,#ss{position:fixed;top:0;left:0;right:0;bottom:0;z-index:50;background:#111;color:#eee;display:flex;flex-direction:column;align-items:center;gap:10px;padding:12px 12px 20px;overflow-y:auto;box-sizing:border-box}
+#scope[hidden],#ss[hidden]{display:none!important}
+#scope .btn,#ss .btn{color:#ddd;border-color:#888}
+#scope .seg button,#ss .seg button{background:#222;border-color:#bbb;color:#ddd}
+#scope .seg button[aria-pressed="true"],#ss .seg button[aria-pressed="true"]{background:#ddd;color:#111}
+#scope .btn[aria-pressed="true"],#ss .btn[aria-pressed="true"]{background:#ddd;color:#111}
 .sc-top{width:100%;max-width:720px;display:flex;justify-content:space-between;align-items:center;gap:8px}
 .sc-field{position:relative;width:88vw;height:88vw;max-width:68vh;max-height:68vh;border-radius:50%;overflow:hidden;background:#000;touch-action:none;cursor:grab;box-shadow:0 0 0 3px #333,inset 0 0 40px 12px rgba(0,0,0,.85);flex:none}
 .sc-field img{position:absolute;top:0;left:0;transform-origin:0 0;max-width:none;user-select:none;-webkit-user-select:none;pointer-events:none}
@@ -112,3 +112,10 @@ a.btn{text-decoration:none;display:inline-block}
 .sc-ctl,.sc-save{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;align-items:center;max-width:720px}
 .sc-save select{max-width:70vw;background:#222;color:#eee;border:1px solid #888;border-radius:4px;padding:6px}
 .sc-info{font-size:.9rem;color:#aaa;text-align:center;max-width:720px}
+
+#ss-svg{position:absolute;top:0;left:0;width:100%;height:100%;pointer-events:none;overflow:visible}
+.sc-tools,.sc-pts{display:flex;flex-wrap:wrap;gap:6px;justify-content:center;max-width:720px}
+.sc-tools button{background:#222;color:#ddd;border:1px solid #888;border-radius:4px;padding:4px 10px}
+.sc-tools button[aria-pressed="true"]{background:#ffd400;color:#111;border-color:#ffd400}
+.ss-lock{background:#222;border-radius:8px;padding:16px 20px;max-width:420px;text-align:center}
+#ss .small{color:#999}

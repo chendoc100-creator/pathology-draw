@@ -45,9 +45,35 @@ service cloud.firestore {
       allow read, update, delete: if isAdmin();
     }
 
-    // Readable only by the admin; the app uses this to decide whether to show the admin tab
+    // Admin-only: admin-tab check and the admin's own microteaching links
     match /admin/{docId} {
-      allow read: if isAdmin();
+      allow read, write: if isAdmin();
+    }
+
+    function approved() {
+      return signedIn() && exists(/databases/$(database)/documents/access/$(request.auth.uid));
+    }
+
+    // Captured slide-field images: only classmates the admin approved
+    match /fimg/{imageId} {
+      allow read: if isAdmin() || approved();
+      allow write: if isAdmin();
+    }
+
+    // Approved viewers (the admin manages; each person may check their own entry)
+    match /access/{uid} {
+      allow read: if isOwner(uid) || isAdmin();
+      allow write: if isAdmin();
+    }
+
+    // Requests to see slide images
+    match /requests/{uid} {
+      allow create, update: if isOwner(uid)
+        && request.resource.data.keys().hasOnly(['name', 'email', 'at'])
+        && request.resource.data.name is string && request.resource.data.name.size() <= 100
+        && request.resource.data.email == request.auth.token.email;
+      allow read: if isOwner(uid) || isAdmin();
+      allow delete: if isOwner(uid) || isAdmin();
     }
   }
 }

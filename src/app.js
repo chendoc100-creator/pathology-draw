@@ -28,9 +28,10 @@ function el(tag,cls,html){var e=document.createElement(tag);if(cls)e.className=c
 var fb=null,user=null,isAdmin=false;
 var SL=[],BY={};                         /* master slide list */
 var P={seen:[],review:[],rseen:[],last:'',rlast:'',units:null}; /* progress */
-var U={overrides:{},notes:{},views:{}};  /* personal data */
+var U={overrides:{},notes:{},views:{},marks:{}};  /* personal data */
 var IMG={};                              /* slideId -> [{id,data,w,h}] (loaded on demand) */
 var REPORTS=[];
+var FLD={},APPROVED=false,REQUESTED=false,LINKS={};  /* slide fields (coords, no images), image access */
 var tab='draw',pool='all',rvHide=false,rvKey=false;
 var live=[];
 
@@ -75,19 +76,23 @@ async function login(){
 }
 async function onUser(u){
   user=u;isAdmin=false;IMG={};
-  if(!u){SL=[];BY={};P=cleanP(null);U={overrides:{},notes:{},views:{}};showGate();return}
+  if(!u){SL=[];BY={};P=cleanP(null);U={overrides:{},notes:{},views:{},marks:{}};FLD={};APPROVED=false;showGate();return}
   $('gate').hidden=true;$('acct').textContent='讀取中…';$('login').hidden=false;$('login').textContent='登出';
   try{
     var r=await Promise.all([
       fb.fs.getDoc(D('content','slides')),
       fb.fs.getDoc(D('progress',u.uid)),
       fb.fs.getDoc(D('users',u.uid)),
-      fb.fs.getDoc(D('admin','flag')).then(function(){return true},function(){return false})
+      fb.fs.getDoc(D('admin','flag')).then(function(){return true},function(){return false}),
+      fb.fs.getDoc(D('content','fields')).then(function(x){return x.exists()?x.data():{}},function(){return {}}),
+      fb.fs.getDoc(D('access',u.uid)).then(function(x){return x.exists()},function(){return false}),
+      fb.fs.getDoc(D('requests',u.uid)).then(function(x){return x.exists()},function(){return false})
     ]);
+    FLD=r[4]||{};APPROVED=r[5];REQUESTED=r[6];
     SL=(r[0].exists()&&r[0].data().list)||[];BY={};SL.forEach(function(d){BY[d.id]=d});
     P=cleanP(r[1].exists()?r[1].data():null);
-    if(r[2].exists()){var x=r[2].data();U={overrides:x.overrides||{},notes:x.notes||{},views:x.views||{}}}
-    else{U={overrides:{},notes:{},views:{}};await fb.fs.setDoc(D('users',u.uid),{overrides:{},notes:{},views:{}})}
+    if(r[2].exists()){var x=r[2].data();U={overrides:x.overrides||{},notes:x.notes||{},views:x.views||{},marks:x.marks||{}}}
+    else{U={overrides:{},notes:{},views:{},marks:{}};await fb.fs.setDoc(D('users',u.uid),{overrides:{},notes:{},views:{},marks:{}})}
     isAdmin=r[3];
   }catch(e){
     $('acct').textContent='已登入';note('讀取資料失敗（'+(e.code||e.message)+'）。請重新整理；一直失敗的話告訴管理者。');return
@@ -95,7 +100,7 @@ async function onUser(u){
   $('acct').textContent=(u.displayName||u.email||'已登入')+'（資料只有你看得到）';
   note(SL.length?'':'題庫還是空的。');
   $('app').hidden=false;$('t-adm').hidden=!isAdmin;
-  if(isAdmin)loadReports();
+  if(isAdmin){loadReports();admInit()}
   renderUnits();setPool(pool);showTab(tab==='adm'&&!isAdmin?'draw':tab);counts();
 }
 
@@ -129,14 +134,14 @@ function mk(id,opt){
   e.innerHTML='<div class="head">'+esc(d.id)+(online?'<span class="badge on">線上</span>':' <small>('+esc(d.n)+')</small>')+(opt.seen?'<span class="badge">已抽過</span>':'')+' <small class="small">'+esc(d.unit||'')+'</small></div>'+
    '<div class="row"><button type="button" class="btn sm q">作答</button><button type="button" class="btn sm r">'+(opt.open?'隱藏答案':'顯示答案')+'</button><button type="button" class="btn sm warn v"></button>'+
    '<button type="button" class="btn sm nb">筆記／圖片<span class="cnt"></span></button>'+
-   (d.link?'<a class="btn sm mt" target="_blank" rel="noopener noreferrer">開 microteaching</a>':'')+
+   (hasSlide(id)?'<button type="button" class="btn sm primary sv2">看片</button>':'')+
    '<button type="button" class="reset rp">回報答案錯誤</button></div>'+
    '<div class="fm f" hidden><label>診斷</label><input class="a-dx" autocomplete="off">'+
    (online?'':'<label>器官</label><input class="a-og" autocomplete="off"><label>描述（英文關鍵字，一行一點或用逗號分開）</label><textarea class="a-ds"></textarea>')+
    '<div class="row"><button type="button" class="btn sm primary g">批改</button></div></div>'+
    '<div class="res-w" hidden></div><div class="ans-w"'+(opt.open?'':' hidden')+'></div><div class="nt-w" hidden></div><div class="rp-w" hidden></div>';
   var q=e.querySelector('.q'),r=e.querySelector('.r'),v=e.querySelector('.v'),f=e.querySelector('.f'),rw=e.querySelector('.res-w'),aw=e.querySelector('.ans-w'),nw=e.querySelector('.nt-w'),pw=e.querySelector('.rp-w');
-  if(d.link)e.querySelector('.mt').href=d.link;
+  if(hasSlide(id))e.querySelector('.sv2').onclick=function(){openSlide(id,null)};
   q.onclick=function(){f.hidden=!f.hidden;if(!f.hidden)f.querySelector('.a-dx').focus()};
   var obj={el:e,id:id,big:!!opt.big,opt:opt,
     upd:function(){v.textContent=P.review.indexOf(id)>=0?'移出複習':'加入複習';var n=(IMG[id]||[]).length,t=(U.notes[id]||'').trim()?1:0;e.querySelector('.cnt').textContent=(n||t)?' ('+(t?'筆記':'')+(t&&n?'＋':'')+(n?n+' 圖':'')+')':''},
@@ -154,7 +159,7 @@ function refreshLive(id){live=live.filter(function(o){return document.body.conta
 
 /* ---------- answer panel ---------- */
 function renderAns(box,id,obj){
-  var d=BY[id],online=!d.n,a=eff(id),vw=U.views[id]||{},keyOnly=obj&&obj.opt.keyOnly,hide=obj&&obj.opt.hide;
+  var d=BY[id],online=!d.n,a=eff(id),vw=viewsFor(id),keyOnly=obj&&obj.opt.keyOnly,hide=obj&&obj.opt.hide;
   var showOrig=box.dataset.orig==='1';
   if(showOrig)a={dx:online?d.dx:d.dxfull,organ:d.organ,desc:d.desc,note:d.note,mine:false};
   var h='<div class="ans ansblk"><div><span class="lab">診斷'+(a.mine?'<span class="mine">我的版本</span>':'')+(showOrig?'<span class="mine">原始答案</span>':'')+'</span>'+lineHTML(a.dx,'dx',vw)+'</div>';
@@ -169,17 +174,20 @@ function renderAns(box,id,obj){
     (a.mine||showOrig?'<button type="button" class="btn sm og">'+(showOrig?'看我的版本':'看原始答案')+'</button>':'')+
     (isAdmin?'<button type="button" class="btn sm warn ad">編輯總答案</button>':'')+'</div>'+
     (a.stale&&!showOrig?'<div class="tag">提醒：你編輯之後，原始答案有更新過，可以按「看原始答案」比對。</div>':'')+
-    '<div class="tag">畫底線的點可以點，會用顯微鏡帶你到你存的視野。在顯微鏡裡按「把目前視野存給這一點」就能設定。</div><div class="edw"></div>';
+    '<div class="tag">畫底線的點可以點，會用顯微鏡帶你到那個視野（「信心」是判讀位置的把握程度，不是答案本身）。</div><div class="edw"></div>';
   box.innerHTML=h;box.className='ans-w'+(hide?' hid':'');
   var blk=box.querySelector('.ansblk');
   if(hide)blk.onclick=function(){box.classList.remove('hid')};
-  box.querySelectorAll('.ln.vw').forEach(function(n){n.onclick=function(ev){if(box.classList.contains('hid'))return;ev.stopPropagation();openScope(id,vw[n.dataset.k])}});
+  box.querySelectorAll('.ln.vw').forEach(function(n){n.onclick=function(ev){if(box.classList.contains('hid'))return;ev.stopPropagation();var v=vw[n.dataset.k];if(v.slide)openSlide(id,v);else openScope(id,v)}});
   box.querySelector('.ed').onclick=function(){editor(box.querySelector('.edw'),id,false)};
   var og=box.querySelector('.og');if(og)og.onclick=function(){box.dataset.orig=showOrig?'':'1';renderAns(box,id,obj)};
   var ad=box.querySelector('.ad');if(ad)ad.onclick=function(){showTab('adm');admForm(id)};
 }
 function lineHTML(text,key,vw){var v=key&&vw[key];if(!String(text).trim())return '<div class="ln">&nbsp;</div>';
-  return '<div class="ln'+(v?' vw':'')+'"'+(v?' data-k="'+esc(key)+'" title="點一下開顯微鏡"':'')+'>'+fmt(text)+(v?'<span class="go">'+v.obj+'× 視野</span>':'')+'</div>'}
+  return '<div class="ln'+(v?' vw':'')+'"'+(v?' data-k="'+esc(key)+'" title="點一下開顯微鏡"':'')+'>'+fmt(text)+(v?'<span class="go">'+v.obj+'× 視野'+(v.conf?'・信心'+esc(v.conf):'')+'</span>':'')+'</div>'}
+function hasSlide(id){var f=FLD[id];return !!(f&&f.ov)}
+function viewsFor(id){var o={},u=U.views[id]||{},f=FLD[id];Object.keys(u).forEach(function(k){o[k]=u[k]});
+  if(f&&f.pts)f.pts.forEach(function(p){o[p.k]={slide:true,x:p.x,y:p.y,obj:p.obj,conf:p.conf,note:p.note}});return o}
 
 /* ---------- editor (personal or master) ---------- */
 function editor(box,id,master){
@@ -408,6 +416,172 @@ function closeScope(){$('scope').hidden=true;document.body.style.overflow='';SC=
   window.addEventListener('resize',function(){layout(false)});
 })();
 
+/* ---------- slide microscope (pre-captured fields; coordinates in µm on the slide) ---------- */
+var FIELD_UM={4:5500,10:2200,40:550};   /* field diameter of a 10x eyepiece (FN 22) with each objective */
+var FIMG={},SS=null;
+function fimg(id){if(FIMG[id])return FIMG[id];FIMG[id]=fb.fs.getDoc(D('fimg',id)).then(function(x){if(!x.exists())throw new Error('missing');return x.data().data});FIMG[id].catch(function(){delete FIMG[id]});return FIMG[id]}
+function inRect(r,x,y){return x>=r.x0&&x<=r.x1&&y>=r.y0&&y<=r.y1}
+function layerFor(f,obj,x,y){
+  if(obj===4)return f.ov;
+  var rs=(f.regs||[]).filter(function(r){return r.obj===obj});if(!rs.length)return null;
+  var inside=rs.filter(function(r){return inRect(r,x,y)});
+  var cd=function(r){return Math.hypot((r.x0+r.x1)/2-x,(r.y0+r.y1)/2-y)};
+  if(inside.length){inside.sort(function(a,b){return cd(a)-cd(b)});return inside[0]}
+  rs.sort(function(a,b){return Math.hypot((a.x0+a.x1)/2-x,(a.y0+a.y1)/2-y)-Math.hypot((b.x0+b.x1)/2-x,(b.y0+b.y1)/2-y)});return rs[0];
+}
+async function openSlide(id,pt){
+  var f=FLD[id];if(!f||!f.ov){note('這張片還沒有擷取影像。');return}
+  SS={id:id,obj:4,x:pt?pt.x:(f.ov.x0+f.ov.x1)/2,y:pt?pt.y:(f.ov.y0+f.ov.y1)/2,layer:null,tool:'move',pt:false,shared:false};
+  $('ss').hidden=false;document.body.style.overflow='hidden';
+  $('ss-t').textContent=id+'　'+(BY[id]?strip(BY[id].dxfull):'');
+  ssPoints();ssTools();
+  var ok=isAdmin||APPROVED;$('ss-lock').hidden=ok;$('ss-f').hidden=!ok;$('ss-ctl').hidden=!ok;$('ss-tools').hidden=!ok;
+  if(!ok){ssLock();return}
+  await ssShow(false);
+  if(pt&&pt.obj&&pt.obj!==4)setTimeout(function(){ssObj(pt.obj,true)},500);
+  if(pt&&pt.note)$('ss-info').textContent=pt.note;
+}
+function ssLock(){
+  var b=$('ss-lock');
+  b.innerHTML='<p>看片影像只開放給管理者核准的同學。</p>'+(REQUESTED?'<p class="small">已送出申請，等待核准。</p>':'<button type="button" class="btn sm primary" id="ss-req">申請看片</button>');
+  var q=$('ss-req');if(q)q.onclick=async function(){try{await fb.fs.setDoc(D('requests',user.uid),{name:user.displayName||'',email:user.email||'',at:Date.now()});REQUESTED=true;ssLock()}catch(e){note('申請失敗：'+(e.code||e.message))}};
+}
+function ssPoints(){
+  var f=FLD[SS.id],box=$('ss-pts');box.innerHTML='';
+  (f.pts||[]).forEach(function(p,i){var b=el('button','btn sm',esc((i+1)+'. '+(p.k==='dx'?'整體':p.k).slice(0,28))+(p.conf?' <small>信心'+esc(p.conf)+'</small>':''));b.type='button';b.title=p.k;
+    b.onclick=function(){SS.x=p.x;SS.y=p.y;SS.obj=4;ssShow(false).then(function(){if(p.obj!==4)setTimeout(function(){ssObj(p.obj,true)},350)});$('ss-info').textContent=p.note||''};box.appendChild(b)});
+}
+async function ssShow(anim){
+  var f=FLD[SS.id],L=layerFor(f,SS.obj,SS.x,SS.y);
+  if(!L){SS.obj=4;L=f.ov}
+  if(L!==SS.layer){
+    var img=$('ss-img');
+    try{img.src=await fimg(L.img)}catch(e){$('ss-info').textContent='影像讀取失敗：'+(e.code||e.message);return}
+    SS.layer=L;anim=false;
+  }
+  ssLayout(anim);
+}
+function ssLayout(anim){
+  if(!SS||!SS.layer)return;var L=SS.layer,Dm=$('ss-f').clientWidth,k=Dm/FIELD_UM[SS.obj],s=(L.x1-L.x0)/L.w;
+  SS.x=Math.max(L.x0,Math.min(L.x1,SS.x));SS.y=Math.max(L.y0,Math.min(L.y1,SS.y));
+  var img=$('ss-img');img.style.width=L.w+'px';img.style.height=L.h+'px';img.style.transition=anim?'transform .45s ease':'none';
+  img.style.transform='translate('+(Dm/2-(SS.x-L.x0)*k)+'px,'+(Dm/2-(SS.y-L.y0)*k)+'px) scale('+(k*s)+')';
+  [].forEach.call($('ss-obj').children,function(b){b.setAttribute('aria-pressed',+b.dataset.o===SS.obj)});
+  var h=FIELD_UM[SS.obj];$('ss-scale').textContent='視野直徑約 '+(h>=1000?(h/1000)+' mm':h+' µm')+'（物鏡 '+SS.obj+'×，總倍率 '+SS.obj*10+'×）';
+  ssMarks();
+}
+function ssObj(o,anim){
+  if(!SS)return;var f=FLD[SS.id];
+  if(o!==4){var L=layerFor(f,o,SS.x,SS.y);if(!L){$('ss-info').textContent='這張片沒有 '+o+'× 的影像。';return}
+    if(!inRect(L,SS.x,SS.y)){SS.x=(L.x0+L.x1)/2;SS.y=(L.y0+L.y1)/2;$('ss-info').textContent='高倍只有重點區域，已移到最近的區域。'}}
+  SS.obj=o;ssShow(anim);
+}
+function ssStep(d){var L=[4,10,40],i=L.indexOf(SS.obj)+d;if(i>=0&&i<L.length)ssObj(L[i],true)}
+function closeSlide(){$('ss').hidden=true;document.body.style.overflow='';SS=null}
+/* annotations: circle, arrow, text — stored in µm */
+function myMarks(){return (U.marks&&U.marks[SS.id])||[]}
+function sharedMarks(){var f=FLD[SS.id];return (f&&f.shared)||[]}
+function ssMarks(extra){
+  var Dm=$('ss-f').clientWidth,k=Dm/FIELD_UM[SS.obj],w=Dm/k,svg=$('ss-svg');
+  svg.setAttribute('viewBox',(SS.x-w/2)+' '+(SS.y-w/2)+' '+w+' '+w);
+  var fs=15/k,sw=2.5/k,h='<defs>'+[['y','#ffd400'],['g','#1a7f37']].map(function(c){return '<marker id="ah'+c[0]+'" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="5" markerHeight="5" orient="auto"><path d="M0 0L10 5L0 10z" fill="'+c[1]+'"/></marker>'}).join('')+'</defs>';
+  function draw(m,c){
+    if(m.t==='c')return '<circle cx="'+m.x+'" cy="'+m.y+'" r="'+m.r+'" fill="none" stroke="'+c+'" stroke-width="'+sw+'"/>';
+    if(m.t==='a')return '<line x1="'+m.x1+'" y1="'+m.y1+'" x2="'+m.x2+'" y2="'+m.y2+'" stroke="'+c+'" stroke-width="'+sw+'" marker-end="url(#ah'+(c==='#1a7f37'?'g':'y')+')"/>';
+    if(m.t==='t')return '<text x="'+m.x+'" y="'+m.y+'" font-size="'+fs+'" fill="'+c+'" stroke="#fff" stroke-width="'+(fs/6)+'" paint-order="stroke" font-family="Times New Roman,DFKai-SB,BiauKai,serif">'+esc(m.s)+'</text>';
+    return ''}
+  h+=sharedMarks().map(function(m){return draw(m,'#1a7f37')}).join('')+myMarks().map(function(m){return draw(m,'#ffd400')}).join('')+(extra?draw(extra,'#ffd400'):'');
+  svg.innerHTML=h;
+}
+function ssSaveMarks(list){
+  if(SS.shared&&isAdmin){var f=FLD[SS.id];f.shared=list;saveFields(SS.id)}
+  else{U.marks=U.marks||{};if(list.length)U.marks[SS.id]=list;else delete U.marks[SS.id];saveU('marks',SS.id)}
+}
+function ssTools(){
+  var box=$('ss-tools');
+  box.innerHTML=[['move','移動'],['c','畫圈'],['a','箭頭'],['t','文字']].map(function(t){return '<button type="button" data-t="'+t[0]+'" aria-pressed="'+(SS.tool===t[0])+'">'+t[1]+'</button>'}).join('')+
+    '<button type="button" class="ss-undo">復原</button><button type="button" class="ss-clr">清除'+(SS.shared?'共用':'我的')+'標註</button>'+(isAdmin?'<button type="button" class="ss-sh" aria-pressed="'+SS.shared+'">共用模式</button>':'');
+  box.querySelectorAll('[data-t]').forEach(function(b){b.onclick=function(){SS.tool=b.dataset.t;ssTools()}});
+  var cur=function(){return (SS.shared?sharedMarks():myMarks()).slice()};
+  box.querySelector('.ss-undo').onclick=function(){var l=cur();l.pop();ssSaveMarks(l);ssMarks()};
+  var clr=box.querySelector('.ss-clr');clr.onclick=function(){if(clr.dataset.a!=='1'){clr.dataset.a='1';clr.textContent='再按一次確認';return}ssSaveMarks([]);ssMarks();ssTools()};
+  var sh=box.querySelector('.ss-sh');if(sh)sh.onclick=function(){SS.shared=!SS.shared;ssTools()};
+  $('ss-f').style.cursor=SS.tool==='move'?'grab':'crosshair';
+}
+async function saveFields(id){var o={};o[id]=FLD[id];try{await fb.fs.setDoc(D('content','fields'),o,{merge:true})}catch(e){note('儲存失敗：'+(e.code||e.message))}}
+(function(){
+  var f=$('ss-f'),pts={},startD=0,drag=null;
+  function toUm(e){var r=f.getBoundingClientRect(),Dm=f.clientWidth,k=Dm/FIELD_UM[SS.obj];return {x:SS.x+(e.clientX-r.left-Dm/2)/k,y:SS.y+(e.clientY-r.top-Dm/2)/k}}
+  f.addEventListener('pointerdown',function(e){if(!SS)return;f.setPointerCapture(e.pointerId);pts[e.pointerId]={x:e.clientX,y:e.clientY};
+    if(Object.keys(pts).length===2){startD=dist();drag=null;return}
+    if(SS.tool!=='move'){var p=toUm(e);
+      if(SS.tool==='t'){var s=window.prompt('標註文字');if(s&&s.trim()){var l=(SS.shared?sharedMarks():myMarks()).slice();l.push({t:'t',x:Math.round(p.x),y:Math.round(p.y),s:s.trim().slice(0,60)});ssSaveMarks(l);ssMarks()}delete pts[e.pointerId];return}
+      drag={t:SS.tool,p:p}}});
+  f.addEventListener('pointermove',function(e){if(!SS||!pts[e.pointerId])return;var p0=pts[e.pointerId],k=Object.keys(pts);
+    if(k.length===2&&startD){var d=dist();if(d/startD>1.5){ssStep(1);startD=d}else if(d/startD<0.67){ssStep(-1);startD=d}p0.x=e.clientX;p0.y=e.clientY;return}
+    if(drag){var q=toUm(e),m=drag.t==='c'?{t:'c',x:drag.p.x,y:drag.p.y,r:Math.hypot(q.x-drag.p.x,q.y-drag.p.y)}:{t:'a',x1:drag.p.x,y1:drag.p.y,x2:q.x,y2:q.y};drag.m=m;ssMarks(m);return}
+    var Dm=f.clientWidth,kk=Dm/FIELD_UM[SS.obj];SS.x-=(e.clientX-p0.x)/kk;SS.y-=(e.clientY-p0.y)/kk;p0.x=e.clientX;p0.y=e.clientY;ssLayout(false)});
+  function up(e){delete pts[e.pointerId];startD=0;
+    if(drag&&drag.m){var m=drag.m,R=function(v){return Math.round(v)};
+      var ok=m.t==='c'?m.r*(f.clientWidth/FIELD_UM[SS.obj])>6:Math.hypot(m.x2-m.x1,m.y2-m.y1)*(f.clientWidth/FIELD_UM[SS.obj])>10;
+      if(ok){var l=(SS.shared?sharedMarks():myMarks()).slice();l.push(m.t==='c'?{t:'c',x:R(m.x),y:R(m.y),r:R(m.r)}:{t:'a',x1:R(m.x1),y1:R(m.y1),x2:R(m.x2),y2:R(m.y2)});ssSaveMarks(l)}
+      ssMarks()}drag=null}
+  f.addEventListener('pointerup',up);f.addEventListener('pointercancel',up);
+  function dist(){var k=Object.keys(pts);if(k.length<2)return 0;var a=pts[k[0]],b=pts[k[1]];return Math.hypot(a.x-b.x,a.y-b.y)}
+  var wl=0;f.addEventListener('wheel',function(e){e.preventDefault();var t=Date.now();if(t-wl<300)return;wl=t;ssStep(e.deltaY<0?1:-1)},{passive:false});
+  [].forEach.call($('ss-obj').children,function(b){b.onclick=function(){ssObj(+b.dataset.o,true)}});
+  $('ss-x').onclick=closeSlide;
+  $('ss-pt').onclick=function(){SS.pt=!SS.pt;$('ss-ptr').hidden=!SS.pt;$('ss-pt').setAttribute('aria-pressed',SS.pt)};
+  document.addEventListener('keydown',function(e){if(!SS)return;var s=FIELD_UM[SS.obj]/10;
+    if(e.key==='Escape')closeSlide();else if(e.key==='ArrowLeft'){SS.x-=s;ssLayout(false)}else if(e.key==='ArrowRight'){SS.x+=s;ssLayout(false)}
+    else if(e.key==='ArrowUp'){SS.y-=s;ssLayout(false)}else if(e.key==='ArrowDown'){SS.y+=s;ssLayout(false)}
+    else if(e.key==='+'||e.key==='=')ssStep(1);else if(e.key==='-')ssStep(-1)});
+  window.addEventListener('resize',function(){ssLayout(false)});
+})();
+
+/* ---------- admin: image access + capture bridge ---------- */
+var CAP_ORIGIN='http://microteaching.ntu.edu.tw:9002',capWin=null;
+async function admInit(){
+  try{var x=await fb.fs.getDoc(D('admin','links'));LINKS=x.exists()?(x.data().map||{}):{}}catch(e){LINKS={}}
+  /* one-time move: direct links leave the shared slide list (they were generated from the admin's own session) */
+  var moved=false;SL.forEach(function(d){if(d.link){LINKS[d.id]=d.link;delete d.link;moved=true}});
+  if(moved){try{await fb.fs.setDoc(D('admin','links'),{map:LINKS});await saveSlides(null)}catch(e){note('連結搬移失敗：'+(e.code||e.message))}}
+}
+window.addEventListener('message',async function(ev){
+  if(ev.origin!==CAP_ORIGIN||!isAdmin||!capWin||ev.source!==capWin)return;
+  var m=ev.data||{},reply=function(o){try{ev.source.postMessage(Object.assign({t:'pd-ack',n:m.n},o),CAP_ORIGIN)}catch(e){}};
+  try{
+    var f=FLD[m.slide]=FLD[m.slide]||{pts:[],regs:[],shared:[]};
+    if(m.t==='pd-img'){
+      if(!/^data:image\/jpeg;base64,/.test(m.data)||m.data.length>990000)throw new Error('bad image');
+      var ref=await fb.fs.addDoc(C('fimg'),{slide:m.slide,data:m.data,at:Date.now()});
+      var L={img:ref.id,x0:m.rect[0],y0:m.rect[1],x1:m.rect[2],y1:m.rect[3],w:m.w,h:m.h};
+      if(m.role==='ov')f.ov=L;else{L.obj=m.obj;f.regs=(f.regs||[]).concat([L])}
+      await saveFields(m.slide);reply({ok:true,id:ref.id});
+    }else if(m.t==='pd-pts'){f.pts=m.pts;await saveFields(m.slide);reply({ok:true})}
+    else if(m.t==='pd-reset'){
+      var ids=[f.ov&&f.ov.img].concat((f.regs||[]).map(function(r){return r.img})).filter(Boolean);
+      for(var i=0;i<ids.length;i++)await fb.fs.deleteDoc(D('fimg',ids[i]));
+      FLD[m.slide]={pts:[],regs:[],shared:f.shared||[]};await saveFields(m.slide);reply({ok:true})}
+    else reply({ok:false,err:'unknown'});
+    refreshLive(m.slide);
+  }catch(e){reply({ok:false,err:String(e.code||e.message||e)})}
+});
+function admCapture(id){if(!LINKS[id]){note(id+' 沒有連結。');return}capWin=window.open(LINKS[id],'pdcap')}
+async function admAccess(){
+  var box=$('a-acc');box.innerHTML='<div class="small">讀取中…</div>';
+  try{
+    var r=await Promise.all([fb.fs.getDocs(C('requests')),fb.fs.getDocs(C('access'))]);
+    var h='';r[0].forEach(function(x){var y=x.data();h+='<div class="rep"><div><b>申請：</b>'+esc(y.name)+' <span class="small">'+esc(y.email)+'</span></div><div class="row"><button type="button" class="btn sm primary" data-ok="'+x.id+'">核准</button><button type="button" class="btn sm warn" data-no="'+x.id+'">拒絕</button></div></div>'});
+    var n=0;r[1].forEach(function(x){n++;var y=x.data();h+='<div class="row" style="align-items:center"><span>'+esc(y.name)+' <span class="small">'+esc(y.email)+'</span></span><button type="button" class="reset" data-rm="'+x.id+'">取消權限</button></div>'});
+    box.innerHTML=(h||'<div class="empty">沒有申請。</div>')+'<div class="small">已核准 '+n+' 人</div>';
+    var reqs={};r[0].forEach(function(x){reqs[x.id]=x.data()});
+    box.querySelectorAll('[data-ok]').forEach(function(b){b.onclick=async function(){var id=b.dataset.ok,y=reqs[id];await fb.fs.setDoc(D('access',id),{name:y.name||'',email:y.email||'',at:Date.now()});await fb.fs.deleteDoc(D('requests',id));admAccess()}});
+    box.querySelectorAll('[data-no]').forEach(function(b){b.onclick=async function(){await fb.fs.deleteDoc(D('requests',b.dataset.no));admAccess()}});
+    box.querySelectorAll('[data-rm]').forEach(function(b){b.onclick=async function(){if(b.dataset.a!=='1'){b.dataset.a='1';b.textContent='再按一次確認';return}await fb.fs.deleteDoc(D('access',b.dataset.rm));admAccess()}});
+  }catch(e){box.innerHTML='<div class="msg">讀取失敗：'+esc(e.code||e.message)+'</div>'}
+}
+
 /* ---------- admin ---------- */
 async function saveSlides(msg){
   try{await fb.fs.setDoc(D('content','slides'),{list:SL,at:Date.now()});if(msg)msg.textContent='已儲存，所有人重新整理後就會看到。';return true}
@@ -419,6 +593,7 @@ async function loadReports(){
   $('rdot').hidden=!REPORTS.length;if(tab==='adm')renderAdmin();
 }
 function renderAdmin(){
+  admAccess();
   var r=$('a-rep');r.innerHTML=REPORTS.length?'':'<div class="empty">沒有未處理的回報。</div>';
   REPORTS.forEach(function(x){var b=el('div','rep','<div><b>'+esc(x.slide)+'</b>　<span class="small">'+esc(x.name)+'・'+new Date(x.at).toLocaleString('zh-TW')+'</span></div><div class="pre">'+esc(x.text)+'</div><div class="row"><button type="button" class="btn sm go2">打開這張編輯</button><button type="button" class="btn sm warn dn">標為已處理</button></div>');
     b.querySelector('.go2').onclick=function(){if(BY[x.slide])admForm(x.slide)};
@@ -429,19 +604,21 @@ function renderAdmin(){
 function admList(){
   var q=$('a-q').value.trim().toLowerCase(),box=$('a-list');box.innerHTML='';
   SL.filter(function(d){return !q||(d.id+' '+d.dxfull+' '+d.unit).toLowerCase().indexOf(q)>=0}).slice().sort(function(a,b){return byNum(a.id,b.id)}).forEach(function(d){
-    var b=el('div','it','<div class="row" style="justify-content:space-between;align-items:center"><div><b>'+esc(d.id)+'</b> <span class="small">'+(d.n?'('+esc(d.n)+')':'線上')+'・'+esc(d.unit||'')+(d.link?'・有連結':'')+(d.desc?'':'・<span class="no">缺描述</span>')+'</span><div>'+esc(d.dxfull)+'</div></div><button type="button" class="btn sm">編輯</button></div>');
-    b.querySelector('button').onclick=function(){admForm(d.id)};box.appendChild(b)});
+    var b=el('div','it','<div class="row" style="justify-content:space-between;align-items:center"><div><b>'+esc(d.id)+'</b> <span class="small">'+(d.n?'('+esc(d.n)+')':'線上')+'・'+esc(d.unit||'')+(LINKS[d.id]?'・有連結':'')+(hasSlide(d.id)?'・已擷取':'')+(d.desc?'':'・<span class="no">缺描述</span>')+'</span><div>'+esc(d.dxfull)+'</div></div><button type="button" class="btn sm">編輯</button></div>');
+    b.querySelector('button').onclick=function(){admForm(d.id)};
+    if(LINKS[d.id]){var c=el('button','btn sm','開擷取視窗');c.type='button';c.onclick=function(){admCapture(d.id)};b.querySelector('.row').appendChild(c)}
+    box.appendChild(b)});
 }
 function admForm(id){
   var isNew=!id,d=isNew?{id:'',n:'',unit:(P.units&&P.units[0])||allUnits()[allUnits().length-1]||'',dxfull:'',dx:'',organ:'',desc:'',note:'',link:''}:BY[id];
   var box=$('a-form');
-  var F=[['id','片號（例 PA0400）'],['n','玻片號碼（空白 = 線上片）'],['unit','單元（例 Micro 2）'],['dxfull','診斷全文（顯示用）'],['dx','診斷關鍵字（批改用，空白 = 同上）'],['organ','器官'],['link','microteaching 連結']];
+  var F=[['id','片號（例 PA0400）'],['n','玻片號碼（空白 = 線上片）'],['unit','單元（例 Micro 2）'],['dxfull','診斷全文（顯示用）'],['dx','診斷關鍵字（批改用，空白 = 同上）'],['organ','器官'],['link','microteaching 連結（只有管理者看得到）']];
   box.innerHTML='<div class="fm rep"><b>'+(isNew?'新增片子':'編輯 '+esc(id))+'</b>'+F.map(function(x){return '<label>'+x[1]+'</label><input data-k="'+x[0]+'"'+(x[0]==='unit'?' list="ul"':'')+'>'}).join('')+
     '<datalist id="ul">'+allUnits().map(function(u){return '<option value="'+esc(u)+'">'}).join('')+'</datalist>'+
     '<label>說明（一行一點；開頭 * = 必寫）</label><div class="tb"><button type="button" data-m="==">螢光</button><button type="button" data-m="__"><b>粗體</b></button><button type="button" data-m="">清除格式</button></div><textarea data-k="desc" style="min-height:12rem"></textarea>'+
     '<label>備註</label><textarea data-k="note"></textarea>'+
     '<div class="row"><button type="button" class="btn sm primary sv">儲存</button><button type="button" class="btn sm cx">關閉</button>'+(isNew?'':'<button type="button" class="btn sm warn del">刪除這張</button>')+'</div><div class="msg"></div></div>';
-  box.querySelectorAll('[data-k]').forEach(function(x){x.value=d[x.dataset.k]||''});
+  box.querySelectorAll('[data-k]').forEach(function(x){x.value=x.dataset.k==='link'?(LINKS[d.id]||''):(d[x.dataset.k]||'')});
   var ds=box.querySelector('[data-k=desc]');
   box.querySelectorAll('.tb button').forEach(function(b){b.onmousedown=function(ev){ev.preventDefault()};b.onclick=function(){wrap(ds,b.dataset.m)}});
   var msg=box.querySelector('.msg');
@@ -453,6 +630,9 @@ function admForm(id){
     if(!o.dxfull){msg.textContent='請填診斷。';return}
     if(!o.dx)o.dx=o.dxfull;if(!o.unit)o.unit='未分類';
     if((isNew||o.id!==id)&&BY[o.id]){msg.textContent=o.id+' 已經存在。';return}
+    var lk=o.link;delete o.link;
+    if(lk!==(LINKS[o.id]||'')||(!isNew&&o.id!==id)){if(!isNew&&o.id!==id)delete LINKS[id];if(lk)LINKS[o.id]=lk;else delete LINKS[o.id];
+      try{await fb.fs.setDoc(D('admin','links'),{map:LINKS})}catch(e){msg.textContent='連結儲存失敗：'+(e.code||e.message);return}}
     var backup=SL.slice();
     if(isNew)SL.push(o);else SL[SL.indexOf(d)]=o;
     BY={};SL.forEach(function(x){BY[x.id]=x});

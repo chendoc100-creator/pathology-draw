@@ -68,6 +68,32 @@ test('users manage their own data', async () => {
   await assertFails(addDoc(collection(alice(), 'users/alice/images'), { slide: 'PA0001', data: IMG, w: 1, h: 1, at: 1, extra: 1 }));
 });
 
+test('slide images: only approved classmates and admin', async () => {
+  await env.withSecurityRulesDisabled(async c => {
+    await setDoc(doc(c.firestore(), 'fimg/f1'), { slide: 'PA0001', data: IMG });
+    await setDoc(doc(c.firestore(), 'access/bob'), { name: 'Bob', email: 'bob@gmail.com', at: 1 });
+  });
+  await assertFails(getDoc(doc(alice(), 'fimg/f1')));
+  await assertSucceeds(getDoc(doc(bob(), 'fimg/f1')));
+  await assertSucceeds(getDoc(doc(admin(), 'fimg/f1')));
+  await assertFails(setDoc(doc(bob(), 'fimg/f2'), { slide: 'PA0001', data: IMG }));
+  await assertFails(setDoc(doc(alice(), 'access/alice'), { name: 'A', email: 'alice@gmail.com', at: 1 }));
+  await assertFails(getDocs(collection(bob(), 'access')));
+  await assertSucceeds(getDoc(doc(bob(), 'access/bob')));
+  await assertFails(getDoc(doc(alice(), 'access/bob')));
+  await assertFails(getDoc(doc(alice(), 'admin/links')));
+});
+
+test('image access requests', async () => {
+  await assertSucceeds(setDoc(doc(alice(), 'requests/alice'), { name: 'Alice', email: 'alice@gmail.com', at: 1 }));
+  await assertFails(setDoc(doc(alice(), 'requests/bob'), { name: 'Bob', email: 'alice@gmail.com', at: 1 }));
+  await assertFails(setDoc(doc(alice(), 'requests/alice'), { name: 'Alice', email: 'someone@else.com', at: 1 }));
+  await assertFails(getDoc(doc(bob(), 'requests/alice')));
+  await assertSucceeds(getDocs(collection(admin(), 'requests')));
+  await assertSucceeds(setDoc(doc(admin(), 'access/alice'), { name: 'Alice', email: 'alice@gmail.com', at: 2 }));
+  await assertSucceeds(getDoc(doc(alice(), 'fimg/f1')));
+});
+
 test('reports: create as yourself only; only admin reads', async () => {
   const ok = { slide: 'PA0001', text: 'typo', uid: 'alice', name: 'Alice', at: 1, done: false };
   await assertSucceeds(addDoc(collection(alice(), 'reports'), ok));

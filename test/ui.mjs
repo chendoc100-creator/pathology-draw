@@ -15,11 +15,18 @@ const fsUrl = 'http://127.0.0.1:8080/v1/projects/demo-pd/databases/(default)/doc
 const toVal = v => Array.isArray(v) ? { arrayValue: { values: v.map(toVal) } }
   : v && typeof v === 'object' ? { mapValue: { fields: Object.fromEntries(Object.entries(v).map(([k, x]) => [k, toVal(x)])) } }
   : typeof v === 'number' ? { integerValue: String(v) } : typeof v === 'boolean' ? { booleanValue: v } : { stringValue: String(v ?? '') };
-await fetch(`${fsUrl}/content/slides`, { method: 'PATCH', headers: { Authorization: 'Bearer owner', 'Content-Type': 'application/json' },
-  body: JSON.stringify({ fields: { list: toVal(slides), at: toVal(1) } }) });
-
 // a small synthetic "histology" picture for upload tests
 const png = Buffer.from(readFileSync('test/sample.png'));
+const put = (path, fields) => fetch(`${fsUrl}/${path}`, { method: 'PATCH', headers: { Authorization: 'Bearer owner', 'Content-Type': 'application/json' }, body: JSON.stringify({ fields }) });
+async function seed() {
+  await put('content/slides', { list: toVal(slides), at: toVal(1) });
+  await put('fimg/t1', { slide: toVal('x'), data: toVal('data:image/png;base64,' + png.toString('base64')) });
+  const f = { ov: { img: 't1', x0: 0, y0: 0, x1: 12000, y1: 9000, w: 1200, h: 900 },
+    regs: [{ obj: 10, img: 't1', x0: 3000, y0: 3000, x1: 6000, y1: 5250, w: 1200, h: 900 }, { obj: 40, img: 't1', x0: 4000, y0: 3500, x1: 4750, y1: 4062, w: 1200, h: 900 }],
+    pts: [{ k: 'dx', x: 4400, y: 3800, obj: 40, conf: '中', note: 'test point' }], shared: [] };
+  await put('content/fields', Object.fromEntries(slides.map(d => [d.id, toVal(f)])));
+}
+await seed();
 
 async function run(name, type, ctxOpts) {
   log(`\n=== ${name} ===`);
@@ -103,6 +110,15 @@ async function run(name, type, ctxOpts) {
     await page.waitForFunction(() => document.querySelector('#slot .rp-w').textContent.includes('已送出'), null, { timeout: 10000 });
     check((await page.textContent('#slot .rp-w')).includes('已送出'), `${name}: report sent`);
 
+    // slide viewer is locked until approved; request access
+    await page.click('#slot .sv2');
+    await page.waitForSelector('#ss:not([hidden])');
+    check(await page.isVisible('#ss-lock') && await page.isHidden('#ss-f'), `${name}: slide images locked for unapproved user`);
+    await page.click('#ss-req');
+    await page.waitForFunction(() => document.querySelector('#ss-lock').textContent.includes('已送出申請'), null, { timeout: 10000 });
+    check(true, `${name}: access request sent`);
+    await page.click('#ss-x');
+
     // review tab
     await page.click('#slot .v');
     await page.click('#t-rev');
@@ -129,6 +145,34 @@ async function run(name, type, ctxOpts) {
     await page.click('#t-adm');
     await page.waitForSelector('#a-rep .rep', { timeout: 10000 });
     check((await page.textContent('#a-rep')).includes('organ should be X'), `${name}: admin sees report`);
+    await page.waitForFunction(() => document.querySelector('#a-acc').textContent.includes('alice@example.com'), null, { timeout: 10000 });
+    await page.click('#a-acc [data-ok]');
+    await page.waitForFunction(() => document.querySelector('#a-acc').textContent.includes('已核准 1 人'), null, { timeout: 10000 });
+    check(true, `${name}: admin approved request`);
+    // admin views a slide: objectives, region limits, annotations
+    await page.click('#t-draw'); await page.click('#draw');
+    await page.waitForSelector('#slot .sv2');
+    await page.click('#slot .r');
+    check((await page.textContent('#slot .ans-w')).includes('信心中'), `${name}: answer line linked to slide field`);
+    await page.click('#slot .ln.vw');
+    await page.waitForSelector('#ss:not([hidden])');
+    await page.waitForFunction(() => document.querySelector('#ss-img').naturalWidth > 0, null, { timeout: 10000 });
+    await page.waitForTimeout(1200);
+    check((await page.textContent('#ss-scale')).includes('550 µm'), `${name}: answer opens at 40x field`);
+    await page.click('#ss-obj button[data-o="4"]'); await page.waitForTimeout(300);
+    check((await page.textContent('#ss-scale')).includes('5.5 mm'), `${name}: 4x field size`);
+    await page.click('#ss-tools [data-t="c"]');
+    const g = await page.locator('#ss-f').boundingBox();
+    check(Math.abs(g.width - g.height) < 2, `${name}: slide field is circular`);
+    await page.mouse.move(g.x + g.width / 2, g.y + g.height / 2); await page.mouse.down();
+    await page.mouse.move(g.x + g.width / 2 + 40, g.y + g.height / 2, { steps: 4 }); await page.mouse.up();
+    check((await page.locator('#ss-svg circle').count()) === 1, `${name}: circle annotation drawn`);
+    await shot('6a-slide');
+    await page.click('#ss-x');
+    await page.click('#slot .sv2'); await page.waitForTimeout(800);
+    check((await page.locator('#ss-svg circle').count()) === 1, `${name}: annotation persists`);
+    await page.click('#ss-x');
+    await page.click('#t-adm');
     await page.click('#a-new');
     const fill = (k, v) => page.fill(`#a-form [data-k="${k}"]`, v);
     await fill('id', 'pa9' + String(Math.floor(Math.random() * 900) + 100));
@@ -144,8 +188,8 @@ async function run(name, type, ctxOpts) {
     await page.click('#units button:has-text("Micro 2")');
     check((await page.textContent('#prog')).includes('/ 1'), `${name}: unit filter limits pool`);
     await page.click('#t-draw'); await page.click('#draw');
-    await page.waitForSelector('#slot .mt');
-    check((await page.getAttribute('#slot .mt', 'href')).startsWith('http://microteaching'), `${name}: microteaching link button`);
+    await page.waitForSelector('#slot .it');
+    check((await page.locator('#slot .mt').count()) === 0, `${name}: no direct microteaching links shown`);
   } catch (e) {
     fails++; log(`FAIL ${name}: exception ${e.message.split('\n')[0]}`);
     await shot('ERR').catch(() => {});
@@ -159,8 +203,7 @@ async function run(name, type, ctxOpts) {
 async function wipe() {
   await fetch('http://127.0.0.1:8080/emulator/v1/projects/demo-pd/databases/(default)/documents', { method: 'DELETE' });
   await fetch('http://127.0.0.1:9099/emulator/v1/projects/demo-pd/accounts', { method: 'DELETE' });
-  await fetch(`${fsUrl}/content/slides`, { method: 'PATCH', headers: { Authorization: 'Bearer owner', 'Content-Type': 'application/json' },
-    body: JSON.stringify({ fields: { list: toVal(slides), at: toVal(1) } }) });
+  await seed();
 }
 
 await run('chromium-desktop', chromium, { viewport: { width: 1280, height: 900 } });
