@@ -135,6 +135,7 @@ function mk(id,opt){
    '<div class="row"><button type="button" class="btn sm q">作答</button><button type="button" class="btn sm r">'+(opt.open?'隱藏答案':'顯示答案')+'</button><button type="button" class="btn sm warn v"></button>'+
    '<button type="button" class="btn sm nb">筆記／圖片<span class="cnt"></span></button>'+
    (hasSlide(id)?'<button type="button" class="btn sm primary sv2">看片</button>':'')+
+   '<a class="btn sm mt" href="https://microteaching.ntu.edu.tw/" target="_blank" rel="noopener noreferrer">開官方頁面</a>'+
    '<button type="button" class="reset rp">回報答案錯誤</button></div>'+
    '<div class="fm f" hidden><label>診斷</label><input class="a-dx" autocomplete="off">'+
    (online?'':'<label>器官</label><input class="a-og" autocomplete="off"><label>描述（英文關鍵字，一行一點或用逗號分開）</label><textarea class="a-ds"></textarea>')+
@@ -142,6 +143,7 @@ function mk(id,opt){
    '<div class="res-w" hidden></div><div class="ans-w"'+(opt.open?'':' hidden')+'></div><div class="nt-w" hidden></div><div class="rp-w" hidden></div>';
   var q=e.querySelector('.q'),r=e.querySelector('.r'),v=e.querySelector('.v'),f=e.querySelector('.f'),rw=e.querySelector('.res-w'),aw=e.querySelector('.ans-w'),nw=e.querySelector('.nt-w'),pw=e.querySelector('.rp-w');
   if(hasSlide(id))e.querySelector('.sv2').onclick=function(){openSlide(id,null)};
+  e.querySelector('.mt').addEventListener('click',function(){copy(id).then(function(ok){if(ok)note('已複製片號 '+id+'，登入後在官方清單的 Search 欄貼上即可找到（需校內網路或台大 VPN）。')})});
   q.onclick=function(){f.hidden=!f.hidden;if(!f.hidden)f.querySelector('.a-dx').focus()};
   var obj={el:e,id:id,big:!!opt.big,opt:opt,
     upd:function(){v.textContent=P.review.indexOf(id)>=0?'移出複習':'加入複習';var n=(IMG[id]||[]).length,t=(U.notes[id]||'').trim()?1:0;e.querySelector('.cnt').textContent=(n||t)?' ('+(t?'筆記':'')+(t&&n?'＋':'')+(n?n+' 圖':'')+')':''},

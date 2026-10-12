@@ -189,7 +189,7 @@ async function run(name, type, ctxOpts) {
     check((await page.textContent('#prog')).includes('/ 1'), `${name}: unit filter limits pool`);
     await page.click('#t-draw'); await page.click('#draw');
     await page.waitForSelector('#slot .it');
-    check((await page.locator('#slot .mt').count()) === 0, `${name}: no direct microteaching links shown`);
+    check((await page.getAttribute('#slot .mt', 'href')) === 'https://microteaching.ntu.edu.tw/', `${name}: official portal link only`);
   } catch (e) {
     fails++; log(`FAIL ${name}: exception ${e.message.split('\n')[0]}`);
     await shot('ERR').catch(() => {});
