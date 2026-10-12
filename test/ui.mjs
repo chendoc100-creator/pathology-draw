@@ -96,7 +96,7 @@ async function run(name, type, ctxOpts) {
     await shot('3-scope40');
     await page.click('#sc-x');
     await page.waitForSelector('#slot .ln.vw', { timeout: 10000 });
-    await page.click('#slot .ln.vw');
+    await page.locator('#slot .ln.vw').filter({ hasNotText: '信心' }).first().click();
     await page.waitForSelector('#scope:not([hidden])');
     await page.waitForTimeout(900);
     check((await page.textContent('#sc-info')).includes('400×'), `${name}: answer line reopens at saved 40x view`);
@@ -154,7 +154,7 @@ async function run(name, type, ctxOpts) {
     await page.waitForSelector('#slot .sv2');
     await page.click('#slot .r');
     check((await page.textContent('#slot .ans-w')).includes('信心中'), `${name}: answer line linked to slide field`);
-    await page.click('#slot .ln.vw');
+    await page.locator('#slot .ln.vw').filter({ hasText: '信心' }).first().click();
     await page.waitForSelector('#ss:not([hidden])');
     await page.waitForFunction(() => document.querySelector('#ss-img').naturalWidth > 0, null, { timeout: 10000 });
     await page.waitForTimeout(1200);
