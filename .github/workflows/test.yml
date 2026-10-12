@@ -27,7 +27,7 @@ jobs:
       - name: Publish results to ci-results branch
         if: always()
         run: |
-          cd ci-out
+          mkdir -p ci-out && cd ci-out
           git init -q && git checkout -q -b ci-results
           git add -A && git -c user.name=ci -c user.email=ci@localhost commit -qm "results ${GITHUB_SHA::7}"
           git push -qf "https://x-access-token:${{ github.token }}@github.com/${{ github.repository }}" ci-results
