@@ -1,0 +1,62 @@
+name: bootstrap
+# One-time: owner signs in with gcloud (URL is published to the ci-login branch, the code is
+# committed to bootstrap/code.txt), then keyless deploy access is configured and gcloud is signed out.
+on:
+  push:
+    branches: [main]
+    paths: ['bootstrap/start.txt']
+permissions: { contents: write, id-token: write }
+jobs:
+  setup:
+    runs-on: ubuntu-latest
+    timeout-minutes: 40
+    steps:
+      - uses: actions/checkout@v4
+      - uses: google-github-actions/setup-gcloud@v2
+      - uses: actions/setup-node@v4
+        with: { node-version: 22 }
+      - name: gcloud sign-in (waits for the owner's code)
+        run: |
+          set -euo pipefail
+          git config --global user.name ci; git config --global user.email ci@localhost
+          mkfifo /tmp/in; exec 3<>/tmp/in
+          gcloud auth login --no-launch-browser --brief <&3 > /tmp/out 2>&1 &
+          GP=$!
+          for i in $(seq 1 30); do grep -q 'https://accounts.google.com' /tmp/out && break; sleep 1; done
+          URL=$(grep -o 'https://accounts.google.com[^ ]*' /tmp/out | head -1)
+          mkdir /tmp/l && cd /tmp/l && git init -q && git checkout -q -b ci-login
+          printf '%s\n' "$URL" > login.txt; git add -A; git commit -qm url
+          git push -qf "https://x-access-token:${{ github.token }}@github.com/${{ github.repository }}" ci-login
+          cd "$GITHUB_WORKSPACE"
+          CODE=""
+          for i in $(seq 1 180); do
+            git fetch -q origin main
+            CODE=$(git show origin/main:bootstrap/code.txt 2>/dev/null | tr -d ' \r\n' || true)
+            [ -n "$CODE" ] && break; sleep 10
+          done
+          [ -n "$CODE" ] || { echo "no code received"; exit 1; }
+          echo "::add-mask::$CODE"
+          echo "$CODE" >&3
+          wait $GP || { sed 's/4\/[A-Za-z0-9_-]*/<code>/g' /tmp/out; exit 1; }
+          gcloud auth list --format='value(account)'
+      - name: Configure Google Cloud (keyless deploy, API key, auth domains, seed)
+        run: bash scripts/gcp-setup.sh
+      - name: Sign gcloud out
+        if: always()
+        run: gcloud auth revoke --all -q || true
+      - name: Commit deploy identity, remove bootstrap files
+        if: always()
+        run: |
+          mkdir -p ci-out; cp ci-out/setup.txt /tmp/setup.txt 2>/dev/null || echo "setup did not run" > /tmp/setup.txt
+          git fetch -q origin main && git checkout -q -B main origin/main
+          git rm -rq --ignore-unmatch bootstrap
+          git add -A .github/wif.json 2>/dev/null || true
+          git commit -qm "Keyless deploy identity; remove bootstrap files" || true
+          git push -q "https://x-access-token:${{ github.token }}@github.com/${{ github.repository }}" main
+          cd /tmp && rm -rf r && mkdir r && cd r && git init -q && git checkout -q -b ci-setup && cp /tmp/setup.txt . && git add -A && git commit -qm setup
+          git push -qf "https://x-access-token:${{ github.token }}@github.com/${{ github.repository }}" ci-setup
+  test:
+    uses: ./.github/workflows/test.yml
+  deploy:
+    needs: [setup, test]
+    uses: ./.github/workflows/deploy.yml

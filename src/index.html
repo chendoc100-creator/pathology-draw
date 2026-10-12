@@ -1,0 +1,90 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="referrer" content="no-referrer">
+<meta name="robots" content="noindex,nofollow">
+<title>病理抽號器</title>
+<link rel="stylesheet" href="app.css">
+</head>
+<body>
+<main>
+  <div class="top">
+    <h1>病理抽號器</h1>
+    <div class="who"><span class="st" id="acct">載入中…</span><button type="button" id="login" hidden>用 Google 登入</button></div>
+  </div>
+  <div class="notice" id="notice" hidden></div>
+
+  <section class="card" id="gate" hidden>
+    <p>請先用 Google 帳號登入。每個人的進度、筆記、圖片、修改過的答案都只存在自己的帳號，別人看不到。</p>
+    <div class="notice" id="inapp" hidden></div>
+    <div class="row"><button type="button" class="btn primary" id="login2">用 Google 登入</button></div>
+  </section>
+
+  <div id="app" hidden>
+    <div class="units" id="units" role="group" aria-label="單元"></div>
+    <div class="tabs" role="tablist">
+      <button class="tab" role="tab" id="t-draw" aria-selected="true">抽號</button>
+      <button class="tab" role="tab" id="t-seen" aria-selected="false">已抽 (<span id="sc">0</span>)</button>
+      <button class="tab" role="tab" id="t-rev" aria-selected="false">複習 (<span id="rc">0</span>)</button>
+      <button class="tab" role="tab" id="t-adm" aria-selected="false" hidden>管理<span class="dot" id="rdot" hidden></span></button>
+    </div>
+
+    <section id="v-draw" class="card">
+      <div class="row" style="justify-content:space-between;align-items:center">
+        <div class="seg" role="group" aria-label="抽號範圍">
+          <button type="button" id="p-all" aria-pressed="true">全部</button>
+          <button type="button" id="p-rev" aria-pressed="false">複習 (<span id="rc2">0</span>)</button>
+        </div>
+        <button class="reset" id="reset" type="button">重設進度</button>
+      </div>
+      <div class="stat"><span id="prog"></span></div>
+      <div class="bar"><i id="barfill"></i></div>
+      <div class="row"><button class="btn primary" id="draw" type="button">抽下一張</button></div>
+      <div class="msg" id="msg"></div>
+      <div id="slot"><div class="empty">按「抽下一張」開始。沒抽過的片子會先出現。</div></div>
+    </section>
+
+    <section id="v-seen" class="card" hidden><div class="lst" id="l-seen"></div></section>
+
+    <section id="v-rev" class="card" hidden>
+      <div class="row" style="align-items:center">
+        <div class="seg" role="group" aria-label="複習模式">
+          <button type="button" id="rv-show" aria-pressed="true">看答案</button>
+          <button type="button" id="rv-hide" aria-pressed="false">遮答案</button>
+        </div>
+        <button type="button" class="btn sm" id="rv-key" aria-pressed="false">只看重點</button>
+      </div>
+      <div class="tag">重點 = 標 * 的必寫項目，加上你畫螢光或粗體的字。</div>
+      <div class="lst" id="l-rev"></div>
+    </section>
+
+    <section id="v-adm" class="card" hidden>
+      <h2>同學回報</h2>
+      <div id="a-rep" class="lst"></div>
+      <h2>片子資料</h2>
+      <div class="row"><input id="a-q" class="inp" placeholder="搜尋片號或診斷" autocomplete="off"><button type="button" class="btn sm primary" id="a-new">新增片子</button></div>
+      <div id="a-form"></div>
+      <div id="a-list" class="lst"></div>
+    </section>
+  </div>
+</main>
+
+<div id="scope" hidden role="dialog" aria-modal="true" aria-label="顯微鏡">
+  <div class="sc-top"><span id="sc-t"></span><button type="button" id="sc-x" class="btn sm">關閉</button></div>
+  <div class="sc-field" id="sc-f"><img id="sc-img" alt="" draggable="false"><div class="sc-ptr" id="sc-ptr" hidden></div></div>
+  <div class="sc-ctl">
+    <div class="seg" id="sc-obj" role="group" aria-label="物鏡">
+      <button type="button" data-o="4">4×</button><button type="button" data-o="10">10×</button><button type="button" data-o="40">40×</button>
+    </div>
+    <button type="button" class="btn sm" id="sc-pt" aria-pressed="false">指針</button>
+    <button type="button" class="btn sm" id="sc-prev">‹ 上一張</button>
+    <button type="button" class="btn sm" id="sc-next">下一張 ›</button>
+  </div>
+  <div class="sc-save"><select id="sc-line" aria-label="要存給哪一點"></select><button type="button" class="btn sm primary" id="sc-sv">把目前視野存給這一點</button></div>
+  <div class="sc-info" id="sc-info"></div>
+</div>
+<script src="app.js"></script>
+</body>
+</html>

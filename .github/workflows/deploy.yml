@@ -1,0 +1,48 @@
+name: deploy
+on: { workflow_call: {} }
+permissions: { contents: write, id-token: write }
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@v4
+        with: { ref: main }
+      - id: cfg
+        run: |
+          echo "provider=$(jq -r .provider .github/wif.json)" >> "$GITHUB_OUTPUT"
+          echo "sa=$(jq -r .sa .github/wif.json)" >> "$GITHUB_OUTPUT"
+      - uses: google-github-actions/auth@v2
+        with:
+          workload_identity_provider: ${{ steps.cfg.outputs.provider }}
+          service_account: ${{ steps.cfg.outputs.sa }}
+      - uses: actions/setup-node@v4
+        with: { node-version: 22, cache: npm }
+      - run: npm ci && npm i -g firebase-tools@15 && npm run build
+      - name: Deploy hosting + rules (retries while new IAM bindings propagate)
+        run: |
+          for i in 1 2 3 4 5 6 7 8; do
+            if firebase deploy --only hosting,firestore:rules --project pathology-draw --non-interactive > deploy.log 2>&1; then break; fi
+            tail -3 deploy.log; echo "retry $i"; sleep 30
+          done
+          cat deploy.log
+          grep -q "Deploy complete" deploy.log
+      - name: Smoke check live site
+        run: |
+          mkdir -p out
+          J=$(cd dist && ls a.*.js)
+          for u in https://pathology-draw.firebaseapp.com/ https://pathology-draw.web.app/; do
+            echo "== $u" >> out/deploy.txt
+            curl -sSI "$u" | tr -d '\r' | grep -iE '^(HTTP|content-security-policy|x-frame-options)' >> out/deploy.txt
+          done
+          curl -sS https://pathology-draw.firebaseapp.com/ | grep -q "$J" && echo "live html references $J" >> out/deploy.txt
+          curl -sS -o /dev/null -w "js %{http_code}\n" "https://pathology-draw.firebaseapp.com/$J" >> out/deploy.txt
+          cat out/deploy.txt
+      - name: Save deploy report to ci-results branch
+        if: always()
+        run: |
+          mkdir -p out; cp deploy.log out/ 2>/dev/null || true
+          git config --global user.name ci; git config --global user.email ci@localhost
+          if git fetch -q origin ci-results; then git worktree add -q ../res FETCH_HEAD; else git worktree add -q --detach ../res && (cd ../res && git checkout -q --orphan ci-results && git rm -rqf . || true); fi
+          cp out/* ../res/
+          cd ../res && git add -A && git commit -qm "deploy ${GITHUB_SHA::7}" && git push -qf "https://x-access-token:${{ github.token }}@github.com/${{ github.repository }}" HEAD:refs/heads/ci-results

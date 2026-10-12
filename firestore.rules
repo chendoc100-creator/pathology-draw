@@ -1,0 +1,53 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    function signedIn() { return request.auth != null; }
+    function isOwner(uid) { return signedIn() && request.auth.uid == uid; }
+    function isAdmin() {
+      return signedIn()
+        && request.auth.token.email == 'chendoc100@gmail.com'
+        && request.auth.token.email_verified == true;
+    }
+
+    // Per-user draw progress (unchanged path, so existing cloud progress carries over)
+    match /progress/{uid} {
+      allow read, write: if isOwner(uid);
+    }
+
+    // Personal answer edits, notes, saved microscope views
+    match /users/{uid} {
+      allow read, write: if isOwner(uid);
+      match /images/{imageId} {
+        allow read, delete: if isOwner(uid);
+        allow create, update: if isOwner(uid)
+          && request.resource.data.keys().hasOnly(['slide', 'data', 'w', 'h', 'at'])
+          && request.resource.data.data is string
+          && request.resource.data.data.size() < 1000000
+          && request.resource.data.data.matches('^data:image/(jpeg|png|webp);base64,.*');
+      }
+    }
+
+    // Master slide list: every signed-in user can read, only the admin can write
+    match /content/{docId} {
+      allow read: if signedIn();
+      allow write: if isAdmin();
+    }
+
+    // Error reports: anyone signed in may file one as themselves; only the admin reads them
+    match /reports/{reportId} {
+      allow create: if signedIn()
+        && request.resource.data.keys().hasOnly(['slide', 'text', 'uid', 'name', 'at', 'done'])
+        && request.resource.data.uid == request.auth.uid
+        && request.resource.data.text is string
+        && request.resource.data.text.size() > 0
+        && request.resource.data.text.size() <= 1500
+        && request.resource.data.done == false;
+      allow read, update, delete: if isAdmin();
+    }
+
+    // Readable only by the admin; the app uses this to decide whether to show the admin tab
+    match /admin/{docId} {
+      allow read: if isAdmin();
+    }
+  }
+}
