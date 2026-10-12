@@ -96,7 +96,7 @@ async function onUser(u){
   note(SL.length?'':'題庫還是空的。');
   $('app').hidden=false;$('t-adm').hidden=!isAdmin;
   if(isAdmin)loadReports();
-  renderUnits();setPool(pool);showTab(tab==='adm'&&!isAdmin?'draw':tab);
+  renderUnits();setPool(pool);showTab(tab==='adm'&&!isAdmin?'draw':tab);counts();
 }
 
 /* ---------- units ---------- */

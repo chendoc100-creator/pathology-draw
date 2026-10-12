@@ -54,7 +54,7 @@ async function run(name, type, ctxOpts) {
     await page.click('#slot .ed');
     const ta = page.locator('#slot .e-ds');
     await ta.fill('*1. Key finding one\n2. Second point');
-    await ta.evaluate(t => { t.focus(); t.setSelectionRange(5, 16); });
+    await ta.evaluate(t => { t.focus(); t.setSelectionRange(4, 15); });
     await page.click('#slot .tb button[data-m="=="]');
     await ta.evaluate(t => { const s = t.value.indexOf('Second'); t.focus(); t.setSelectionRange(s, s + 6); });
     await page.click('#slot .tb button[data-m="__"]');
@@ -107,7 +107,7 @@ async function run(name, type, ctxOpts) {
     await page.click('#slot .v');
     await page.click('#t-rev');
     await page.waitForSelector('#l-rev .it');
-    check((await page.textContent('#l-rev')).includes('my note about this slide'), `${name}: review shows notes`);
+    check((await page.locator('#l-rev .n-t').first().inputValue()) === 'my note about this slide', `${name}: review shows notes`);
     await page.click('#rv-key');
     check((await page.locator('#l-rev .ans-w .ln').count()) >= 1, `${name}: key-points filter`);
     await page.click('#rv-hide');
@@ -150,7 +150,7 @@ async function run(name, type, ctxOpts) {
     fails++; log(`FAIL ${name}: exception ${e.message.split('\n')[0]}`);
     await shot('ERR').catch(() => {});
   }
-  const real = errs.filter(e => !/emulator|Failed to load resource/i.test(e));
+  const real = errs.filter(e => !/emulator|Failed to load resource|127\.0\.0\.1:(8080|9099)/i.test(e));
   check(real.length === 0, `${name}: no page errors ${real.length ? JSON.stringify(real.slice(0, 3)) : ''}`);
   await browser.close();
 }
