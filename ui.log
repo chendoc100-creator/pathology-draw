@@ -1,0 +1,154 @@
+
+=== chromium-desktop ===
+PASS chromium-desktop: content hidden before login
+PASS chromium-desktop: admin tab hidden for classmate
+PASS chromium-desktop: unit chip shown
+PASS chromium-desktop: 45 slides in pool
+chromium-desktop: drew PA0004
+PASS chromium-desktop: answer shown
+PASS chromium-desktop: highlight/bold markup inserted
+PASS chromium-desktop: highlight rendered
+PASS chromium-desktop: bold rendered
+PASS chromium-desktop: personal version label
+PASS chromium-desktop: image uploaded
+PASS chromium-desktop: field is circular (612x612)
+PASS chromium-desktop: 40x objective
+PASS chromium-desktop: answer line reopens at saved 40x view
+PASS chromium-desktop: report sent
+PASS chromium-desktop: slide images locked for unapproved user
+PASS chromium-desktop: access request sent
+PASS chromium-desktop: review shows notes
+PASS chromium-desktop: key-points filter
+PASS chromium-desktop: review list persisted
+PASS chromium-desktop: seen persisted
+PASS chromium-desktop: admin tab visible for admin
+PASS chromium-desktop: admin does not see Alice's progress
+PASS chromium-desktop: admin sees report
+PASS chromium-desktop: admin approved request
+PASS chromium-desktop: answer line linked to slide field
+PASS chromium-desktop: answer opens at 40x field
+PASS chromium-desktop: 4x field size
+PASS chromium-desktop: slide field is circular
+PASS chromium-desktop: circle annotation drawn
+PASS chromium-desktop: annotation persists
+PASS chromium-desktop: new unit appears after adding slide
+PASS chromium-desktop: report marked done
+PASS chromium-desktop: unit filter limits pool
+PASS chromium-desktop: official portal link only
+PASS chromium-desktop: no page errors 
+
+=== firefox-desktop ===
+PASS firefox-desktop: content hidden before login
+PASS firefox-desktop: admin tab hidden for classmate
+PASS firefox-desktop: unit chip shown
+PASS firefox-desktop: 45 slides in pool
+firefox-desktop: drew PA0004
+PASS firefox-desktop: answer shown
+PASS firefox-desktop: highlight/bold markup inserted
+PASS firefox-desktop: highlight rendered
+PASS firefox-desktop: bold rendered
+PASS firefox-desktop: personal version label
+PASS firefox-desktop: image uploaded
+PASS firefox-desktop: field is circular (612x612)
+PASS firefox-desktop: 40x objective
+PASS firefox-desktop: answer line reopens at saved 40x view
+PASS firefox-desktop: report sent
+PASS firefox-desktop: slide images locked for unapproved user
+PASS firefox-desktop: access request sent
+PASS firefox-desktop: review shows notes
+PASS firefox-desktop: key-points filter
+PASS firefox-desktop: review list persisted
+PASS firefox-desktop: seen persisted
+PASS firefox-desktop: admin tab visible for admin
+PASS firefox-desktop: admin does not see Alice's progress
+PASS firefox-desktop: admin sees report
+PASS firefox-desktop: admin approved request
+PASS firefox-desktop: answer line linked to slide field
+PASS firefox-desktop: answer opens at 40x field
+PASS firefox-desktop: 4x field size
+PASS firefox-desktop: slide field is circular
+PASS firefox-desktop: circle annotation drawn
+PASS firefox-desktop: annotation persists
+PASS firefox-desktop: new unit appears after adding slide
+PASS firefox-desktop: report marked done
+PASS firefox-desktop: unit filter limits pool
+PASS firefox-desktop: official portal link only
+PASS firefox-desktop: no page errors 
+
+=== webkit-iphone ===
+PASS webkit-iphone: content hidden before login
+PASS webkit-iphone: admin tab hidden for classmate
+PASS webkit-iphone: unit chip shown
+PASS webkit-iphone: 45 slides in pool
+webkit-iphone: drew PA0287
+PASS webkit-iphone: answer shown
+PASS webkit-iphone: highlight/bold markup inserted
+PASS webkit-iphone: highlight rendered
+PASS webkit-iphone: bold rendered
+PASS webkit-iphone: personal version label
+PASS webkit-iphone: image uploaded
+PASS webkit-iphone: field is circular (343x343)
+PASS webkit-iphone: 40x objective
+PASS webkit-iphone: answer line reopens at saved 40x view
+PASS webkit-iphone: report sent
+PASS webkit-iphone: slide images locked for unapproved user
+PASS webkit-iphone: access request sent
+PASS webkit-iphone: review shows notes
+PASS webkit-iphone: key-points filter
+PASS webkit-iphone: review list persisted
+PASS webkit-iphone: seen persisted
+PASS webkit-iphone: admin tab visible for admin
+PASS webkit-iphone: admin does not see Alice's progress
+PASS webkit-iphone: admin sees report
+PASS webkit-iphone: admin approved request
+PASS webkit-iphone: answer line linked to slide field
+PASS webkit-iphone: answer opens at 40x field
+PASS webkit-iphone: 4x field size
+PASS webkit-iphone: slide field is circular
+PASS webkit-iphone: circle annotation drawn
+PASS webkit-iphone: annotation persists
+PASS webkit-iphone: new unit appears after adding slide
+PASS webkit-iphone: report marked done
+PASS webkit-iphone: unit filter limits pool
+PASS webkit-iphone: official portal link only
+PASS webkit-iphone: no page errors 
+
+=== chromium-android ===
+PASS chromium-android: content hidden before login
+PASS chromium-android: admin tab hidden for classmate
+PASS chromium-android: unit chip shown
+PASS chromium-android: 45 slides in pool
+chromium-android: drew PA0141
+PASS chromium-android: answer shown
+PASS chromium-android: highlight/bold markup inserted
+PASS chromium-android: highlight rendered
+PASS chromium-android: bold rendered
+PASS chromium-android: personal version label
+PASS chromium-android: image uploaded
+PASS chromium-android: field is circular (363x363)
+PASS chromium-android: 40x objective
+PASS chromium-android: answer line reopens at saved 40x view
+PASS chromium-android: report sent
+PASS chromium-android: slide images locked for unapproved user
+PASS chromium-android: access request sent
+PASS chromium-android: review shows notes
+PASS chromium-android: key-points filter
+PASS chromium-android: review list persisted
+PASS chromium-android: seen persisted
+PASS chromium-android: admin tab visible for admin
+PASS chromium-android: admin does not see Alice's progress
+PASS chromium-android: admin sees report
+PASS chromium-android: admin approved request
+PASS chromium-android: answer line linked to slide field
+PASS chromium-android: answer opens at 40x field
+PASS chromium-android: 4x field size
+PASS chromium-android: slide field is circular
+PASS chromium-android: circle annotation drawn
+PASS chromium-android: annotation persists
+PASS chromium-android: new unit appears after adding slide
+PASS chromium-android: report marked done
+PASS chromium-android: unit filter limits pool
+PASS chromium-android: official portal link only
+PASS chromium-android: no page errors 
+
+TOTAL FAILS: 0
