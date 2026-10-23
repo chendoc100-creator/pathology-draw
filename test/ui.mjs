@@ -144,7 +144,7 @@ async function run(name, type, ctxOpts, viewer) {
       await vw.waitForLoadState();
       check(vw.url().startsWith(LIST), `${name}: 看片 opens the portal`);
       await vw.addScriptTag({ url: BASE + 'h.js' });
-      await vw.waitForURL(/viewer\.html\?s=PA0306/, { timeout: 15000 });
+      await vw.waitForURL(/viewer\.html\?GestaltViewer=1&s=PA0306/, { timeout: 15000 });
       check(true, `${name}: list bookmarklet opened PA0306 in the same tab`);
       await vw.waitForFunction(() => window.Pviewer && window.Pviewer.world.getItemCount() > 0, null, { timeout: 15000 });
       const panelP = ctx.waitForEvent('page', { timeout: 20000 });
