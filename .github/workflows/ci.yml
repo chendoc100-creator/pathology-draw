@@ -2,7 +2,7 @@ name: ci
 on:
   push:
     branches: [main]
-    paths-ignore: ['bootstrap/**']
+    paths-ignore: ['bootstrap/**', 'ops/**', 'seed/**']
   workflow_dispatch: {}
 permissions: { contents: write, id-token: write }
 concurrency: { group: ci, cancel-in-progress: false }

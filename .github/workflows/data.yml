@@ -1,0 +1,39 @@
+name: data
+# Content-only data sync (content/* documents). Triggered by committing ops/run.sh.
+on:
+  push:
+    branches: [main]
+    paths: ['ops/run.sh']
+permissions: { contents: write, id-token: write }
+concurrency: { group: data, cancel-in-progress: false }
+jobs:
+  run:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - id: cfg
+        run: |
+          echo "provider=$(jq -r .provider .github/wif.json)" >> "$GITHUB_OUTPUT"
+          echo "sa=$(jq -r .sa .github/wif.json)" >> "$GITHUB_OUTPUT"
+      - id: auth
+        uses: google-github-actions/auth@v2
+        with:
+          workload_identity_provider: ${{ steps.cfg.outputs.provider }}
+          service_account: ${{ steps.cfg.outputs.sa }}
+          token_format: access_token
+      - uses: actions/setup-node@v4
+        with: { node-version: 22 }
+      - name: Run ops
+        env: { TOKEN: "${{ steps.auth.outputs.access_token }}" }
+        run: |
+          mkdir -p out
+          set -o pipefail
+          bash ops/run.sh 2>&1 | tee out/log.txt
+      - name: Publish output to data-out branch
+        if: always()
+        run: |
+          mkdir -p out && cd out
+          git init -q && git checkout -q -b data-out
+          git add -A && git -c user.name=ci -c user.email=ci@localhost commit -qm "data ${GITHUB_SHA::7}"
+          git push -qf "https://x-access-token:${{ github.token }}@github.com/${{ github.repository }}" data-out
