@@ -19,12 +19,20 @@ service cloud.firestore {
       allow read, write: if isOwner(uid);
       match /images/{imageId} {
         allow read, delete: if isOwner(uid);
-        allow create, update: if isOwner(uid)
-          && request.resource.data.keys().hasOnly(['slide', 'data', 'w', 'h', 'at'])
-          && request.resource.data.data is string
-          && request.resource.data.data.size() < 1000000
-          && request.resource.data.data.matches('^data:image/(jpeg|png|webp);base64,.*');
+        allow create: if isOwner(uid) && validImage(request.resource.data);
+        // captions (附註) can be edited later; the picture itself stays as uploaded
+        allow update: if isOwner(uid) && validImage(request.resource.data)
+          && request.resource.data.diff(resource.data).affectedKeys().hasOnly(['note']);
       }
+    }
+    function validImage(d) {
+      return d.keys().hasOnly(['slide', 'data', 'w', 'h', 'at', 'note', 'view'])
+        && d.slide is string && d.slide.size() <= 20
+        && d.data is string
+        && d.data.size() < 1000000
+        && d.data.matches('^data:image/(jpeg|png|webp);base64,.*')
+        && (!('note' in d) || (d.note is string && d.note.size() <= 3000))
+        && (!('view' in d) || (d.view is map && d.view.keys().hasOnly(['vid', 'x', 'y', 'obj'])));
     }
 
     // Master slide list: every signed-in user can read, only the admin can write
@@ -50,30 +58,5 @@ service cloud.firestore {
       allow read, write: if isAdmin();
     }
 
-    function approved() {
-      return signedIn() && exists(/databases/$(database)/documents/access/$(request.auth.uid));
-    }
-
-    // Captured slide-field images: only classmates the admin approved
-    match /fimg/{imageId} {
-      allow read: if isAdmin() || approved();
-      allow write: if isAdmin();
-    }
-
-    // Approved viewers (the admin manages; each person may check their own entry)
-    match /access/{uid} {
-      allow read: if isOwner(uid) || isAdmin();
-      allow write: if isAdmin();
-    }
-
-    // Requests to see slide images
-    match /requests/{uid} {
-      allow create, update: if isOwner(uid)
-        && request.resource.data.keys().hasOnly(['name', 'email', 'at'])
-        && request.resource.data.name is string && request.resource.data.name.size() <= 100
-        && request.resource.data.email == request.auth.token.email;
-      allow read: if isOwner(uid) || isAdmin();
-      allow delete: if isOwner(uid) || isAdmin();
-    }
   }
 }

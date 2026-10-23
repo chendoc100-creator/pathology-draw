@@ -17,5 +17,7 @@ writeFileSync(`dist/${cn}`, css);
 let html = readFileSync('src/index.html', 'utf8').replace('app.css', cn).replace('app.js', jn);
 html = await minifyHtml(html, { collapseWhitespace: true, removeComments: true, minifyCSS: true });
 writeFileSync('dist/index.html', html);
+const hjs = (await minify(readFileSync('src/h.js', 'utf8'), { ecma: 2017, compress: { passes: 2 }, mangle: true, format: { comments: false } })).code;
+writeFileSync('dist/h.js', hjs);
 writeFileSync('dist/robots.txt', 'User-agent: *\nDisallow: /\n');
 console.log('built', jn, js.length, cn, css.length, 'index', html.length);

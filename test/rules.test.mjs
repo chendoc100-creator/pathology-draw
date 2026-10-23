@@ -68,30 +68,27 @@ test('users manage their own data', async () => {
   await assertFails(addDoc(collection(alice(), 'users/alice/images'), { slide: 'PA0001', data: IMG, w: 1, h: 1, at: 1, extra: 1 }));
 });
 
-test('slide images: only approved classmates and admin', async () => {
-  await env.withSecurityRulesDisabled(async c => {
-    await setDoc(doc(c.firestore(), 'fimg/f1'), { slide: 'PA0001', data: IMG });
-    await setDoc(doc(c.firestore(), 'access/bob'), { name: 'Bob', email: 'bob@gmail.com', at: 1 });
-  });
-  await assertFails(getDoc(doc(alice(), 'fimg/f1')));
-  await assertSucceeds(getDoc(doc(bob(), 'fimg/f1')));
-  await assertSucceeds(getDoc(doc(admin(), 'fimg/f1')));
-  await assertFails(setDoc(doc(bob(), 'fimg/f2'), { slide: 'PA0001', data: IMG }));
-  await assertFails(setDoc(doc(alice(), 'access/alice'), { name: 'A', email: 'alice@gmail.com', at: 1 }));
-  await assertFails(getDocs(collection(bob(), 'access')));
-  await assertSucceeds(getDoc(doc(bob(), 'access/bob')));
-  await assertFails(getDoc(doc(alice(), 'access/bob')));
+test('image captions: owner may edit only the caption', async () => {
+  const ref = await addDoc(collection(alice(), 'users/alice/images'), { slide: 'PA0306', data: IMG, w: 1, h: 1, at: 1, note: '', view: { vid: 'PA0306', x: 1, y: 2, obj: 40 } });
+  await assertSucceeds(updateDoc(ref, { note: 'fibrin' }));
+  await assertFails(updateDoc(ref, { data: IMG + 'B' }));
+  await assertFails(updateDoc(ref, { note: 'x'.repeat(3001) }));
+  await assertFails(addDoc(collection(alice(), 'users/alice/images'), { slide: 'PA0306', data: IMG, w: 1, h: 1, at: 1, view: { evil: 1 } }));
+  await assertFails(updateDoc(doc(bob(), ref.path), { note: 'hack' }));
+});
+
+test('old image-access collections are closed', async () => {
+  await assertFails(getDoc(doc(admin(), 'fimg/f1')));
+  await assertFails(setDoc(doc(alice(), 'requests/alice'), { name: 'Alice', email: 'alice@gmail.com', at: 1 }));
   await assertFails(getDoc(doc(alice(), 'admin/links')));
 });
 
-test('image access requests', async () => {
-  await assertSucceeds(setDoc(doc(alice(), 'requests/alice'), { name: 'Alice', email: 'alice@gmail.com', at: 1 }));
-  await assertFails(setDoc(doc(alice(), 'requests/bob'), { name: 'Bob', email: 'alice@gmail.com', at: 1 }));
-  await assertFails(setDoc(doc(alice(), 'requests/alice'), { name: 'Alice', email: 'someone@else.com', at: 1 }));
-  await assertFails(getDoc(doc(bob(), 'requests/alice')));
-  await assertSucceeds(getDocs(collection(admin(), 'requests')));
-  await assertSucceeds(setDoc(doc(admin(), 'access/alice'), { name: 'Alice', email: 'alice@gmail.com', at: 2 }));
-  await assertSucceeds(getDoc(doc(alice(), 'fimg/f1')));
+test('content (slides, catalog, answer points): read by signed-in users, written by admin only', async () => {
+  await assertSucceeds(setDoc(doc(admin(), 'content/catalog'), { list: [{ id: 'PA0001', n: '', dx: 'x', on: 1 }] }));
+  await assertSucceeds(setDoc(doc(admin(), 'content/fields'), { PA0306: { pts: [] } }, { merge: true }));
+  await assertSucceeds(getDoc(doc(bob(), 'content/catalog')));
+  await assertFails(setDoc(doc(bob(), 'content/fields'), { PA0306: { pts: [] } }, { merge: true }));
+  await assertFails(getDoc(doc(anon(), 'content/catalog')));
 });
 
 test('reports: create as yourself only; only admin reads', async () => {

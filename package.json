@@ -10,6 +10,7 @@
     "@firebase/rules-unit-testing": "^4.0.1",
     "firebase": "^11.0.0",
     "html-minifier-terser": "^7.2.0",
+    "openseadragon": "^4.1.1",
     "playwright": "^1.48.0",
     "terser": "^5.36.0"
   }

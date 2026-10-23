@@ -2,3 +2,5 @@ node_modules/
 dist/
 .firebase/
 *.log
+test/mock/openseadragon.min.js
+test/mock/sample.png

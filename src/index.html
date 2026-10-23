@@ -12,7 +12,7 @@
 <main>
   <div class="top">
     <h1>病理抽號器</h1>
-    <div class="who"><span class="st" id="acct">載入中…</span><button type="button" id="login" hidden>用 Google 登入</button></div>
+    <div class="who"><span class="st" id="acct">載入中…</span><button type="button" id="admbtn" hidden aria-pressed="false">管理</button><span class="dot" id="rdot" hidden></span><button type="button" id="login" hidden>用 Google 登入</button></div>
   </div>
   <div class="notice" id="notice" hidden></div>
 
@@ -22,13 +22,18 @@
     <div class="row"><button type="button" class="btn primary" id="login2">用 Google 登入</button></div>
   </section>
 
+  <section id="panel" class="card" hidden></section>
+
   <div id="app" hidden>
-    <div class="units" id="units" role="group" aria-label="單元"></div>
+    <div class="units" id="units" role="group" aria-label="分類"></div>
     <div class="tabs" role="tablist">
       <button class="tab" role="tab" id="t-draw" aria-selected="true">抽號</button>
       <button class="tab" role="tab" id="t-seen" aria-selected="false">已抽 (<span id="sc">0</span>)</button>
       <button class="tab" role="tab" id="t-rev" aria-selected="false">複習 (<span id="rc">0</span>)</button>
-      <button class="tab" role="tab" id="t-adm" aria-selected="false" hidden>管理<span class="dot" id="rdot" hidden></span></button>
+      <button class="tab" role="tab" id="t-cat" aria-selected="false">片庫</button>
+      <button class="tab" role="tab" id="t-exp" aria-selected="false">匯出</button>
+      <button class="tab" role="tab" id="t-set" aria-selected="false">看片設定</button>
+      <button class="tab" role="tab" id="t-adm" aria-selected="false" hidden>管理</button>
     </div>
 
     <section id="v-draw" class="card">
@@ -37,6 +42,7 @@
           <button type="button" id="p-all" aria-pressed="true">全部</button>
           <button type="button" id="p-rev" aria-pressed="false">複習 (<span id="rc2">0</span>)</button>
         </div>
+        <label class="small"><input type="checkbox" id="altc" checked> 包含線上類似片</label>
         <button class="reset" id="reset" type="button">重設進度</button>
       </div>
       <div class="stat"><span id="prog"></span></div>
@@ -60,46 +66,49 @@
       <div class="lst" id="l-rev"></div>
     </section>
 
+    <section id="v-cat" class="card" hidden>
+      <div class="tag">全部片子：實體片號（1–200）、線上片號、是什麼。線上沒有的實體片也列出來。</div>
+      <div class="row" style="align-items:center"><input id="c-q" class="inp" placeholder="搜尋片號、號碼或診斷" autocomplete="off"><label class="small"><input type="checkbox" id="c-sem"> 只看這學期</label><span class="small" id="c-n"></span></div>
+      <div id="l-cat"></div>
+    </section>
+
+    <section id="v-exp" class="card" hidden>
+      <div class="tag">勾選片子，匯出成 Word：實體片號－線上片號－診斷、你修改後的答案、整題筆記、圖片和附註。中文標楷體、英文 Times New Roman。預設勾選有筆記或修改過的片子。</div>
+      <div class="row"><button type="button" class="btn sm" id="x-all">全選</button><button type="button" class="btn sm" id="x-none">全不選</button><button type="button" class="btn sm primary" id="x-go">匯出 Word</button></div>
+      <div class="msg" id="x-m"></div>
+      <div class="lst xl" id="l-exp"></div>
+    </section>
+
+    <section id="v-set" class="card" hidden>
+      <h2>看片怎麼用</h2>
+      <ol class="steps">
+        <li>第一次：把這個按鈕拖到瀏覽器的書籤列 → <a id="bm" class="btn sm primary" href="#">抽號器看片</a><br><span class="small">拖不了的話：<button type="button" class="reset" id="bm-c">複製書籤程式碼</button>，新增一個書籤，網址貼上。</span> <span class="small" id="bm-m"></span></li>
+        <li>在任何一張片按「看片」，會開 microteaching。用你自己的台大帳號登入（要校內網路或台大 VPN）。</li>
+        <li>到片子清單後按書籤「抽號器看片」，會自動開那張片。</li>
+        <li>到看片畫面再按一次書籤：畫面變成圓形視野，只能用 4×、10×、40× 三個倍率（實際倍率：10× 目鏡、視野數 22，視野直徑 5.5 mm／2.2 mm／0.55 mm），可以拖曳。旁邊會開答案面板。</li>
+        <li>答案裡標「視野」的點按下去，看片畫面會移到那裡。看片畫面的「擷取視野到筆記」會把目前的視野存成你的筆記圖片。</li>
+      </ol>
+      <div class="tag">右下角原本顯示的「x 數字」是掃描倍率，不是顯微鏡倍率，所以鎖定後會跟它不一樣。手機不適合看片（書籤在手機上很難用），請用電腦；筆記、抽號在手機上都可以用。</div>
+    </section>
+
     <section id="v-adm" class="card" hidden>
       <h2>同學回報</h2>
       <div id="a-rep" class="lst"></div>
-      <h2>看片權限</h2>
-      <div id="a-acc" class="lst"></div>
       <h2>片子資料</h2>
-      <div class="row"><input id="a-q" class="inp" placeholder="搜尋片號或診斷" autocomplete="off"><button type="button" class="btn sm primary" id="a-new">新增片子</button></div>
+      <div class="row"><input id="a-q" class="inp" placeholder="搜尋片號、診斷或分類" autocomplete="off"><button type="button" class="btn sm primary" id="a-new">新增片子</button></div>
       <div id="a-form"></div>
       <div id="a-list" class="lst"></div>
     </section>
   </div>
 </main>
 
-<div id="scope" hidden role="dialog" aria-modal="true" aria-label="顯微鏡">
-  <div class="sc-top"><span id="sc-t"></span><button type="button" id="sc-x" class="btn sm">關閉</button></div>
-  <div class="sc-field" id="sc-f"><img id="sc-img" alt="" draggable="false"><div class="sc-ptr" id="sc-ptr" hidden></div></div>
-  <div class="sc-ctl">
-    <div class="seg" id="sc-obj" role="group" aria-label="物鏡">
-      <button type="button" data-o="4">4×</button><button type="button" data-o="10">10×</button><button type="button" data-o="40">40×</button>
-    </div>
-    <button type="button" class="btn sm" id="sc-pt" aria-pressed="false">指針</button>
-    <button type="button" class="btn sm" id="sc-prev">‹ 上一張</button>
-    <button type="button" class="btn sm" id="sc-next">下一張 ›</button>
-  </div>
-  <div class="sc-save"><select id="sc-line" aria-label="要存給哪一點"></select><button type="button" class="btn sm primary" id="sc-sv">把目前視野存給這一點</button></div>
-  <div class="sc-info" id="sc-info"></div>
-</div>
-<div id="ss" hidden role="dialog" aria-modal="true" aria-label="看片">
-  <div class="sc-top"><span id="ss-t"></span><button type="button" id="ss-x" class="btn sm">關閉</button></div>
-  <div id="ss-lock" class="ss-lock" hidden></div>
-  <div class="sc-field" id="ss-f"><img id="ss-img" alt="" draggable="false"><svg id="ss-svg" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none"></svg><div class="sc-ptr" id="ss-ptr" hidden></div></div>
-  <div class="sc-ctl" id="ss-ctl">
-    <div class="seg" id="ss-obj" role="group" aria-label="物鏡"><button type="button" data-o="4">4×</button><button type="button" data-o="10">10×</button><button type="button" data-o="40">40×</button></div>
-    <button type="button" class="btn sm" id="ss-pt" aria-pressed="false">指針</button>
-  </div>
-  <div class="sc-tools" id="ss-tools"></div>
-  <div class="sc-info" id="ss-scale"></div>
-  <div class="sc-pts" id="ss-pts"></div>
-  <div class="sc-info" id="ss-info"></div>
-  <div class="sc-info small">影像來源：台大 EBM 數位玻片，僅供修課複習，請勿外流。</div>
+<div id="lb" hidden role="dialog" aria-modal="true" aria-label="圖片">
+  <div class="sc-top"><span id="lb-t"></span><button type="button" id="lb-x" class="btn sm">關閉</button></div>
+  <img id="lb-img" alt="">
+  <div class="lb-ctl"><button type="button" class="btn sm" id="lb-prev">‹ 上一張</button><button type="button" class="btn sm" id="lb-go" hidden>在看片視窗開到這裡</button><button type="button" class="btn sm" id="lb-next">下一張 ›</button></div>
+  <label class="small" for="lb-n">附註（自動存）</label>
+  <textarea id="lb-n" maxlength="3000"></textarea>
+  <div class="lb-ctl"><span class="small" id="lb-s"></span><button type="button" class="btn sm warn" id="lb-del">刪除這張</button></div>
 </div>
 <script src="app.js"></script>
 </body>

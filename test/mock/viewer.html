@@ -1,0 +1,14 @@
+<!doctype html>
+<html><head><meta charset="utf-8"><title>EBMViewer (mock)</title>
+<style>body{margin:0;background:#000;color:#fff;font:14px sans-serif}nav{height:50px}#contentDiv{position:absolute;top:50px;left:0;right:0;bottom:0}
+#sliderBox{position:absolute;right:8px;top:200px;z-index:1000;background:#444;padding:4px}</style>
+<script src="openseadragon.min.js"></script></head>
+<body><nav>mock viewer <span id="span_scanID">PA0306</span></nav>
+<div id="contentDiv"></div>
+<div id="sliderBox"><input type="button" id="max" value="x80"><div id="slider-vertical" style="position:relative;height:100px"></div><input type="button" id="fit" value="Fit"></div>
+<div id="div_leftBar" style="position:absolute;left:20px;bottom:20px;width:100px;height:80px;background:#fff;z-index:1000"></div>
+<script>
+window.Pviewer = OpenSeadragon({ id: 'contentDiv', showNavigationControl: false, maxZoomLevel: 80, minZoomLevel: 0.5,
+  tileSources: { type: 'image', url: 'sample.png', buildPyramid: false } });
+window.Pviewer.scalebarInstance = { pixelsPerMeter: 100000 }; /* 10 µm per image pixel, so the small picture is 12 mm wide */
+</script></body></html>

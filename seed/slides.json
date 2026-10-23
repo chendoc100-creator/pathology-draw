@@ -1,497 +1,2500 @@
 [
  {
-  "id": "PA0001",
-  "n": "",
-  "dxfull": "Infective endocarditis",
-  "dx": "Infective endocarditis",
-  "organ": "",
-  "desc": "",
+  "dxfull": "Acute tubular necrosis (ATN), kidney",
+  "n": "77",
+  "dx": "Acute tubular necrosis (ATN)",
   "note": "",
-  "unit": "Micro 1",
-  "link": "http://microteaching.ntu.edu.tw:9002/GestaltViewer?wlGUID=FV32RG%2bbW1aBSHShETWQybOqEiCc%2fgRAZ3HrvBx317SokD9aU8NshuNuJ6IOuJTkd2%2b0IOcjZQReMA5xTOU%2fQRSld9ioHqLNUDa%2b3fdVn1%2f0zLnNFYscAnqJvKx0l6u2iBh2T%2ftVg7M%3d"
+  "organ": "kidney",
+  "desc": "*1. Tubular epithelial coagulative necrosis\n*① Dead cells with preserved cellular outlines (\"ghost cells\")\n*② Cytoplasmic eosinophilia; may be glassy, may be vacuolated\n*③ Nuclear changes: karyolysis (loss), pyknosis (shrinkage), karyorrhexis (fragmentation)\n2. An inflammatory infiltrate",
+  "unit": "Cell injury and adaption",
+  "id": "PA0097",
+  "units": [
+   "Cell injury and adaption"
+  ],
+  "alt": []
  },
  {
-  "id": "PA0004",
-  "n": "",
-  "dxfull": "Myocardial infarction",
-  "dx": "Myocardial infarction",
-  "organ": "",
-  "desc": "",
+  "n": "196",
+  "unit": "Cell injury and adaption",
+  "organ": "intestine/colon",
+  "dxfull": "Necrotizing enterocolitis (NEC), intestine/colon",
+  "id": "PA0313",
+  "desc": "*1. Coagulative necrosis with hemorrhage — mucosal and transmural (impending perforation)\n2. Chronic changes: strictures, crypt distortion, reactive epithelial cells (absent in this slide)",
+  "dx": "Necrotizing enterocolitis (NEC)",
   "note": "",
-  "unit": "Micro 1",
-  "link": "http://microteaching.ntu.edu.tw:9002/GestaltViewer?wlGUID=X%2bfb9h%2fqeYQydlLc4pqXSmuB7LyWhuIWDkwCzTzBntvhzRJV7nAewawBv0qG30NufCbH5ZIV5s5xNDI38vLDPjes%2bMq0mIk5MX7Z2nCirYFO1IaDdpns2mFh8Hyk%2b%2f%2byAP4ylfI7SYU%3d"
+  "units": [
+   "Cell injury and adaption",
+   "Disease of infancy and childhood"
+  ],
+  "alt": []
  },
  {
-  "id": "PA0008",
-  "n": "10",
-  "dxfull": "Congestive splenomegaly, spleen",
-  "dx": "Congestive splenomegaly",
-  "organ": "spleen",
-  "desc": "*1. Red pulp expansion\n*2. Red pulp congestion (& fibrosis — not obvious in this slide)\n*3. Dilated sinusoids\nOther finding: Gamna-Gandy bodies",
-  "note": "",
-  "unit": "Micro 1",
-  "link": "http://microteaching.ntu.edu.tw:9002/GestaltViewer?wlGUID=5iXt5shxWUa1yCbcnBkqnKmXbv0tn%2bJvzbr7HWsU7tfOHiNLRanNBfDyLDRmpYaEPkZaaAou1qTT32krkzfQKwsIj4yXBzN7aSiU2%2bSMWCETNoKkaNzpaqwKI8Cv3%2fQbMScVSQUbrBA%3d"
+  "dxfull": "Myocardial infarction (this slide: remote / healed), heart",
+  "n": "6",
+  "dx": "Myocardial infarction (this slide: remote / healed)",
+  "desc": "General MI description (Section review 1.1):\n*1. Cardiomyocyte coagulative necrosis\n*① Dead cells with preserved cellular outlines\n*② Cytoplasmic eosinophilia\n*③ Nuclear changes: karyolysis, pyknosis, karyorrhexis\n2. Interstitial edema and hemorrhage\n3. An inflammatory infiltrate (neutrophils or macrophages)\n4. Granulation tissue (capillary and fibroblast proliferation)\n5. Fibrosis / scar formation (dense collagen deposition)\nThis slide (PA0335, remote MI):\n*1. Multifocal fibrosis replacing myocytes (remote change); slightly increased mononuclear inflammatory cells\n2. Granulation tissue, focal (hard to find; recent change): neovascularization (capillary proliferation), hemorrhage\n3. Myocyte vacuolization, especially subendocardial areas (sublethal ischemic change)\n4. Hypertrophic changes of cardiomyocytes (patient background): increased cell and nuclear size\nAlso: lipofuscin (perinuclear, normal aging)",
+  "unit": "Cell injury and adaption",
+  "note": "PA0335 (6) — 69M; listed as PA0004 (6) Myocardial infarction, heart in Section review 1.2",
+  "organ": "heart",
+  "id": "PA0335",
+  "units": [
+   "Cell injury and adaption",
+   "Hemodynamic derangement",
+   "Cardiovascular system"
+  ],
+  "alt": [
+   "PA0004"
+  ]
  },
  {
-  "id": "PA0015",
-  "n": "17",
-  "dxfull": "Aspergillosis, lung",
-  "dx": "Aspergillosis",
+  "dx": "Encephalomalacia",
+  "desc": "*1. Focal liquefactive necrosis: loss of the original structure → loosening of the tissue\n2. Neutrophil infiltration or \"microabscess\" may be present\n3. Reactive gliosis: gemistocytic astrocytes\n*4. Gitter cells: histiocytes with phagocytosed myelin",
+  "unit": "Cell injury and adaption",
+  "n": "138",
+  "dxfull": "Encephalomalacia, cerebrum (brain)",
+  "id": "PA0162",
+  "note": "",
+  "organ": "cerebrum (brain)",
+  "units": [
+   "Cell injury and adaption"
+  ],
+  "alt": []
+ },
+ {
   "organ": "lung",
-  "desc": "*1. Fungal hyphae with septa and acute-angle branching\n2. Chronic inflammation\n3. Fibrosis\n4. Anthracosis",
+  "n": "144",
+  "id": "PA0198",
   "note": "",
-  "unit": "Micro 1",
-  "link": "http://microteaching.ntu.edu.tw:9002/GestaltViewer?wlGUID=aC6gcuNEYWk4I8WWR29TjZNTHID7fLLDs7TWXZe%2bjBSOG0hGpHfNP5RQ2VStorY5OKVwRu0iNO1XjDC8GZjiRSTIvnxZadEwCyV1%2bi%2bVUoPZ3uwhSWQdgdqhkbMEPnJuLOL28dYccz8%3d"
+  "unit": "Cell injury and adaption",
+  "dxfull": "Caseating granulomatous inflammation, lung",
+  "dx": "Caseating granulomatous inflammation",
+  "desc": "*1. Center: caseous necrosis — a structureless collection of lysed cells & amorphous granular debris (complete loss of cellular details)\n*2. Periphery: granulomatous inflammation\n*① Epithelioid macrophages (histiocytes)\n② Langhans giant cells (usually but not always present)\n③ Lymphocytes\n④ Fibrosis\nAlso in this slide: anthracosis (black pigment in histiocytes; see PA0017)",
+  "units": [
+   "Cell injury and adaption",
+   "Inflammation",
+   "Infection",
+   "Respiratory system"
+  ],
+  "alt": [
+   "PA0025"
+  ]
  },
  {
+  "organ": "pancreas",
+  "dx": "Fat necrosis",
+  "note": "",
+  "dxfull": "Fat necrosis, pancreas",
+  "id": "PA0081",
+  "desc": "*1. Shadowy outlines of necrotic fat cells\n*2. Basophilic calcium deposits (\"saponification\")\n3. Inflammation\nAlso in this slide:\n• acute interstitial pancreatitis (traumatic pancreatitis) — acute inflammatory infiltrate into pancreatic parenchyma, mostly in outer part\n• hemorrhage (RBC and fibrin)\n• trauma by clinical history",
+  "unit": "Cell injury and adaption",
+  "n": "65",
+  "units": [
+   "Cell injury and adaption"
+  ],
+  "alt": []
+ },
+ {
+  "dxfull": "Nodular hyperplasia, prostate (clinical term: benign prostatic hypertrophy, BPH)",
+  "dx": "Nodular hyperplasia",
+  "desc": "*1. Nodules of cystically dilated hyperplastic glands → epithelial infoldings → papillae\n2. ± Stromal cell hyperplasia (not obvious in this slide)\n*3. Presence of both acinar & basal cells (bilayered glandular epithelium)\n*4. No cytologic atypia",
+  "unit": "Cell injury and adaption",
+  "id": "PA0220",
+  "n": "162",
+  "note": "",
+  "organ": "prostate (clinical term: benign prostatic hypertrophy, BPH)",
+  "units": [
+   "Cell injury and adaption"
+  ],
+  "alt": []
+ },
+ {
+  "dxfull": "Steatosis (fatty change), liver",
+  "id": "PA0074",
+  "unit": "Cell injury and adaption",
+  "desc": "*1. Lipid droplets in hepatocytes\n① Large droplets (macrovesicular): distend the hepatocyte and push the nucleus aside\n② Small droplets (microvesicular): multiple small vacuoles, nucleus stays central",
+  "dx": "Steatosis (fatty change)",
+  "note": "",
+  "organ": "liver",
+  "n": "58",
+  "units": [
+   "Cell injury and adaption",
+   "Liver and biliary tract"
+  ],
+  "alt": []
+ },
+ {
+  "unit": "Cell injury and adaption",
+  "dxfull": "Anthracosis, lung",
+  "desc": "*1. Dark black pigments in macrophages/histiocytes\nSection review 1.1 wording: \"Dark black pigments in histiocytes\" or \"Accumulation of black anthracotic pigments in histiocytes\" (same for lymph node)",
   "id": "PA0017",
   "n": "18",
-  "dxfull": "Anthracosis, lung",
-  "dx": "Anthracosis",
+  "note": "",
   "organ": "lung",
-  "desc": "*1. Dark black pigments in macrophages/histiocytes\nSection review 1.1 wording: \"Dark black pigments in histiocytes\" or \"Accumulation of black anthracotic pigments in histiocytes\" (same for lymph node)",
-  "note": "",
-  "unit": "Micro 1",
-  "link": "http://microteaching.ntu.edu.tw:9002/GestaltViewer?wlGUID=aHsKfBbIp5jh9ujnqjg2DiFFTJHZRzK73lNz%2bJbG8pUTgiKhYoXs7yLrigIaJlmZdgwsYuiYJfYWFCOJwmpru0%2fazJSI8z25kZUmQjxY4Od69YpDIu6NISrhHxsOHc1GiJ7j5LMhDNs%3d"
+  "dx": "Anthracosis",
+  "units": [
+   "Cell injury and adaption",
+   "Respiratory system"
+  ],
+  "alt": []
  },
  {
-  "id": "PA0022",
-  "n": "9",
-  "dxfull": "Mucormycosis, spleen",
-  "dx": "Mucormycosis",
-  "organ": "spleen",
-  "desc": "*1. Aseptate hyphae with wide-angle branching\n*2. “Necrotizing” granulomatous inflammation — \"necrotizing\" preferred, since \"caseating\" is easily misread as tuberculosis\n 3. May have infarct（此片無）",
+  "n": "120",
+  "desc": "*1. Nests & cords of proliferative melanocytes (nevus cells) in the dermis\n*2. Brown-black melanin pigmentation\n3. (Adipocytic metaplasia) — suggests a longer-standing nevus\nSupporting (DDx with melanoma): maturation with descent; no cytologic atypia",
+  "unit": "Cell injury and adaption",
+  "dxfull": "Intradermal (melanocytic) nevus, skin",
+  "dx": "Intradermal (melanocytic) nevus",
+  "organ": "skin",
   "note": "",
-  "unit": "Micro 1",
-  "link": "http://microteaching.ntu.edu.tw:9002/GestaltViewer?wlGUID=c18%2ftY35LxkFdt0pLFcquhFi3dpEbN7gQet5%2f35IhcxxW3OvBm7Ie4bbX7RRX%2b41wxekoa%2f5%2bts2ahl6LZdAq9V1IlbowGT3hGLnQc5ShDZEQr3bR99oiHH4Bs0ZpSUtloehmRKeCKY%3d"
+  "id": "PA0144",
+  "units": [
+   "Cell injury and adaption"
+  ],
+  "alt": []
  },
  {
-  "id": "PA0044",
+  "n": "152",
+  "organ": "large intestine",
+  "note": "",
+  "dx": "Melanosis coli",
+  "desc": "*1. Yellow-brown ceroid-laden macrophages in the lamina propria",
+  "id": "PA0208",
+  "unit": "Cell injury and adaption",
+  "dxfull": "Melanosis coli, large intestine",
+  "units": [
+   "Cell injury and adaption"
+  ],
+  "alt": []
+ },
+ {
+  "desc": "*1. Golden yellow-brown, refractile hemosiderin accumulation in hepatocytes (some in macrophages)\n*2. Ballooning change (hepatocytes)\n*3. Mallory-Denk bodies",
+  "dxfull": "Hemosiderosis, liver",
+  "unit": "Cell injury and adaption",
+  "dx": "Hemosiderosis",
+  "note": "",
+  "id": "PA0211",
+  "n": "153",
+  "organ": "liver",
+  "units": [
+   "Cell injury and adaption",
+   "Liver and biliary tract"
+  ],
+  "alt": []
+ },
+ {
+  "organ": "liver",
+  "dx": "Obstructive cholestasis",
+  "note": "",
+  "dxfull": "Obstructive cholestasis, liver",
+  "id": "PA0214",
+  "desc": "*1. Green-brown bile pigments in hepatocytes and dilated canaliculi\n*2. Portal edema, prominent ductular reaction & neutrophil infiltration (\"pericholangitis\") — triad of obstructive cholestasis\n3. Swelling of periportal hepatocytes (\"feathery degeneration\")",
+  "n": "156",
+  "unit": "Cell injury and adaption",
+  "units": [
+   "Cell injury and adaption",
+   "Liver and biliary tract"
+  ],
+  "alt": []
+ },
+ {
+  "note": "",
+  "n": "158",
+  "organ": "liver",
+  "dx": "Malaria pigment (hemozoin)",
+  "dxfull": "Malaria pigment (hemozoin), liver",
+  "desc": "*1. Brown-black malaria pigments in macrophages (Kupffer cells) and hepatocytes\n*2. Sinusoid dilation",
+  "unit": "Cell injury and adaption",
+  "id": "PA0216",
+  "units": [
+   "Cell injury and adaption"
+  ],
+  "alt": []
+ },
+ {
+  "n": "37",
+  "organ": "appendix",
+  "dxfull": "Acute suppurative appendicitis, appendix",
+  "unit": "Inflammation",
+  "id": "PA0270",
+  "desc": "*1. Mucosal and mural neutrophil infiltration, involving muscularis propria (± lymphocytes, plasma cells, eosinophils, histiocytes)\n2. Mucosal ulceration (mucosal defect + fibrinoid necrosis)\n3. Luminal and mural abscess (neutrophil collection + cell debris)\n4. Fibrinous inflammation on the serosal surface (fibrin + inflammatory cells)",
+  "dx": "Acute suppurative appendicitis",
+  "note": "",
+  "units": [
+   "Inflammation",
+   "GI tract and pancreas"
+  ],
+  "alt": [
+   "PA0056"
+  ]
+ },
+ {
   "n": "29",
-  "dxfull": "Chronic sinusitis, maxillary sinus (nasal cavity / paranasal sinus / sinonasal tract)",
-  "dx": "Chronic sinusitis",
+  "note": "",
+  "id": "PA0044",
+  "unit": "Inflammation",
   "organ": "maxillary sinus (nasal cavity / paranasal sinus / sinonasal tract)",
   "desc": "*1. Submucosal mixed inflammatory cell infiltrate of lymphocytes, plasma cells, and eosinophils (histiocytes and neutrophils few in this slide)\n*2. Submucosal edema\n3. Basement membrane thickening (focal only in this slide)",
-  "note": "",
-  "unit": "Micro 1",
-  "link": "http://microteaching.ntu.edu.tw:9002/GestaltViewer?wlGUID=hlDVCjyAtOnGDu3eihBuFNEPcK4LPOm8mOULttLhR2XzlM%2fmSZHI56miLi2I1X7w%2bqhudo54ZIF%2brOLYv1%2fz5POY65uePo4Qsq8UJBrWJ%2fZ67BilRsDPhx2UoMch1OHgDMxbfpnWndQ%3d"
+  "dxfull": "Chronic sinusitis, maxillary sinus (nasal cavity / paranasal sinus / sinonasal tract)",
+  "dx": "Chronic sinusitis",
+  "units": [
+   "Inflammation",
+   "Head and neck"
+  ],
+  "alt": []
  },
  {
-  "id": "PA0057",
-  "n": "",
-  "dxfull": "Actinomycosis",
-  "dx": "Actinomycosis",
-  "organ": "",
-  "desc": "",
+  "unit": "Inflammation",
+  "organ": "skin",
+  "id": "PA0143",
+  "n": "119",
+  "desc": "*1. Center: suture\n*2. Periphery: granulomatous inflammation\n① (Epithelioid) macrophages/histiocytes\n② Multinucleated giant cells\n③ Lymphocytes, plasma cells (eosinophils)\n④ Fibrosis/scar: collagen deposition, fibroblast/myofibroblast proliferation\n3. Other finding: fat necrosis (subcutis)",
+  "dxfull": "Suture granuloma, skin",
+  "dx": "Suture granuloma",
   "note": "",
-  "unit": "Micro 1",
-  "link": "http://microteaching.ntu.edu.tw:9002/GestaltViewer?wlGUID=hyohuQT75PB4GRb4URf%2bqjFzUHhiaFSbQHhijPzYj2v8syH5PUhs5zfuiZ6sdGHZFI27rdAWgWcdlyc7RuM5G29ZKRmPf%2fGv%2bGhZ9R%2fx4rhA7vGtWtYj8BVJD2%2b1OseSpnwB42wqMEs%3d"
+  "units": [
+   "Inflammation"
+  ],
+  "alt": []
  },
  {
-  "id": "PA0059",
+  "unit": "Inflammation",
+  "desc": "*1. Mucosal defect with fibrinous necrosis (fibrin + cell debris) and neutrophil-predominant infiltrate\n*2. Granulation tissue: loose ECM with edema, capillary proliferation, mixed inflammatory cells (lymphocytes, plasma cells, eosinophils, histiocytes, neutrophils)\n*3. Fibrosis/scar: collagen deposition, fibroblast/myofibroblast proliferation\n4. Other finding: fibrinous inflammation on the serosal surface",
+  "id": "PA0202",
+  "dxfull": "Chronic ulcer, stomach",
+  "organ": "stomach",
+  "dx": "Chronic ulcer",
+  "note": "",
+  "n": "148",
+  "units": [
+   "Inflammation",
+   "GI tract and pancreas"
+  ],
+  "alt": []
+ },
+ {
+  "note": "",
+  "n": "10",
+  "id": "PA0008",
+  "unit": "Hemodynamic derangement",
+  "organ": "spleen",
+  "dxfull": "Congestive splenomegaly, spleen",
+  "desc": "*1. Red pulp expansion\n*2. Red pulp congestion (& fibrosis — not obvious in this slide)\n*3. Dilated sinusoids\nOther finding: Gamna-Gandy bodies",
+  "dx": "Congestive splenomegaly",
+  "units": [
+   "Hemodynamic derangement"
+  ],
+  "alt": []
+ },
+ {
+  "note": "",
+  "organ": "anus",
+  "dx": "Hemorrhoid",
   "n": "41",
   "dxfull": "Hemorrhoid, anus",
-  "dx": "Hemorrhoid",
-  "organ": "anus",
   "desc": "*1. Dilated and congested submucosal vessels\n2. Thrombosis (fibrin + platelet + RBC)\n3. Organization & recanalization of thrombus",
-  "note": "",
-  "unit": "Micro 1",
-  "link": "http://microteaching.ntu.edu.tw:9002/GestaltViewer?wlGUID=3AVvVlP7hS9ILFjObz31GE3KPxoHc%2f4%2bzjEyFAI%2fIWySjqRr1ZpNzECwRvWFzdytHCJwpnmLp4euOtsG75wStLAtD0sDk%2bMutYb0IoUG%2fnJNPA5HilwBWKZ3bpG%2behKBcMvprUEebgc%3d"
- },
- {
-  "id": "PA0074",
-  "n": "58",
-  "dxfull": "Steatosis (fatty change), liver",
-  "dx": "Steatosis (fatty change)",
-  "organ": "liver",
-  "desc": "*1. Lipid droplets in hepatocytes\n① Large droplets (macrovesicular): distend the hepatocyte and push the nucleus aside\n② Small droplets (microvesicular): multiple small vacuoles, nucleus stays central",
-  "note": "",
-  "unit": "Micro 1",
-  "link": "http://microteaching.ntu.edu.tw:9002/GestaltViewer?wlGUID=0SQv%2fD3fVYraCorH1ii5UyjZ1SVZ4xYWkX2ABBR73E5O%2buTiSsA93j61iWPem6pQNpK3NhDx8SuCMfGA6D5bwCpx8gKytJm%2b1MQKzn42x4MQ0ElSvP6t6CDLa%2bO%2b%2bEQJCNqkaCIBsuw%3d"
+  "unit": "Hemodynamic derangement",
+  "id": "PA0059",
+  "units": [
+   "Hemodynamic derangement",
+   "GI tract and pancreas"
+  ],
+  "alt": [
+   "PA0058"
+  ]
  },
  {
   "id": "PA0076",
   "n": "61",
+  "note": "",
+  "organ": "liver",
   "dxfull": "Nutmeg liver (centrilobular [zone 3] congestion and necrosis / congestive hepatopathy)",
+  "unit": "Hemodynamic derangement",
   "dx": "Nutmeg liver (centrilobular [zone 3] congestion and necrosis / congestive hepatopathy)",
-  "organ": "liver",
   "desc": "*1. Centrilobular [zone 3] congestion (main finding in this slide)\n2. Centrilobular [zone 3] hepatocyte necrosis (only focal in this slide)",
-  "note": "",
-  "unit": "Micro 1",
-  "link": "http://microteaching.ntu.edu.tw:9002/GestaltViewer?wlGUID=SG5nFpMvlYpuiLIQeh0%2bc6qzIuCyIgBvktgFyjWLJUJlYo9GXSboS2APaGMd9PByPDa0hw9Ip4ZRgK%2bqiWhq9Nr2PtM4s27QuHOJGC%2fDTbCUyMVAKs8YqD%2f2eiJ9i0QJli0hhQigo34%3d"
+  "units": [
+   "Hemodynamic derangement",
+   "Liver and biliary tract"
+  ],
+  "alt": []
  },
  {
-  "id": "PA0081",
-  "n": "65",
-  "dxfull": "Fat necrosis, pancreas",
-  "dx": "Fat necrosis",
-  "organ": "pancreas",
-  "desc": "*1. Shadowy outlines of necrotic fat cells\n*2. Basophilic calcium deposits (\"saponification\")\n3. Inflammation\nAlso in this slide:\n• acute interstitial pancreatitis (traumatic pancreatitis) — acute inflammatory infiltrate into pancreatic parenchyma, mostly in outer part\n• hemorrhage (RBC and fibrin)\n• trauma by clinical history",
-  "note": "",
-  "unit": "Micro 1",
-  "link": "http://microteaching.ntu.edu.tw:9002/GestaltViewer?wlGUID=S74CxEJH32DfnGZz9gHW9EaZLu8UAuo5TsrEzcg53gDOHsndh3ju7aP7mf9sLvKHtGloeEIqDYY0LNCBW89OOXMv8qhgjyzgjL%2fghQzqsXD3ba0WZhvzNPJr1mMRmUa7JWNNA%2b649Ik%3d"
- },
- {
-  "id": "PA0096",
-  "n": "76",
-  "dxfull": "(1) Infarct / infarction; (2) Acute tubular necrosis, kidney",
-  "dx": "(1) Infarct / infarction; (2) Acute tubular necrosis",
-  "organ": "kidney",
-  "desc": "*1. Wedge-shaped coagulative necrosis (localized, clear border; glomeruli + tubules)\n− acute tubular necrosis\n2. Thrombosis (in renal vessel)",
-  "note": "",
-  "unit": "Micro 1",
-  "link": "http://microteaching.ntu.edu.tw:9002/GestaltViewer?wlGUID=Hnq8jb7uu4t9AFD%2bzvotAx1ceJW45FfM8DTsDfj5Y0Gb4AQiLXEToWyaSuNFDOS7VeauD2mjjGbH54uBuS8V1Jh1lkore7TvGfBdaihxJ%2fgBErzjWwnn%2bdpSgLTJRoHDy21hBUj3W90%3d"
- },
- {
-  "id": "PA0097",
-  "n": "77",
-  "dxfull": "Acute tubular necrosis (ATN), kidney",
-  "dx": "Acute tubular necrosis (ATN)",
-  "organ": "kidney",
-  "desc": "*1. Tubular epithelial coagulative necrosis\n*① Dead cells with preserved cellular outlines (\"ghost cells\")\n*② Cytoplasmic eosinophilia; may be glassy, may be vacuolated\n*③ Nuclear changes: karyolysis (loss), pyknosis (shrinkage), karyorrhexis (fragmentation)\n2. An inflammatory infiltrate",
-  "note": "",
-  "unit": "Micro 1",
-  "link": "http://microteaching.ntu.edu.tw:9002/GestaltViewer?wlGUID=AAub7GHDTFp4ow9v8GN0FR9P3FkyeifhhcBzEHwWadlP%2fR%2bpri6W6qtgrVvEnhafczHySjj1HGYLDJyWuFwnQ3Jl7uGHIlfllTIyhHneBhcoHsUtnSdCOxHiENFfXI6Dws3x68tjNrw%3d"
- },
- {
-  "id": "PA0141",
-  "n": "",
-  "dxfull": "Molluscum contagiosum",
-  "dx": "Molluscum contagiosum",
-  "organ": "",
-  "desc": "",
-  "note": "",
-  "unit": "Micro 1",
-  "link": "http://microteaching.ntu.edu.tw:9002/GestaltViewer?wlGUID=A7pT9bi07luy7mghxoZr%2fGo0m9JECLdw4vUF1UeQlWHxVNVFbn4jcY0HcQR6Z7WzxsVcLhLJrY1zMvO%2bv3CXRH5CNf4BKIE7qjH5uoynnfpPJ38pjHPkAhNynXt3i7UUnNoUpjz%2fgfU%3d"
- },
- {
-  "id": "PA0143",
-  "n": "119",
-  "dxfull": "Suture granuloma, skin",
-  "dx": "Suture granuloma",
-  "organ": "skin",
-  "desc": "*1. Center: suture\n*2. Periphery: granulomatous inflammation\n① (Epithelioid) macrophages/histiocytes\n② Multinucleated giant cells\n③ Lymphocytes, plasma cells (eosinophils)\n④ Fibrosis/scar: collagen deposition, fibroblast/myofibroblast proliferation\n3. Other finding: fat necrosis (subcutis)",
-  "note": "",
-  "unit": "Micro 1",
-  "link": "http://microteaching.ntu.edu.tw:9002/GestaltViewer?wlGUID=lB9oG9YlN2Vu97Sc54vilAXn%2fe77pzf%2f8RZ5npgLNGX3rXBvF2mMx4knrXBdWt0ENBJhpAaMYLwryFdYX4qFtfuU%2bbWUTVcPX3DWKZ3gC%2bmE0rVoGROit8n9Db%2be0iqmQnowRXN11BQ%3d"
- },
- {
-  "id": "PA0144",
-  "n": "120",
-  "dxfull": "Intradermal (melanocytic) nevus, skin",
-  "dx": "Intradermal (melanocytic) nevus",
-  "organ": "skin",
-  "desc": "*1. Nests & cords of proliferative melanocytes (nevus cells) in the dermis\n*2. Brown-black melanin pigmentation\n3. (Adipocytic metaplasia) — suggests a longer-standing nevus\nSupporting (DDx with melanoma): maturation with descent; no cytologic atypia",
-  "note": "",
-  "unit": "Micro 1",
-  "link": "http://microteaching.ntu.edu.tw:9002/GestaltViewer?wlGUID=3X2iw63YfcUEYoXmsf286YzCKw7hZKpxxgCR95MjtbMJVIdWNAkSJ94XyuNRMQW7U57dqnH4vraRe5ifOR5Diu2vkUnHhVPN2HsoAB9aNQzWiQ6z1D9nJuc%2fZRxiesKqdiLGUXpF5sc%3d"
- },
- {
-  "id": "PA0162",
-  "n": "138",
-  "dxfull": "Encephalomalacia, cerebrum (brain)",
-  "dx": "Encephalomalacia",
-  "organ": "cerebrum (brain)",
-  "desc": "*1. Focal liquefactive necrosis: loss of the original structure → loosening of the tissue\n2. Neutrophil infiltration or \"microabscess\" may be present\n3. Reactive gliosis: gemistocytic astrocytes\n*4. Gitter cells: histiocytes with phagocytosed myelin",
-  "note": "",
-  "unit": "Micro 1",
-  "link": "http://microteaching.ntu.edu.tw:9002/GestaltViewer?wlGUID=HEtVk2X2NHbTxQy9EKAjKB15o4euoXLN%2bxm1nQuuP%2fAQQnlLFuOfEAjJeVQVYXlF5rE0W4dqjrtiW%2fKqrCyTQrP5eZUVdxI%2bWjlek51sniR6ugMq4edn%2fl9IjBLVk%2bQUnv5KH6iLShw%3d"
- },
- {
-  "id": "PA0175",
-  "n": "",
-  "dxfull": "Cryptococcosis",
-  "dx": "Cryptococcosis",
-  "organ": "",
-  "desc": "",
-  "note": "",
-  "unit": "Micro 1",
-  "link": "http://microteaching.ntu.edu.tw:9002/GestaltViewer?wlGUID=Rboib8%2bZ7NeJy61iBSPYGnO%2bO34e3%2fBRO64qHUG9utJOecmUXXvIofjSX9UaijYaMl3djc7Nj9ELRqap2LIuTNozT37N4yWNo7%2fLWrxIXYbFxzEs09mPgHE8%2fAXuabpqB5r1py5LI6U%3d"
- },
- {
-  "id": "PA0198",
-  "n": "144",
-  "dxfull": "Caseating granulomatous inflammation, lung",
-  "dx": "Caseating granulomatous inflammation",
-  "organ": "lung",
-  "desc": "*1. Center: caseous necrosis — a structureless collection of lysed cells & amorphous granular debris (complete loss of cellular details)\n*2. Periphery: granulomatous inflammation\n*① Epithelioid macrophages (histiocytes)\n② Langhans giant cells (usually but not always present)\n③ Lymphocytes\n④ Fibrosis\nAlso in this slide: anthracosis (black pigment in histiocytes; see PA0017)",
-  "note": "",
-  "unit": "Micro 1",
-  "link": "http://microteaching.ntu.edu.tw:9002/GestaltViewer?wlGUID=kQUKNItf5IIQ7taAR27iJrxtNnlz6iMe9nzT402J4XkePOyybldwIfhFMXKyPvIIoafL%2bIbEWJ%2f%2fXRnbf54SeH61io6zhzaM0FMJzs3QKufw9F8kooDmwWYur5BJZBT%2bWCEZcm5cJcg%3d"
- },
- {
-  "id": "PA0201",
-  "n": "147",
-  "dxfull": "Candidiasis, esophagus",
-  "dx": "Candidiasis",
-  "organ": "esophagus",
-  "desc": "*1. Fungal yeasts and pseudohyphae\n2. Hyperkeratosis, parakeratosis\n3. Chronic inflammation\n4. Bacterial clumps",
-  "note": "",
-  "unit": "Micro 1",
-  "link": "http://microteaching.ntu.edu.tw:9002/GestaltViewer?wlGUID=pJhmRU1xeMosIIgohxR%2fIbxCals3GuqrK2LfSpb91tgVAFckqlnYCvPfz2vpC42GG6jyIRVJ48QlBnxuUOCacjgVzbUDGZm0ZEGKzlPawOECEBuWTKtQ9z6bq0Eb7ec47Et2%2fI5cOco%3d"
- },
- {
-  "id": "PA0202",
-  "n": "148",
-  "dxfull": "Chronic ulcer, stomach",
-  "dx": "Chronic ulcer",
-  "organ": "stomach",
-  "desc": "*1. Mucosal defect with fibrinous necrosis (fibrin + cell debris) and neutrophil-predominant infiltrate\n*2. Granulation tissue: loose ECM with edema, capillary proliferation, mixed inflammatory cells (lymphocytes, plasma cells, eosinophils, histiocytes, neutrophils)\n*3. Fibrosis/scar: collagen deposition, fibroblast/myofibroblast proliferation\n4. Other finding: fibrinous inflammation on the serosal surface",
-  "note": "",
-  "unit": "Micro 1",
-  "link": "http://microteaching.ntu.edu.tw:9002/GestaltViewer?wlGUID=PojExtlasNSzOb7ardTBieFOVEp%2fkC6ekTloDecI4tDhpFUAmgmyPAENNplYYdNGI8zX8mRTFYGcfGefSLbDr31%2fRl6rNw2dtvoQFFBBb1m752KbQwg0Nb7R2peFIuDwDZSjosVnvQY%3d"
- },
- {
-  "id": "PA0203",
-  "n": "",
-  "dxfull": "Amebiasis",
-  "dx": "Amebiasis",
-  "organ": "",
-  "desc": "",
-  "note": "",
-  "unit": "Micro 1",
-  "link": "http://microteaching.ntu.edu.tw:9002/GestaltViewer?wlGUID=KhOXd29dPyDBZDyXZ8a5TVjwZvnUJ1wbT2UVSiEyBGG8GxXWuCCthbVAsIF2rHUp7dMD6Q%2foA5FmnKnUqje0bBD3nXgvQzBIzsrR%2bOQzTDs7eAyiHXTHWgwSAKQApxkcoP7BP0MTOk0%3d"
- },
- {
-  "id": "PA0206",
-  "n": "150",
-  "dxfull": "Amebiasis, appendix",
-  "dx": "Amebiasis",
-  "organ": "appendix",
-  "desc": "*1. Round microorganisms (trophozoites):\n① Foamy cytoplasm\n② Round, eccentric nucleus\n③ Ingested red blood cells\n*2. Ulcer with inflamed granulation tissue and acute suppurative inflammation (transmural neutrophil infiltration)",
-  "note": "",
-  "unit": "Micro 1",
-  "link": "http://microteaching.ntu.edu.tw:9002/GestaltViewer?wlGUID=2SGq5CyEY28gwOz2%2buCnHbrw%2fMDBEN7Bj56u75bjyo37LPjK2FAVEOrnyG2OeVZMNdzpUHb4FRxnRyzJqEq0ggJgyQL5pJS%2bVL0FZ9%2bVnsVqXeflsWvtQIB7C9EpCTrSrra0TpwdtHg%3d"
- },
- {
-  "id": "PA0208",
-  "n": "152",
-  "dxfull": "Melanosis coli, large intestine",
-  "dx": "Melanosis coli",
-  "organ": "large intestine",
-  "desc": "*1. Yellow-brown ceroid-laden macrophages in the lamina propria",
-  "note": "",
-  "unit": "Micro 1",
-  "link": "http://microteaching.ntu.edu.tw:9002/GestaltViewer?wlGUID=mrqJtZeEhSLS8sq%2fVxDF8au9lbTLtYslA8VnRFXxi5osjyjqDDlgVVp6j6%2b46rfrwm2qKZuD4sacat407Z1v2OLO%2flMoqpYNgkCkA7n6Q0KCkkChed5zP3WRx40fyCaHpLCkO7AuXI8%3d"
- },
- {
-  "id": "PA0211",
-  "n": "153",
-  "dxfull": "Hemosiderosis, liver",
-  "dx": "Hemosiderosis",
+  "unit": "Hemodynamic derangement",
   "organ": "liver",
-  "desc": "*1. Golden yellow-brown, refractile hemosiderin accumulation in hepatocytes (some in macrophages)\n*2. Ballooning change (hepatocytes)\n*3. Mallory-Denk bodies",
-  "note": "",
-  "unit": "Micro 1",
-  "link": "http://microteaching.ntu.edu.tw:9002/GestaltViewer?wlGUID=s8nK%2b%2fCdN8C8mzw4KV3ZjNSN1vLU30haj1WQdmpIKL3RwNDhosGj%2b1I06ylJ8r8jOBHTWAR3M71gB%2bfseNOSQ6pBw9bfN%2ftsFbT6p22%2balcSWglfq7jmY9X1LjbTHPO3I6vAxeB6468%3d"
- },
- {
-  "id": "PA0214",
-  "n": "156",
-  "dxfull": "Obstructive cholestasis, liver",
-  "dx": "Obstructive cholestasis",
-  "organ": "liver",
-  "desc": "*1. Green-brown bile pigments in hepatocytes and dilated canaliculi\n*2. Portal edema, prominent ductular reaction & neutrophil infiltration (\"pericholangitis\") — triad of obstructive cholestasis\n3. Swelling of periportal hepatocytes (\"feathery degeneration\")",
-  "note": "",
-  "unit": "Micro 1",
-  "link": "http://microteaching.ntu.edu.tw:9002/GestaltViewer?wlGUID=7%2fgAUDwIIuaXuWHG0dZR3spS%2fXsSiDpxnJywrbUMn8tpjk0DLJRJqJMSCz%2bS97v9vq2qmV9nQ46%2fRcW0hCSL87Vmss7%2bdfCP0KXn9%2ftwVivHAjXIN8I%2b27UvhwpNMYaI5r%2f9IQABn8Q%3d"
- },
- {
   "id": "PA0215",
   "n": "157",
+  "desc": "*1. Centrilobular congestion (and necrosis)\n*2. Centrilobular [zone 3] fibrosis — key difference from nutmeg liver\nMay have bridging fibrosis: \"central to central\" fibrosis; \"central to portal\" fibrosis",
   "dxfull": "Cardiac sclerosis (congestive hepatic fibrosis), liver",
   "dx": "Cardiac sclerosis (congestive hepatic fibrosis)",
-  "organ": "liver",
-  "desc": "*1. Centrilobular congestion (and necrosis)\n*2. Centrilobular [zone 3] fibrosis — key difference from nutmeg liver\nMay have bridging fibrosis: \"central to central\" fibrosis; \"central to portal\" fibrosis",
   "note": "",
-  "unit": "Micro 1",
-  "link": "http://microteaching.ntu.edu.tw:9002/GestaltViewer?wlGUID=pq7TuBYOsBya%2fPoiFLmRiwbnytebYhziQtGvw7tV5qSIBnojkS2VgVfHUeJ9KeLxXgEtACzo7KikC%2b5QlyqgCgKGtnxX8YnMpdszcp8jZjSzVNX7oleKjD8UGqwry8Emik8pq9eZmPQ%3d"
+  "units": [
+   "Hemodynamic derangement",
+   "Liver and biliary tract"
+  ],
+  "alt": []
  },
  {
-  "id": "PA0216",
-  "n": "158",
-  "dxfull": "Malaria pigment (hemozoin), liver",
-  "dx": "Malaria pigment (hemozoin)",
-  "organ": "liver",
-  "desc": "*1. Brown-black malaria pigments in macrophages (Kupffer cells) and hepatocytes\n*2. Sinusoid dilation",
+  "dxfull": "(1) Infarct / infarction; (2) Acute tubular necrosis, kidney",
+  "dx": "(1) Infarct / infarction; (2) Acute tubular necrosis",
+  "desc": "*1. Wedge-shaped coagulative necrosis (localized, clear border; glomeruli + tubules)\n− acute tubular necrosis\n2. Thrombosis (in renal vessel)",
+  "unit": "Hemodynamic derangement",
+  "n": "76",
+  "id": "PA0096",
   "note": "",
-  "unit": "Micro 1",
-  "link": "http://microteaching.ntu.edu.tw:9002/GestaltViewer?wlGUID=wt017oYIszDrCPOX%2fOzfjGtTPcR6wvEWqPbjysFaq6fUY5m%2bVAllRwYBBIdtlUkZKpgHpOyPKbuwnRn5QfV%2fDEc%2f2x1zy7NCgH%2fDI1yGp1jYa9ivfH4Bf2PLzu%2fJs1kGRmP0i1gcgfM%3d"
- },
- {
-  "id": "PA0218",
-  "n": "160",
-  "dxfull": "Cytomegalovirus (CMV) infection or cytomegaloviral (CMV) nephritis, kidney",
-  "dx": "Cytomegalovirus (CMV) infection or cytomegaloviral (CMV) nephritis",
   "organ": "kidney",
-  "desc": "*1. Infected cells:\n*① Cytomegaly (Cellular and nuclear enlargement)\n*② Large intranuclear basophilic inclusions with halos (\"owl's eye\")\n③ Small intracytoplasmic basophilic inclusions\n2. Chronic inflammation (this slide; other cases may show mainly acute inflammation)\n3. Tubular injury",
-  "note": "",
-  "unit": "Micro 1",
-  "link": "http://microteaching.ntu.edu.tw:9002/GestaltViewer?wlGUID=sdKOfO2UOhMHNkrBaVG77cZLAY4%2bRWSVzEAxhQjr09N1HvaJs8GGVwTkHtL0Vp2HuCN%2f1JA%2fZbj%2bHAynoZlLYG3jSilyU5x%2b4n3WH2Ih3ZjXyUDhwWNQ2XedC%2brFnMtd5gwWNBBbyGM%3d"
+  "units": [
+   "Hemodynamic derangement"
+  ],
+  "alt": []
  },
  {
-  "id": "PA0220",
-  "n": "162",
-  "dxfull": "Nodular hyperplasia, prostate (clinical term: benign prostatic hypertrophy, BPH)",
-  "dx": "Nodular hyperplasia",
-  "organ": "prostate (clinical term: benign prostatic hypertrophy, BPH)",
-  "desc": "*1. Nodules of cystically dilated hyperplastic glands → epithelial infoldings → papillae\n2. ± Stromal cell hyperplasia (not obvious in this slide)\n*3. Presence of both acinar & basal cells (bilayered glandular epithelium)\n*4. No cytologic atypia",
-  "note": "",
-  "unit": "Micro 1",
-  "link": "http://microteaching.ntu.edu.tw:9002/GestaltViewer?wlGUID=SkrRZqcykUPwl1Xvw64pS5ubnHqZXs%2bol3%2fOpNhVgrZLlqIAwEPFBzl%2bsQ0WKF2Q47McDJ4hdj9ET2CNomxvsA3rlPlarbDR%2f8PnbWu0mckXw%2bSrK%2bVoFrcfo%2bHEy6A9kh7H9vMT2cg%3d"
- },
- {
-  "id": "PA0243",
-  "n": "",
-  "dxfull": "Cryptococcosis",
-  "dx": "Cryptococcosis",
-  "organ": "",
-  "desc": "",
-  "note": "",
-  "unit": "Micro 1",
-  "link": "http://microteaching.ntu.edu.tw:9002/GestaltViewer?wlGUID=HclZFE3qga42uAPfMO1NoDsZiD45MFaM5IjytpKwObqnfhxfH8J06Xrlv4VFYAX2DuERwOUnoZLeddpasCAht2PuiYN2dMS2AZKQXRkQB5o2lGo4RcsCC105KDLoIyIypE84IwH60Mw%3d"
- },
- {
-  "id": "PA0251",
-  "n": "39",
-  "dxfull": "Actinomycosis, ovary (slide is occupied by lesion; no identifiable ovarian tissue) （放射菌）",
-  "dx": "Actinomycosis",
-  "organ": "ovary (slide is occupied by lesion; no identifiable ovarian tissue) （放射菌）",
-  "desc": "*1. Sulfur granules: clumped colonies of bacteria in center (basophilic) with eosinophilic periphery with club-like projections (Splendore-Hoeppli phenomenon)\n*2. Acute and chronic inflammation with abscess formation\n3. May show granulomatous inflammation (suppurative granulomatous inflammation) （此片無）",
-  "note": "",
-  "unit": "Micro 1",
-  "link": "http://microteaching.ntu.edu.tw:9002/GestaltViewer?wlGUID=gM6TuOgliP6jFLkK1Y0oc2IP0WxKP4RQyCyZdcjK2xSgrUm%2f%2bmSoyby1HHRSBh9ZQIcslPSOJW0FLoAwhZD%2by73H9wUAdFsO2Ec8OxJCtkl97Fyp%2bcOUdSLsjrPjEDyffndYEb1SMCc%3d"
- },
- {
-  "id": "PA0255",
-  "n": "80",
+  "unit": "Infection",
   "dxfull": "Condyloma acuminatum, skin（尖型濕疣，菜花）",
+  "n": "80",
+  "desc": "*1. Papillomatosis (papillary architecture with fibrovascular cores)\n*2. Koilocytosis\n3. Acanthosis\n4. Hyperkeratosis\n5. Parakeratosis",
+  "id": "PA0255",
+  "note": "",
   "dx": "Condyloma acuminatum",
   "organ": "skin（尖型濕疣，菜花）",
-  "desc": "*1. Papillomatosis (papillary architecture with fibrovascular cores)\n*2. Koilocytosis\n3. Acanthosis\n4. Hyperkeratosis\n5. Parakeratosis",
-  "note": "",
-  "unit": "Micro 1",
-  "link": "http://microteaching.ntu.edu.tw:9002/GestaltViewer?wlGUID=2X6fhGHfvEOVJ98bPINVIvdCgmkBK9wyKLYzEa7l2GKx6oUZpYYuUZMVa75HlYh%2brRSXVDGbe%2bym5953pmtsS9olroIn0elwJ58kugao%2f1Uhbzf1NrSK%2f1YlwZ9%2byxaIMUrr2fsYxnY%3d"
+  "units": [
+   "Infection"
+  ],
+  "alt": [
+   "PA0099",
+   "PA0190"
+  ]
  },
  {
-  "id": "PA0261",
-  "n": "",
-  "dxfull": "Pneumocystis jirovecii pneumonia (PJP)",
-  "dx": "Pneumocystis jirovecii pneumonia (PJP)",
-  "organ": "",
-  "desc": "",
+  "organ": "skin",
   "note": "",
-  "unit": "Micro 1",
-  "link": "http://microteaching.ntu.edu.tw:9002/GestaltViewer?wlGUID=4MF6qd51Akc9FQEP5ainplDEgjW8hTiQRbEYQbSNdI1aJBEj8YgzMfyWcxR7UWovKCyiKsKF7g0dtSKgd%2fkld58NT6HiLHSzm6o1ruWwLXwODJ87CWeL65yQh%2bBDRSNqb4H2yUl0Pwg%3d"
- },
- {
-  "id": "PA0270",
-  "n": "37",
-  "dxfull": "Acute suppurative appendicitis, appendix",
-  "dx": "Acute suppurative appendicitis",
-  "organ": "appendix",
-  "desc": "*1. Mucosal and mural neutrophil infiltration, involving muscularis propria (± lymphocytes, plasma cells, eosinophils, histiocytes)\n2. Mucosal ulceration (mucosal defect + fibrinoid necrosis)\n3. Luminal and mural abscess (neutrophil collection + cell debris)\n4. Fibrinous inflammation on the serosal surface (fibrin + inflammatory cells)",
-  "note": "",
-  "unit": "Micro 1",
-  "link": "http://microteaching.ntu.edu.tw:9002/GestaltViewer?wlGUID=cmBAOE7yyP1eUKcGW8zkaGOLg6%2byIWUHwXGOoa8%2fy3s0IrgZjCYt%2bKVOGAap%2b33%2ftJd8IRQ5scZhij7YCfhTw4v736H0qwYuiKd7dUtMnNG0aKLBkCoe302UtWu0mbl9VH44EquwhnQ%3d"
- },
- {
   "id": "PA0271",
   "n": "117",
   "dxfull": "Molluscum contagiosum, skin",
-  "dx": "Molluscum contagiosum",
-  "organ": "skin",
+  "unit": "Infection",
   "desc": "*1. A cup-like lesion with a crater\n2. Epidermal hyperplasia\n*3. Molluscum bodies (Henderson-Patterson bodies) in the crater: large, eosinophilic to basophilic intracytoplasmic inclusions that push aside the nucleus",
-  "note": "",
-  "unit": "Micro 1",
-  "link": "http://microteaching.ntu.edu.tw:9002/GestaltViewer?wlGUID=rGvX%2baMBzChJX0SMwmlrW9TqMSHeGoi9iBank1lIw1pH0mctY23Q6%2fdNMsrQnMmv8DmlaNDsT3PE9t0GS3KArCCLhsbIQyuIIo4jJuQ7U3H%2f40MzMyxTbRIoSbbx5i%2bjbtsZM2Tyq60%3d"
+  "dx": "Molluscum contagiosum",
+  "units": [
+   "Infection"
+  ],
+  "alt": [
+   "PA0141"
+  ]
  },
  {
-  "id": "PA0287",
+  "note": "",
+  "organ": "kidney",
+  "n": "160",
+  "dxfull": "Cytomegalovirus (CMV) infection or cytomegaloviral (CMV) nephritis, kidney",
+  "dx": "Cytomegalovirus (CMV) infection or cytomegaloviral (CMV) nephritis",
+  "desc": "*1. Infected cells:\n*① Cytomegaly (Cellular and nuclear enlargement)\n*② Large intranuclear basophilic inclusions with halos (\"owl's eye\")\n③ Small intracytoplasmic basophilic inclusions\n2. Chronic inflammation (this slide; other cases may show mainly acute inflammation)\n3. Tubular injury",
+  "unit": "Infection",
+  "id": "PA0218",
+  "units": [
+   "Infection"
+  ],
+  "alt": []
+ },
+ {
+  "n": "4",
+  "organ": "heart valve",
+  "id": "PA0306",
+  "note": "PA0306 (4), aortic valve (exam list) — lecture slides label this case PA0001 (4), mitral valve",
+  "unit": "Infection",
+  "dx": "Infective endocarditis",
+  "dxfull": "Infective endocarditis, heart valve",
+  "desc": "*1. Valve destruction with necrosis\n*2. Vegetation: fibrin, bacterial clumps, and inflammatory infiltrate (neutrophilic or lymphohistiocytic)\n3. Inflamed granulation tissue\n4. (In chronic lesion) organization and calcification",
+  "units": [
+   "Infection",
+   "Cardiovascular system"
+  ],
+  "alt": [
+   "PA0001"
+  ]
+ },
+ {
+  "id": "PA0251",
+  "note": "",
+  "unit": "Infection",
+  "desc": "*1. Sulfur granules: clumped colonies of bacteria in center (basophilic) with eosinophilic periphery with club-like projections (Splendore-Hoeppli phenomenon)\n*2. Acute and chronic inflammation with abscess formation\n3. May show granulomatous inflammation (suppurative granulomatous inflammation) （此片無）",
+  "dx": "Actinomycosis",
+  "organ": "ovary (slide is occupied by lesion; no identifiable ovarian tissue) （放射菌）",
+  "dxfull": "Actinomycosis, ovary (slide is occupied by lesion; no identifiable ovarian tissue) （放射菌）",
+  "n": "39",
+  "units": [
+   "Infection"
+  ],
+  "alt": [
+   "PA0057"
+  ]
+ },
+ {
+  "id": "PA0022",
+  "organ": "spleen",
+  "unit": "Infection",
+  "desc": "*1. Aseptate hyphae with wide-angle branching\n*2. “Necrotizing” granulomatous inflammation — \"necrotizing\" preferred, since \"caseating\" is easily misread as tuberculosis\n 3. May have infarct（此片無）",
+  "dx": "Mucormycosis",
+  "n": "9",
+  "dxfull": "Mucormycosis, spleen",
+  "note": "",
+  "units": [
+   "Infection"
+  ],
+  "alt": []
+ },
+ {
+  "organ": "lung",
+  "n": "17",
+  "dx": "Aspergillosis",
+  "note": "",
+  "dxfull": "Aspergillosis, lung",
+  "desc": "*1. Fungal hyphae with septa and acute-angle branching\n2. Chronic inflammation\n3. Fibrosis\n4. Anthracosis",
+  "unit": "Infection",
+  "id": "PA0015",
+  "units": [
+   "Infection",
+   "Respiratory system"
+  ],
+  "alt": [
+   "PA0016",
+   "PA0287",
+   "PA0288"
+  ]
+ },
+ {
+  "id": "PA0201",
+  "dxfull": "Candidiasis, esophagus",
+  "note": "",
+  "organ": "esophagus",
+  "dx": "Candidiasis",
+  "unit": "Infection",
+  "n": "147",
+  "desc": "*1. Fungal yeasts and pseudohyphae\n2. Hyperkeratosis, parakeratosis\n3. Chronic inflammation\n4. Bacterial clumps",
+  "units": [
+   "Infection",
+   "GI tract and pancreas"
+  ],
+  "alt": []
+ },
+ {
+  "unit": "Infection",
+  "desc": "*1. Numerous round to oval, refractile, thick-walled fungal yeasts (narrow-based budding)\n2. Focal necrosis\n3. Granulomatous inflammation (vaguely-formed granuloma / macrophage infiltration with scattered multinucleated giant cells)\n4. Infiltration of lymphocytes and plasma cells\n5. Intraalveolar fibrin deposition\n6. Fibrosis\n7. Soft-bubble like",
+  "id": "PA0316",
+  "dx": "Cryptococcosis",
+  "dxfull": "Cryptococcosis, lung",
+  "note": "",
+  "n": "198",
+  "organ": "lung",
+  "units": [
+   "Infection",
+   "Respiratory system"
+  ],
+  "alt": [
+   "PA0175",
+   "PA0243",
+   "PA0244"
+  ]
+ },
+ {
+  "unit": "Infection",
+  "desc": "*1. Foamy, granular, eosinophilic exudate in the alveolar spaces\n2. Interstitial thickening and inflammation\n3. Other finding: focal ossification",
+  "id": "PA0302",
+  "organ": "lung",
+  "n": "191",
+  "dx": "Pneumocystis jirovecii pneumonia (PJP)",
+  "note": "",
+  "dxfull": "Pneumocystis jirovecii pneumonia (PJP), lung",
+  "units": [
+   "Infection",
+   "Immunological disorder",
+   "Respiratory system"
+  ],
+  "alt": [
+   "PA0261",
+   "PA0262"
+  ]
+ },
+ {
+  "organ": "appendix",
+  "dx": "Amebiasis",
+  "note": "",
+  "id": "PA0206",
+  "desc": "*1. Round microorganisms (trophozoites):\n① Foamy cytoplasm\n② Round, eccentric nucleus\n③ Ingested red blood cells\n*2. Ulcer with inflamed granulation tissue and acute suppurative inflammation (transmural neutrophil infiltration)",
+  "n": "150",
+  "dxfull": "Amebiasis, appendix",
+  "unit": "Infection",
+  "units": [
+   "Infection",
+   "GI tract and pancreas"
+  ],
+  "alt": [
+   "PA0203",
+   "PA0204"
+  ]
+ },
+ {
+  "note": "PA0354 (145) — updated teaching slide (exam list earlier: PA0332 (145), herpes virus infection, skin)",
+  "dxfull": "Herpes virus infection, oral cavity (mouth floor)",
+  "n": "145",
+  "dx": "Herpes virus infection",
+  "desc": "*1. Cytopathic effects compatible with herpes infection (3M):\n① Multinucleation\n② Margination of chromatin\n③ Molding of nuclei\n2. Ulcer with neutrophil infiltration and necrotic debris",
+  "unit": "Infection",
+  "organ": "oral cavity (mouth floor)",
+  "id": "PA0354",
+  "units": [
+   "Infection"
+  ],
+  "view": "PA0332",
+  "warn": "講義寫 skin, thigh, 85M；實體 145 號片單寫 oral cavity, mouth floor。線上沒有 PA0354，看片開 PA0332（herpes infection, thigh, 85M）。",
+  "alt": [
+   "PA0332"
+  ]
+ },
+ {
+  "id": "PA0030",
+  "n": "25",
+  "dxfull": "Amyloidoma, lung",
+  "dx": "Amyloidoma",
+  "organ": "lung",
+  "desc": "",
+  "note": "",
+  "units": [
+   "Immunological disorder",
+   "Respiratory system"
+  ],
+  "unit": "Immunological disorder",
+  "alt": []
+ },
+ {
+  "id": "PA0284",
   "n": "",
+  "dxfull": "Chronic rejection, kidney",
+  "dx": "Chronic rejection",
+  "organ": "kidney",
+  "desc": "",
+  "note": "",
+  "units": [
+   "Immunological disorder"
+  ],
+  "unit": "Immunological disorder",
+  "warn": "講義寫 (69)，但實體 69 號是 PA0342 Alcoholic steatohepatitis，所以本片當作線上片。",
+  "alt": [
+   "PA0086"
+  ]
+ },
+ {
+  "id": "PA0061",
+  "n": "43",
+  "dxfull": "Acute cellular rejection, liver",
+  "dx": "Acute cellular rejection",
+  "organ": "liver",
+  "desc": "",
+  "note": "",
+  "units": [
+   "Immunological disorder",
+   "Liver and biliary tract"
+  ],
+  "unit": "Immunological disorder",
+  "alt": [
+   "PA0066",
+   "PA0269"
+  ]
+ },
+ {
+  "id": "PA0264",
+  "n": "193",
+  "dxfull": "Allergic rhinitis, nasal cavity",
+  "dx": "Allergic rhinitis",
+  "organ": "nasal cavity",
+  "desc": "",
+  "note": "",
+  "units": [
+   "Immunological disorder"
+  ],
+  "unit": "Immunological disorder",
+  "alt": []
+ },
+ {
+  "id": "PA0289",
+  "n": "68",
+  "dxfull": "Nephroblastoma (Wilms' tumor), soft tissue (kidney)",
+  "dx": "Nephroblastoma (Wilms' tumor)",
+  "organ": "soft tissue (kidney)",
+  "desc": "",
+  "note": "",
+  "units": [
+   "Disease of infancy and childhood"
+  ],
+  "unit": "Disease of infancy and childhood",
+  "alt": [
+   "PA0085"
+  ]
+ },
+ {
+  "id": "PA0305",
+  "n": "107",
+  "dxfull": "Neuroblastoma, adrenal gland",
+  "dx": "Neuroblastoma",
+  "organ": "adrenal gland",
+  "desc": "",
+  "note": "",
+  "units": [
+   "Disease of infancy and childhood"
+  ],
+  "unit": "Disease of infancy and childhood",
+  "alt": [
+   "PA0131"
+  ]
+ },
+ {
+  "id": "PA0247",
+  "n": "142",
+  "dxfull": "Retinoblastoma, eye",
+  "dx": "Retinoblastoma",
+  "organ": "eye",
+  "desc": "",
+  "note": "",
+  "units": [
+   "Disease of infancy and childhood"
+  ],
+  "unit": "Disease of infancy and childhood",
+  "alt": [
+   "PA0167",
+   "PA0168",
+   "PA0196"
+  ]
+ },
+ {
+  "id": "PA0341",
+  "n": "146",
+  "dxfull": "Hyaline membrane disease, lung",
+  "dx": "Hyaline membrane disease",
+  "organ": "lung",
+  "desc": "",
+  "note": "",
+  "units": [
+   "Disease of infancy and childhood",
+   "Respiratory system"
+  ],
+  "unit": "Disease of infancy and childhood",
+  "alt": [
+   "PA0200"
+  ]
+ },
+ {
+  "id": "PA0047",
+  "n": "32",
+  "dxfull": "Squamous cell carcinoma, esophagus",
+  "dx": "Squamous cell carcinoma",
+  "organ": "esophagus",
+  "desc": "",
+  "note": "",
+  "units": [
+   "Epithelial neoplasm",
+   "GI tract and pancreas"
+  ],
+  "unit": "Epithelial neoplasm",
+  "alt": []
+ },
+ {
+  "id": "PA0337",
+  "n": "",
+  "dxfull": "High-grade squamous intraepithelial lesion (HSIL, CIN2), cervix",
+  "dx": "High-grade squamous intraepithelial lesion (HSIL, CIN2)",
+  "organ": "cervix",
+  "desc": "",
+  "note": "",
+  "units": [
+   "Epithelial neoplasm"
+  ],
+  "unit": "Epithelial neoplasm",
+  "alt": []
+ },
+ {
+  "id": "PA0338",
+  "n": "96",
+  "dxfull": "High-grade squamous intraepithelial lesion (HSIL, CIN3), cervix",
+  "dx": "High-grade squamous intraepithelial lesion (HSIL, CIN3)",
+  "organ": "cervix",
+  "desc": "",
+  "note": "",
+  "units": [
+   "Epithelial neoplasm"
+  ],
+  "unit": "Epithelial neoplasm",
+  "alt": []
+ },
+ {
+  "id": "PA0102",
+  "n": "83",
+  "dxfull": "Squamous cell carcinoma, uterine cervix",
+  "dx": "Squamous cell carcinoma",
+  "organ": "uterine cervix",
+  "desc": "",
+  "note": "",
+  "units": [
+   "Epithelial neoplasm"
+  ],
+  "unit": "Epithelial neoplasm",
+  "alt": []
+ },
+ {
+  "id": "PA0295",
+  "n": "118",
+  "dxfull": "Basal cell carcinoma, skin",
+  "dx": "Basal cell carcinoma",
+  "organ": "skin",
+  "desc": "",
+  "note": "",
+  "units": [
+   "Epithelial neoplasm"
+  ],
+  "unit": "Epithelial neoplasm",
+  "alt": [
+   "PA0142"
+  ]
+ },
+ {
+  "id": "PA0260",
+  "n": "190",
+  "dxfull": "Nasopharyngeal carcinoma, nasopharynx",
+  "dx": "Nasopharyngeal carcinoma",
+  "organ": "nasopharynx",
+  "desc": "",
+  "note": "",
+  "units": [
+   "Epithelial neoplasm",
+   "Head and neck"
+  ],
+  "unit": "Epithelial neoplasm",
+  "alt": []
+ },
+ {
+  "id": "PA0207",
+  "n": "151",
+  "dxfull": "Familial adenomatous polyposis, large intestine",
+  "dx": "Familial adenomatous polyposis",
+  "organ": "large intestine",
+  "desc": "",
+  "note": "",
+  "units": [
+   "Epithelial neoplasm",
+   "GI tract and pancreas"
+  ],
+  "unit": "Epithelial neoplasm",
+  "alt": []
+ },
+ {
+  "id": "PA0249",
+  "n": "38",
+  "dxfull": "Adenocarcinoma, colon",
+  "dx": "Adenocarcinoma",
+  "organ": "colon",
+  "desc": "",
+  "note": "",
+  "units": [
+   "Epithelial neoplasm",
+   "GI tract and pancreas"
+  ],
+  "unit": "Epithelial neoplasm",
+  "alt": [
+   "PA0179"
+  ]
+ },
+ {
+  "id": "PA0104",
+  "n": "85",
+  "dxfull": "Leiomyoma, uterine corpus",
+  "dx": "Leiomyoma",
+  "organ": "uterine corpus",
+  "desc": "",
+  "note": "",
+  "units": [
+   "Non-epithelial neoplasm"
+  ],
+  "unit": "Non-epithelial neoplasm",
+  "alt": []
+ },
+ {
+  "id": "PA0158",
+  "n": "135",
+  "dxfull": "Schwannoma, soft tissue (near T-level vertebra)",
+  "dx": "Schwannoma",
+  "organ": "soft tissue (near T-level vertebra)",
+  "desc": "",
+  "note": "",
+  "units": [
+   "Non-epithelial neoplasm"
+  ],
+  "unit": "Non-epithelial neoplasm",
+  "alt": []
+ },
+ {
+  "id": "PA0195",
+  "n": "134",
+  "dxfull": "Neurofibroma, plexiform and diffuse, soft tissue (cheek)",
+  "dx": "Neurofibroma, plexiform and diffuse",
+  "organ": "soft tissue (cheek)",
+  "desc": "",
+  "note": "",
+  "units": [
+   "Non-epithelial neoplasm"
+  ],
+  "unit": "Non-epithelial neoplasm",
+  "alt": []
+ },
+ {
+  "id": "PA0314",
+  "n": "197",
+  "dxfull": "Hemangioma, skin",
+  "dx": "Hemangioma",
+  "organ": "skin",
+  "desc": "",
+  "note": "",
+  "units": [
+   "Non-epithelial neoplasm"
+  ],
+  "unit": "Non-epithelial neoplasm",
+  "alt": []
+ },
+ {
+  "id": "PA0336",
+  "n": "132",
+  "dxfull": "Lymphangioma, pericardial soft tissue",
+  "dx": "Lymphangioma",
+  "organ": "pericardial soft tissue",
+  "desc": "",
+  "note": "",
+  "units": [
+   "Non-epithelial neoplasm"
+  ],
+  "unit": "Non-epithelial neoplasm",
+  "alt": [
+   "PA0156"
+  ]
+ },
+ {
+  "id": "PA0226",
+  "n": "167",
+  "dxfull": "Embryonal rhabdomyosarcoma, soft tissue",
+  "dx": "Embryonal rhabdomyosarcoma",
+  "organ": "soft tissue",
+  "desc": "",
+  "note": "",
+  "units": [
+   "Non-epithelial neoplasm"
+  ],
+  "unit": "Non-epithelial neoplasm",
+  "alt": []
+ },
+ {
+  "id": "PA0100",
+  "n": "81",
+  "dxfull": "Malignant melanoma, vulva",
+  "dx": "Malignant melanoma",
+  "organ": "vulva",
+  "desc": "",
+  "note": "",
+  "units": [
+   "Non-epithelial neoplasm"
+  ],
+  "unit": "Non-epithelial neoplasm",
+  "alt": []
+ },
+ {
+  "id": "PA0285",
+  "n": "88",
+  "dxfull": "Mature (cystic) teratoma, ovary",
+  "dx": "Mature (cystic) teratoma",
+  "organ": "ovary",
+  "desc": "",
+  "note": "",
+  "units": [
+   "Non-epithelial neoplasm"
+  ],
+  "unit": "Non-epithelial neoplasm",
+  "alt": [
+   "PA0107"
+  ]
+ },
+ {
+  "id": "PA0002",
+  "n": "5",
+  "dxfull": "Cardiac myxoma, heart, left atrium",
+  "dx": "Cardiac myxoma",
+  "organ": "heart, left atrium",
+  "desc": "",
+  "note": "",
+  "units": [
+   "Cardiovascular system"
+  ],
+  "unit": "Cardiovascular system",
+  "alt": [
+   "PA0003"
+  ]
+ },
+ {
+  "id": "PA0340",
+  "n": "2",
+  "dxfull": "Atherosclerosis, artery (aorta)",
+  "dx": "Atherosclerosis",
+  "organ": "artery (aorta)",
+  "desc": "",
+  "note": "",
+  "units": [
+   "Cardiovascular system"
+  ],
+  "unit": "Cardiovascular system",
+  "alt": [
+   "PA0169"
+  ]
+ },
+ {
+  "id": "PA0197",
+  "n": "143",
+  "dxfull": "Acute rheumatic pancarditis, heart",
+  "dx": "Acute rheumatic pancarditis",
+  "organ": "heart",
+  "desc": "",
+  "note": "",
+  "units": [
+   "Cardiovascular system"
+  ],
+  "unit": "Cardiovascular system",
+  "alt": []
+ },
+ {
+  "id": "PA0171",
+  "n": "3",
+  "dxfull": "Amyloidosis, myocardium",
+  "dx": "Amyloidosis",
+  "organ": "myocardium",
+  "desc": "",
+  "note": "",
+  "units": [
+   "Cardiovascular system"
+  ],
+  "unit": "Cardiovascular system",
+  "alt": []
+ },
+ {
+  "id": "PA0174",
+  "n": "19",
+  "dxfull": "Adenocarcinoma, lung",
+  "dx": "Adenocarcinoma",
+  "organ": "lung",
+  "desc": "",
+  "note": "",
+  "units": [
+   "Respiratory system"
+  ],
+  "unit": "Respiratory system",
+  "alt": [
+   "PA0027"
+  ]
+ },
+ {
+  "id": "PA0308",
+  "n": "23",
+  "dxfull": "Mucinous adenocarcinoma, lung",
+  "dx": "Mucinous adenocarcinoma",
+  "organ": "lung",
+  "desc": "",
+  "note": "",
+  "units": [
+   "Respiratory system"
+  ],
+  "unit": "Respiratory system",
+  "alt": [
+   "PA0023"
+  ]
+ },
+ {
+  "id": "PA0307",
+  "n": "20",
+  "dxfull": "Small cell carcinoma, lung",
+  "dx": "Small cell carcinoma",
+  "organ": "lung",
+  "desc": "",
+  "note": "",
+  "units": [
+   "Respiratory system"
+  ],
+  "unit": "Respiratory system",
+  "alt": [
+   "PA0018",
+   "PA0031"
+  ]
+ },
+ {
+  "id": "PA0021",
+  "n": "22",
+  "dxfull": "Squamous cell carcinoma, lung",
+  "dx": "Squamous cell carcinoma",
+  "organ": "lung",
+  "desc": "",
+  "note": "",
+  "units": [
+   "Respiratory system"
+  ],
+  "unit": "Respiratory system",
+  "alt": []
+ },
+ {
+  "id": "PA0041",
+  "n": "27",
+  "dxfull": "Mesothelioma, pleura",
+  "dx": "Mesothelioma",
+  "organ": "pleura",
+  "desc": "",
+  "note": "",
+  "units": [
+   "Respiratory system"
+  ],
+  "unit": "Respiratory system",
+  "alt": []
+ },
+ {
+  "id": "PA0024",
+  "n": "24",
+  "dxfull": "Bronchopneumonia, lung",
+  "dx": "Bronchopneumonia",
+  "organ": "lung",
+  "desc": "",
+  "note": "",
+  "units": [
+   "Respiratory system"
+  ],
+  "unit": "Respiratory system",
+  "warn": "講義只寫 Bronchopneumonia；片單和線上都寫 (1) bronchopneumonia; (2) diffuse alveolar damage。",
+  "alt": []
+ },
+ {
+  "id": "PA0040",
+  "n": "26",
+  "dxfull": "Diffuse alveolar damage, lung",
+  "dx": "Diffuse alveolar damage",
+  "organ": "lung",
+  "desc": "",
+  "note": "",
+  "units": [
+   "Respiratory system"
+  ],
+  "unit": "Respiratory system",
+  "alt": [
+   "PA0038"
+  ]
+ },
+ {
+  "id": "PA0263",
+  "n": "192",
+  "dxfull": "Pneumoconiosis, lung",
+  "dx": "Pneumoconiosis",
+  "organ": "lung",
+  "desc": "",
+  "note": "",
+  "units": [
+   "Respiratory system"
+  ],
+  "unit": "Respiratory system",
+  "alt": []
+ },
+ {
+  "id": "PA0067",
+  "n": "51",
+  "dxfull": "Focal nodular hyperplasia, liver",
+  "dx": "Focal nodular hyperplasia",
+  "organ": "liver",
+  "desc": "",
+  "note": "",
+  "units": [
+   "Liver and biliary tract"
+  ],
+  "unit": "Liver and biliary tract",
+  "alt": []
+ },
+ {
+  "id": "PA0071",
+  "n": "55",
+  "dxfull": "Hepatocellular carcinoma, liver",
+  "dx": "Hepatocellular carcinoma",
+  "organ": "liver",
+  "desc": "",
+  "note": "",
+  "units": [
+   "Liver and biliary tract"
+  ],
+  "unit": "Liver and biliary tract",
+  "alt": []
+ },
+ {
+  "id": "PA0184",
+  "n": "60",
+  "dxfull": "Cholangiocarcinoma, liver",
+  "dx": "Cholangiocarcinoma",
+  "organ": "liver",
+  "desc": "",
+  "note": "",
+  "units": [
+   "Liver and biliary tract"
+  ],
+  "unit": "Liver and biliary tract",
+  "alt": []
+ },
+ {
+  "id": "PA0281",
+  "n": "42",
+  "dxfull": "Acute hepatitis, liver",
+  "dx": "Acute hepatitis",
+  "organ": "liver",
+  "desc": "",
+  "note": "",
+  "units": [
+   "Liver and biliary tract"
+  ],
+  "unit": "Liver and biliary tract",
+  "alt": [
+   "PA0060"
+  ]
+ },
+ {
+  "id": "PA0334",
+  "n": "50",
+  "dxfull": "Chronic hepatitis, liver",
+  "dx": "Chronic hepatitis",
+  "organ": "liver",
+  "desc": "",
+  "note": "",
+  "units": [
+   "Liver and biliary tract"
+  ],
+  "unit": "Liver and biliary tract",
+  "alt": [
+   "PA0062",
+   "PA0183"
+  ]
+ },
+ {
+  "id": "PA0282",
+  "n": "47",
+  "dxfull": "Submassive necrosis, liver",
+  "dx": "Submassive necrosis",
+  "organ": "liver",
+  "desc": "",
+  "note": "",
+  "units": [
+   "Liver and biliary tract"
+  ],
+  "unit": "Liver and biliary tract",
+  "alt": [
+   "PA0064"
+  ]
+ },
+ {
+  "id": "PA0075",
+  "n": "59",
+  "dxfull": "Cirrhosis, liver",
+  "dx": "Cirrhosis",
+  "organ": "liver",
+  "desc": "",
+  "note": "",
+  "units": [
+   "Liver and biliary tract"
+  ],
+  "unit": "Liver and biliary tract",
+  "alt": []
+ },
+ {
+  "id": "PA0286",
+  "n": "159",
+  "dxfull": "Steatohepatitis, liver",
+  "dx": "Steatohepatitis",
+  "organ": "liver",
+  "desc": "",
+  "note": "",
+  "units": [
+   "Liver and biliary tract"
+  ],
+  "unit": "Liver and biliary tract",
+  "alt": []
+ },
+ {
+  "id": "PA0342",
+  "n": "69",
+  "dxfull": "Alcoholic steatohepatitis, liver",
+  "dx": "Alcoholic steatohepatitis",
+  "organ": "liver",
+  "desc": "",
+  "note": "",
+  "units": [
+   "Liver and biliary tract"
+  ],
+  "unit": "Liver and biliary tract",
+  "alt": []
+ },
+ {
+  "id": "PA0265",
+  "n": "45",
+  "dxfull": "Primary biliary cholangitis, liver",
+  "dx": "Primary biliary cholangitis",
+  "organ": "liver",
+  "desc": "",
+  "note": "",
+  "units": [
+   "Liver and biliary tract"
+  ],
+  "unit": "Liver and biliary tract",
+  "alt": [
+   "PA0063",
+   "PA0181"
+  ]
+ },
+ {
+  "id": "PA0333",
+  "n": "52",
+  "dxfull": "Primary sclerosing cholangitis, liver",
+  "dx": "Primary sclerosing cholangitis",
+  "organ": "liver",
+  "desc": "",
+  "note": "",
+  "units": [
+   "Liver and biliary tract"
+  ],
+  "unit": "Liver and biliary tract",
+  "alt": [
+   "PA0068",
+   "PA0283"
+  ]
+ },
+ {
+  "id": "PA0069",
+  "n": "53",
+  "dxfull": "Neonatal hepatitis (giant cell hepatitis), liver",
+  "dx": "Neonatal hepatitis (giant cell hepatitis)",
+  "organ": "liver",
+  "desc": "",
+  "note": "",
+  "units": [
+   "Liver and biliary tract"
+  ],
+  "unit": "Liver and biliary tract",
+  "alt": [
+   "PA0072"
+  ]
+ },
+ {
+  "id": "PA0311",
+  "n": "48",
+  "dxfull": "Biliary atresia, liver",
+  "dx": "Biliary atresia",
+  "organ": "liver",
+  "desc": "",
+  "note": "",
+  "units": [
+   "Liver and biliary tract"
+  ],
+  "unit": "Liver and biliary tract",
+  "alt": [
+   "PA0065",
+   "PA0073"
+  ]
+ },
+ {
+  "id": "PA0345",
+  "n": "62",
+  "dxfull": "Chronic cholecystitis, gallbladder",
+  "dx": "Chronic cholecystitis",
+  "organ": "gallbladder",
+  "desc": "",
+  "note": "",
+  "units": [
+   "Liver and biliary tract"
+  ],
+  "unit": "Liver and biliary tract",
+  "alt": [
+   "PA0078"
+  ]
+ },
+ {
+  "id": "PA0273",
+  "n": "28",
+  "dxfull": "Ameloblastoma, bone",
+  "dx": "Ameloblastoma",
+  "organ": "bone",
+  "desc": "",
+  "note": "",
+  "units": [
+   "Head and neck"
+  ],
+  "unit": "Head and neck",
+  "alt": [
+   "PA0043"
+  ]
+ },
+ {
+  "id": "PA0045",
+  "n": "30",
+  "dxfull": "Warthin's tumor, parotid gland",
+  "dx": "Warthin's tumor",
+  "organ": "parotid gland",
+  "desc": "",
+  "note": "",
+  "units": [
+   "Head and neck"
+  ],
+  "unit": "Head and neck",
+  "alt": []
+ },
+ {
+  "id": "PA0046",
+  "n": "31",
+  "dxfull": "Pleomorphic adenoma (mixed tumor), parotid gland",
+  "dx": "Pleomorphic adenoma (mixed tumor)",
+  "organ": "parotid gland",
+  "desc": "",
+  "note": "",
+  "units": [
+   "Head and neck"
+  ],
+  "unit": "Head and neck",
+  "alt": []
+ },
+ {
+  "id": "PA0279",
+  "n": "33",
+  "dxfull": "Adenocarcinoma, signet-ring cell type (signet-ring cell carcinoma), stomach",
+  "dx": "Adenocarcinoma, signet-ring cell type (signet-ring cell carcinoma)",
+  "organ": "stomach",
+  "desc": "",
+  "note": "",
+  "units": [
+   "GI tract and pancreas"
+  ],
+  "unit": "GI tract and pancreas",
+  "alt": [
+   "PA0048"
+  ]
+ },
+ {
+  "id": "PA0309",
+  "n": "34",
+  "dxfull": "Adenocarcinoma, intestinal type, stomach",
+  "dx": "Adenocarcinoma, intestinal type",
+  "organ": "stomach",
+  "desc": "",
+  "note": "",
+  "units": [
+   "GI tract and pancreas"
+  ],
+  "unit": "GI tract and pancreas",
+  "alt": [
+   "PA0049"
+  ]
+ },
+ {
+  "id": "PA0055",
+  "n": "36",
+  "dxfull": "Neuroendocrine tumor, ileum",
+  "dx": "Neuroendocrine tumor",
+  "organ": "ileum",
+  "desc": "",
+  "note": "",
+  "units": [
+   "GI tract and pancreas"
+  ],
+  "unit": "GI tract and pancreas",
+  "alt": []
+ },
+ {
+  "id": "PA0280",
+  "n": "35",
+  "dxfull": "Crohn's disease, small intestine",
+  "dx": "Crohn's disease",
+  "organ": "small intestine",
+  "desc": "",
+  "note": "",
+  "units": [
+   "GI tract and pancreas"
+  ],
+  "unit": "GI tract and pancreas",
+  "warn": "講義寫 PA0280 (35)；實體 35 號片單寫 PA0328（Crohn's disease, large intestine/colon, 26F）。兩張都可以看。",
+  "alt": [
+   "PA0054",
+   "PA0328"
+  ]
+ },
+ {
+  "id": "PA0310",
+  "n": "40",
+  "dxfull": "Ulcerative colitis, large intestine",
+  "dx": "Ulcerative colitis",
+  "organ": "large intestine",
+  "desc": "",
+  "note": "",
+  "units": [
+   "GI tract and pancreas"
+  ],
+  "unit": "GI tract and pancreas",
+  "warn": "講義寫 PA0310 (40)；實體 40 號片單寫 PA0329（Ulcerative colitis, large intestine/colon, 65M）。兩張都可以看。",
+  "alt": [
+   "PA0329",
+   "PA0250",
+   "PA0180"
+  ]
+ },
+ {
+  "id": "PA0312",
+  "n": "63",
+  "dxfull": "Chronic pancreatitis, pancreas",
+  "dx": "Chronic pancreatitis",
+  "organ": "pancreas",
+  "desc": "",
+  "note": "",
+  "units": [
+   "GI tract and pancreas"
+  ],
+  "unit": "GI tract and pancreas",
+  "alt": [
+   "PA0079"
+  ]
+ },
+ {
+  "id": "PA0248",
+  "n": "187",
+  "dxfull": "IgG4-related autoimmune pancreatitis, pancreas",
+  "dx": "IgG4-related autoimmune pancreatitis",
+  "organ": "pancreas",
+  "desc": "",
+  "note": "",
+  "units": [
+   "GI tract and pancreas"
+  ],
+  "unit": "GI tract and pancreas",
+  "alt": []
+ },
+ {
+  "id": "PA0343",
+  "n": "57",
+  "dxfull": "Intraductal papillary mucinous neoplasm (IPMN), pancreas",
+  "dx": "Intraductal papillary mucinous neoplasm (IPMN)",
+  "organ": "pancreas",
+  "desc": "",
+  "note": "",
+  "units": [
+   "GI tract and pancreas"
+  ],
+  "unit": "GI tract and pancreas",
+  "alt": []
+ },
+ {
+  "id": "PA0344",
+  "n": "82",
+  "dxfull": "Ductal adenocarcinoma, pancreas",
+  "dx": "Ductal adenocarcinoma",
+  "organ": "pancreas",
+  "desc": "",
+  "note": "",
+  "units": [
+   "GI tract and pancreas"
+  ],
+  "unit": "GI tract and pancreas",
+  "alt": []
+ },
+ {
+  "dxfull": "Myocardial infarction",
+  "dx": "Myocardial infarction",
+  "desc": "",
+  "unit": "Cell injury and adaption",
+  "id": "PA0004",
+  "note": "",
+  "organ": "",
+  "n": "",
+  "site": "heart",
+  "parent": "PA0335",
+  "units": [
+   "Cell injury and adaption",
+   "Hemodynamic derangement",
+   "Cardiovascular system"
+  ],
+  "alt": []
+ },
+ {
+  "id": "PA0025",
+  "dxfull": "Caseating granulomatous inflammation",
+  "dx": "Caseating granulomatous inflammation",
+  "organ": "",
+  "desc": "",
+  "note": "",
+  "n": "",
+  "site": "right upper lung",
+  "parent": "PA0198",
+  "units": [
+   "Cell injury and adaption",
+   "Inflammation",
+   "Infection",
+   "Respiratory system"
+  ],
+  "unit": "Cell injury and adaption",
+  "alt": []
+ },
+ {
+  "id": "PA0056",
+  "dxfull": "Acute suppurative appendicitis",
+  "dx": "Acute suppurative appendicitis",
+  "organ": "",
+  "desc": "",
+  "note": "",
+  "n": "",
+  "site": "appendix",
+  "parent": "PA0270",
+  "units": [
+   "Inflammation",
+   "GI tract and pancreas"
+  ],
+  "unit": "Inflammation",
+  "alt": []
+ },
+ {
+  "id": "PA0058",
+  "dxfull": "Hemorrhoid",
+  "dx": "Hemorrhoid",
+  "organ": "",
+  "desc": "",
+  "note": "",
+  "n": "",
+  "site": "anorectal junction",
+  "parent": "PA0059",
+  "units": [
+   "Hemodynamic derangement",
+   "GI tract and pancreas"
+  ],
+  "unit": "Hemodynamic derangement",
+  "alt": []
+ },
+ {
+  "id": "PA0099",
+  "dxfull": "Condyloma acuminatum",
+  "dx": "Condyloma acuminatum",
+  "organ": "",
+  "desc": "",
+  "note": "",
+  "n": "",
+  "site": "penile shaft",
+  "parent": "PA0255",
+  "units": [
+   "Infection"
+  ],
+  "unit": "Infection",
+  "alt": []
+ },
+ {
+  "id": "PA0190",
+  "dxfull": "Condyloma acuminatum",
+  "dx": "Condyloma acuminatum",
+  "organ": "",
+  "desc": "",
+  "note": "",
+  "n": "",
+  "site": "vulva",
+  "parent": "PA0255",
+  "units": [
+   "Infection"
+  ],
+  "unit": "Infection",
+  "alt": []
+ },
+ {
+  "n": "",
+  "dxfull": "Molluscum contagiosum",
+  "dx": "Molluscum contagiosum",
+  "note": "",
+  "organ": "",
+  "desc": "",
+  "id": "PA0141",
+  "unit": "Infection",
+  "site": "shin",
+  "parent": "PA0271",
+  "units": [
+   "Infection"
+  ],
+  "alt": []
+ },
+ {
+  "n": "",
+  "organ": "",
+  "unit": "Infection",
+  "desc": "",
+  "id": "PA0001",
+  "dxfull": "Infective endocarditis",
+  "dx": "Infective endocarditis",
+  "note": "",
+  "site": "mitral valve",
+  "parent": "PA0306",
+  "units": [
+   "Infection",
+   "Cardiovascular system"
+  ],
+  "alt": []
+ },
+ {
+  "unit": "Infection",
+  "id": "PA0057",
+  "desc": "",
+  "organ": "",
+  "dx": "Actinomycosis",
+  "note": "",
+  "dxfull": "Actinomycosis",
+  "n": "",
+  "site": "transverse colon",
+  "parent": "PA0251",
+  "units": [
+   "Infection"
+  ],
+  "alt": []
+ },
+ {
+  "id": "PA0016",
   "dxfull": "Aspergillosis",
   "dx": "Aspergillosis",
   "organ": "",
   "desc": "",
   "note": "",
-  "unit": "Micro 1",
-  "link": "http://microteaching.ntu.edu.tw:9002/GestaltViewer?wlGUID=GfFUI5heEdkc%2fDLetcgR5mlp%2f34%2fh5wGjI6bDaj%2bW%2boOY%2bPdd6J%2fR0T8SjvNOvoBgKidYqypLlUsm%2b3LAIebOSsJ6GWDF69bu9N0SO6m9%2b2Z0UcElOTJuDeHnG%2by9rmrk5XKqOWrNxk%3d"
- },
- {
-  "id": "PA0302",
-  "n": "191",
-  "dxfull": "Pneumocystis jirovecii pneumonia (PJP), lung",
-  "dx": "Pneumocystis jirovecii pneumonia (PJP)",
-  "organ": "lung",
-  "desc": "*1. Foamy, granular, eosinophilic exudate in the alveolar spaces\n2. Interstitial thickening and inflammation\n3. Other finding: focal ossification",
-  "note": "",
-  "unit": "Micro 1",
-  "link": "http://microteaching.ntu.edu.tw:9002/GestaltViewer?wlGUID=SxWYDisTDf%2fFrbyKdlgDQk%2bGZoZEsQTgoTdasMJsHxwDsmrVIBf%2bqqTOoCwhxK5LI%2fK2nkO%2bzgmxjlaB7mi%2fPwAksFE0kGvTFBzwoAArZaxgya72R9JS7I%2bYqC20c2Kkc%2fHoWQ00fiI%3d"
- },
- {
-  "id": "PA0306",
-  "n": "4",
-  "dxfull": "Infective endocarditis, heart valve",
-  "dx": "Infective endocarditis",
-  "organ": "heart valve",
-  "desc": "*1. Valve destruction with necrosis\n*2. Vegetation: fibrin, bacterial clumps, and inflammatory infiltrate (neutrophilic or lymphohistiocytic)\n3. Inflamed granulation tissue\n4. (In chronic lesion) organization and calcification",
-  "note": "PA0306 (4), aortic valve (exam list) — lecture slides label this case PA0001 (4), mitral valve",
-  "unit": "Micro 1",
-  "link": "http://microteaching.ntu.edu.tw:9002/GestaltViewer?wlGUID=Ci%2bvv3xzDzEuV%2fc1go9Vvw8ebKd3P5vD7ffBBSk0uNUUUe%2bbVQ4XD7iinnz5%2f5Mqr4GqfVwF6gzy71HcaqVtDT%2fjxxcr8Ct7ivuhNVpIjqnXKAxbzl47AdBD5RE7pkf%2bAtUchQPJ5cA%3d"
- },
- {
-  "id": "PA0313",
-  "n": "196",
-  "dxfull": "Necrotizing enterocolitis (NEC), intestine/colon",
-  "dx": "Necrotizing enterocolitis (NEC)",
-  "organ": "intestine/colon",
-  "desc": "*1. Coagulative necrosis with hemorrhage — mucosal and transmural (impending perforation)\n2. Chronic changes: strictures, crypt distortion, reactive epithelial cells (absent in this slide)",
-  "note": "",
-  "unit": "Micro 1",
-  "link": "http://microteaching.ntu.edu.tw:9002/GestaltViewer?wlGUID=Ja9boKeB9E3UqnR4Z5OW2wSVJwYfqSMuE1LBNzafMayhPIhOYHMBWJ9gun27a%2b2O7mXL6aztUsGP8iLuQy9UKnWEOYUF42elbKOoEAXVNpiD%2beQo9X2bgJszTl15%2f4857unkx%2b8iGQY%3d"
- },
- {
-  "id": "PA0316",
-  "n": "198",
-  "dxfull": "Cryptococcosis, lung",
-  "dx": "Cryptococcosis",
-  "organ": "lung",
-  "desc": "*1. Numerous round to oval, refractile, thick-walled fungal yeasts (narrow-based budding)\n2. Focal necrosis\n3. Granulomatous inflammation (vaguely-formed granuloma / macrophage infiltration with scattered multinucleated giant cells)\n4. Infiltration of lymphocytes and plasma cells\n5. Intraalveolar fibrin deposition\n6. Fibrosis\n7. Soft-bubble like",
-  "note": "",
-  "unit": "Micro 1",
-  "link": "http://microteaching.ntu.edu.tw:9002/GestaltViewer?wlGUID=ibK3rn8PP0YjeAx1f7ITawnIc9Uty%2biMZcT3dZX3cTGZJqcj3NaJaiZxPJ1tmj%2fs9YfMdc1LkUpsWmykh8LuIIKtWg0cwjcXjt6Epz4RyRNMU6FNHuV%2fQh9AL7nKZDVqovtYghlymVQ%3d"
- },
- {
-  "id": "PA0332",
   "n": "",
-  "dxfull": "Herpes virus infection",
-  "dx": "Herpes virus infection",
+  "site": "right lower lung",
+  "parent": "PA0015",
+  "units": [
+   "Infection",
+   "Respiratory system"
+  ],
+  "unit": "Infection",
+  "alt": []
+ },
+ {
+  "desc": "",
+  "dxfull": "Aspergillosis",
+  "dx": "Aspergillosis",
+  "unit": "Infection",
+  "note": "",
+  "n": "",
+  "id": "PA0287",
+  "organ": "",
+  "site": "",
+  "parent": "PA0015",
+  "units": [
+   "Infection",
+   "Respiratory system"
+  ],
+  "alt": []
+ },
+ {
+  "id": "PA0288",
+  "dxfull": "Aspergillosis (GMS)",
+  "dx": "Aspergillosis (GMS)",
   "organ": "",
   "desc": "",
   "note": "",
-  "unit": "Micro 1",
-  "link": "http://microteaching.ntu.edu.tw:9002/GestaltViewer?wlGUID=1qyEehotToPUfFvr2vr4sV8kPIu7BmpA%2fsgwyZYgEVs6plBpqHpQwZrCBkvNpZw9%2fqAHE9M1eWnM%2bbRRUpbe%2bOwd1T1pdjpzsDqbj08P6a%2baYD8xfGah3E6ChTzA14bgMJGUUdzIurk%3d"
+  "n": "",
+  "site": "",
+  "parent": "PA0015",
+  "units": [
+   "Infection",
+   "Respiratory system"
+  ],
+  "unit": "Infection",
+  "alt": []
  },
  {
-  "id": "PA0335",
-  "n": "6",
-  "dxfull": "Myocardial infarction (this slide: remote / healed), heart",
-  "dx": "Myocardial infarction (this slide: remote / healed)",
-  "organ": "heart",
-  "desc": "General MI description (Section review 1.1):\n*1. Cardiomyocyte coagulative necrosis\n*① Dead cells with preserved cellular outlines\n*② Cytoplasmic eosinophilia\n*③ Nuclear changes: karyolysis, pyknosis, karyorrhexis\n2. Interstitial edema and hemorrhage\n3. An inflammatory infiltrate (neutrophils or macrophages)\n4. Granulation tissue (capillary and fibroblast proliferation)\n5. Fibrosis / scar formation (dense collagen deposition)\nThis slide (PA0335, remote MI):\n*1. Multifocal fibrosis replacing myocytes (remote change); slightly increased mononuclear inflammatory cells\n2. Granulation tissue, focal (hard to find; recent change): neovascularization (capillary proliferation), hemorrhage\n3. Myocyte vacuolization, especially subendocardial areas (sublethal ischemic change)\n4. Hypertrophic changes of cardiomyocytes (patient background): increased cell and nuclear size\nAlso: lipofuscin (perinuclear, normal aging)",
-  "note": "PA0335 (6) — 69M; listed as PA0004 (6) Myocardial infarction, heart in Section review 1.2",
-  "unit": "Micro 1",
-  "link": "http://microteaching.ntu.edu.tw:9002/GestaltViewer?wlGUID=nlO2xtK%2bW38QnDF7mZ04x%2fT0VI8j5YBph118CbzQjF4AXJm4OBbdXUMjB4CnwBYcbfhCMLK%2fLRSxNPls3XZ1YdiPjijWKUiel5XZruV7NJSXUPBbraAqzrchTaUuhIYkwtX3TisncDw%3d"
+  "dx": "Cryptococcosis",
+  "note": "",
+  "organ": "",
+  "id": "PA0175",
+  "dxfull": "Cryptococcosis",
+  "desc": "",
+  "n": "",
+  "unit": "Infection",
+  "site": "lung",
+  "parent": "PA0316",
+  "units": [
+   "Infection",
+   "Respiratory system"
+  ],
+  "alt": []
  },
  {
-  "id": "PA0354",
-  "n": "145",
-  "dxfull": "Herpes virus infection, oral cavity (mouth floor)",
+  "dx": "Cryptococcosis",
+  "desc": "",
+  "organ": "",
+  "unit": "Infection",
+  "n": "185",
+  "id": "PA0243",
+  "dxfull": "Cryptococcosis",
+  "note": "",
+  "site": "lung",
+  "parent": "PA0316",
+  "units": [
+   "Infection",
+   "Respiratory system"
+  ],
+  "alt": []
+ },
+ {
+  "id": "PA0244",
+  "dxfull": "Cryptococcosis",
+  "dx": "Cryptococcosis",
+  "organ": "",
+  "desc": "",
+  "note": "",
+  "n": "",
+  "site": "lung",
+  "parent": "PA0316",
+  "units": [
+   "Infection",
+   "Respiratory system"
+  ],
+  "unit": "Infection",
+  "alt": []
+ },
+ {
+  "dx": "Amebiasis",
+  "desc": "",
+  "organ": "",
+  "unit": "Infection",
+  "n": "",
+  "id": "PA0203",
+  "dxfull": "Amebiasis",
+  "note": "",
+  "site": "cecum",
+  "parent": "PA0206",
+  "units": [
+   "Infection",
+   "GI tract and pancreas"
+  ],
+  "alt": []
+ },
+ {
+  "id": "PA0204",
+  "dxfull": "Amebiasis",
+  "dx": "Amebiasis",
+  "organ": "",
+  "desc": "",
+  "note": "",
+  "n": "",
+  "site": "cecum",
+  "parent": "PA0206",
+  "units": [
+   "Infection",
+   "GI tract and pancreas"
+  ],
+  "unit": "Infection",
+  "alt": []
+ },
+ {
+  "note": "",
+  "dx": "Pneumocystis jirovecii pneumonia (PJP)",
+  "organ": "",
+  "dxfull": "Pneumocystis jirovecii pneumonia (PJP)",
+  "desc": "",
+  "unit": "Infection",
+  "n": "",
+  "id": "PA0261",
+  "site": "",
+  "parent": "PA0302",
+  "units": [
+   "Infection",
+   "Immunological disorder",
+   "Respiratory system"
+  ],
+  "alt": []
+ },
+ {
+  "id": "PA0262",
+  "dxfull": "Pneumocystis jirovecii pneumonia",
+  "dx": "Pneumocystis jirovecii pneumonia",
+  "organ": "",
+  "desc": "",
+  "note": "",
+  "n": "",
+  "site": "",
+  "parent": "PA0302",
+  "units": [
+   "Infection",
+   "Immunological disorder",
+   "Respiratory system"
+  ],
+  "unit": "Infection",
+  "alt": []
+ },
+ {
+  "n": "",
+  "unit": "Infection",
+  "desc": "",
+  "id": "PA0332",
+  "dxfull": "Herpes virus infection",
+  "note": "",
   "dx": "Herpes virus infection",
-  "organ": "oral cavity (mouth floor)",
-  "desc": "*1. Cytopathic effects compatible with herpes infection (3M):\n① Multinucleation\n② Margination of chromatin\n③ Molding of nuclei\n2. Ulcer with neutrophil infiltration and necrotic debris",
-  "note": "PA0354 (145) — updated teaching slide (exam list earlier: PA0332 (145), herpes virus infection, skin)",
-  "unit": "Micro 1",
-  "link": ""
+  "organ": "",
+  "site": "thigh",
+  "parent": "PA0354",
+  "units": [
+   "Infection"
+  ],
+  "alt": []
+ },
+ {
+  "id": "PA0086",
+  "dxfull": "Chronic rejection",
+  "dx": "Chronic rejection",
+  "organ": "",
+  "desc": "",
+  "note": "",
+  "n": "",
+  "site": "graft kidney",
+  "parent": "PA0284",
+  "units": [
+   "Immunological disorder"
+  ],
+  "unit": "Immunological disorder",
+  "alt": []
+ },
+ {
+  "id": "PA0066",
+  "dxfull": "Cellular rejection",
+  "dx": "Cellular rejection",
+  "organ": "",
+  "desc": "",
+  "note": "",
+  "n": "49",
+  "site": "liver",
+  "parent": "PA0061",
+  "units": [
+   "Immunological disorder",
+   "Liver and biliary tract"
+  ],
+  "unit": "Immunological disorder",
+  "alt": []
+ },
+ {
+  "id": "PA0269",
+  "dxfull": "Cellular rejection",
+  "dx": "Cellular rejection",
+  "organ": "",
+  "desc": "",
+  "note": "",
+  "n": "195",
+  "site": "",
+  "parent": "PA0061",
+  "units": [
+   "Immunological disorder",
+   "Liver and biliary tract"
+  ],
+  "unit": "Immunological disorder",
+  "alt": []
+ },
+ {
+  "id": "PA0085",
+  "dxfull": "Nephroblastoma (Wilms' tumor)",
+  "dx": "Nephroblastoma (Wilms' tumor)",
+  "organ": "",
+  "desc": "",
+  "note": "",
+  "n": "",
+  "site": "kidney",
+  "parent": "PA0289",
+  "units": [
+   "Disease of infancy and childhood"
+  ],
+  "unit": "Disease of infancy and childhood",
+  "alt": []
+ },
+ {
+  "id": "PA0131",
+  "dxfull": "Neuroblastoma",
+  "dx": "Neuroblastoma",
+  "organ": "",
+  "desc": "",
+  "note": "",
+  "n": "",
+  "site": "adrenal gland",
+  "parent": "PA0305",
+  "units": [
+   "Disease of infancy and childhood"
+  ],
+  "unit": "Disease of infancy and childhood",
+  "alt": []
+ },
+ {
+  "id": "PA0167",
+  "dxfull": "Retinoblastoma",
+  "dx": "Retinoblastoma",
+  "organ": "",
+  "desc": "",
+  "note": "",
+  "n": "",
+  "site": "eye",
+  "parent": "PA0247",
+  "units": [
+   "Disease of infancy and childhood"
+  ],
+  "unit": "Disease of infancy and childhood",
+  "alt": []
+ },
+ {
+  "id": "PA0168",
+  "dxfull": "Retinoblastoma",
+  "dx": "Retinoblastoma",
+  "organ": "",
+  "desc": "",
+  "note": "",
+  "n": "",
+  "site": "eye",
+  "parent": "PA0247",
+  "units": [
+   "Disease of infancy and childhood"
+  ],
+  "unit": "Disease of infancy and childhood",
+  "alt": []
+ },
+ {
+  "id": "PA0196",
+  "dxfull": "Retinoblastoma",
+  "dx": "Retinoblastoma",
+  "organ": "",
+  "desc": "",
+  "note": "",
+  "n": "",
+  "site": "eye",
+  "parent": "PA0247",
+  "units": [
+   "Disease of infancy and childhood"
+  ],
+  "unit": "Disease of infancy and childhood",
+  "alt": []
+ },
+ {
+  "id": "PA0200",
+  "dxfull": "Hyaline membrane disease",
+  "dx": "Hyaline membrane disease",
+  "organ": "",
+  "desc": "",
+  "note": "",
+  "n": "",
+  "site": "lung",
+  "parent": "PA0341",
+  "units": [
+   "Disease of infancy and childhood",
+   "Respiratory system"
+  ],
+  "unit": "Disease of infancy and childhood",
+  "alt": []
+ },
+ {
+  "id": "PA0142",
+  "dxfull": "Basal cell carcinoma",
+  "dx": "Basal cell carcinoma",
+  "organ": "",
+  "desc": "",
+  "note": "",
+  "n": "",
+  "site": "lip",
+  "parent": "PA0295",
+  "units": [
+   "Epithelial neoplasm"
+  ],
+  "unit": "Epithelial neoplasm",
+  "alt": []
+ },
+ {
+  "id": "PA0156",
+  "dxfull": "Lymphangioma",
+  "dx": "Lymphangioma",
+  "organ": "",
+  "desc": "",
+  "note": "",
+  "n": "",
+  "site": "lower leg",
+  "parent": "PA0336",
+  "units": [
+   "Non-epithelial neoplasm"
+  ],
+  "unit": "Non-epithelial neoplasm",
+  "alt": []
+ },
+ {
+  "id": "PA0107",
+  "dxfull": "Mature cystic teratoma",
+  "dx": "Mature cystic teratoma",
+  "organ": "",
+  "desc": "",
+  "note": "",
+  "n": "",
+  "site": "ovary",
+  "parent": "PA0285",
+  "units": [
+   "Non-epithelial neoplasm"
+  ],
+  "unit": "Non-epithelial neoplasm",
+  "alt": []
+ },
+ {
+  "id": "PA0003",
+  "dxfull": "Cardiac myxoma",
+  "dx": "Cardiac myxoma",
+  "organ": "",
+  "desc": "",
+  "note": "",
+  "n": "",
+  "site": "left atrium of heart",
+  "parent": "PA0002",
+  "units": [
+   "Cardiovascular system"
+  ],
+  "unit": "Cardiovascular system",
+  "alt": []
+ },
+ {
+  "id": "PA0169",
+  "dxfull": "Atherosclerosis",
+  "dx": "Atherosclerosis",
+  "organ": "",
+  "desc": "",
+  "note": "",
+  "n": "1",
+  "site": "heart, coronary artery",
+  "parent": "PA0340",
+  "units": [
+   "Cardiovascular system"
+  ],
+  "unit": "Cardiovascular system",
+  "alt": []
+ },
+ {
+  "id": "PA0023",
+  "dxfull": "Invasive mucinous adenocarcinoma",
+  "dx": "Invasive mucinous adenocarcinoma",
+  "organ": "",
+  "desc": "",
+  "note": "",
+  "n": "",
+  "site": "right middle lung",
+  "parent": "PA0308",
+  "units": [
+   "Respiratory system"
+  ],
+  "unit": "Respiratory system",
+  "alt": []
+ },
+ {
+  "id": "PA0018",
+  "dxfull": "Small cell carcinoma",
+  "dx": "Small cell carcinoma",
+  "organ": "",
+  "desc": "",
+  "note": "",
+  "n": "",
+  "site": "left lung",
+  "parent": "PA0307",
+  "units": [
+   "Respiratory system"
+  ],
+  "unit": "Respiratory system",
+  "alt": []
+ },
+ {
+  "id": "PA0031",
+  "dxfull": "Small cell carcinoma",
+  "dx": "Small cell carcinoma",
+  "organ": "",
+  "desc": "",
+  "note": "",
+  "n": "",
+  "site": "left lower lung",
+  "parent": "PA0307",
+  "units": [
+   "Respiratory system"
+  ],
+  "unit": "Respiratory system",
+  "alt": []
+ },
+ {
+  "id": "PA0027",
+  "dxfull": "Adenocarcinoma",
+  "dx": "Adenocarcinoma",
+  "organ": "",
+  "desc": "",
+  "note": "",
+  "n": "",
+  "site": "left upper lung",
+  "parent": "PA0174",
+  "units": [
+   "Respiratory system"
+  ],
+  "unit": "Respiratory system",
+  "alt": []
+ },
+ {
+  "id": "PA0038",
+  "dxfull": "(1) Diffuse alveolar damage; (2) Cytomegaloviral pneumonitis",
+  "dx": "(1) Diffuse alveolar damage; (2) Cytomegaloviral pneumonitis",
+  "organ": "",
+  "desc": "",
+  "note": "",
+  "n": "",
+  "site": "left lingual lobe",
+  "parent": "PA0040",
+  "units": [
+   "Respiratory system"
+  ],
+  "unit": "Respiratory system",
+  "alt": []
+ },
+ {
+  "id": "PA0060",
+  "dxfull": "Acute hepatitis",
+  "dx": "Acute hepatitis",
+  "organ": "",
+  "desc": "",
+  "note": "",
+  "n": "",
+  "site": "liver",
+  "parent": "PA0281",
+  "units": [
+   "Liver and biliary tract"
+  ],
+  "unit": "Liver and biliary tract",
+  "alt": []
+ },
+ {
+  "id": "PA0062",
+  "dxfull": "Chronic hepatitis b",
+  "dx": "Chronic hepatitis b",
+  "organ": "",
+  "desc": "",
+  "note": "",
+  "n": "",
+  "site": "liver",
+  "parent": "PA0334",
+  "units": [
+   "Liver and biliary tract"
+  ],
+  "unit": "Liver and biliary tract",
+  "alt": []
+ },
+ {
+  "id": "PA0183",
+  "dxfull": "Chronic hepatitis b",
+  "dx": "Chronic hepatitis b",
+  "organ": "",
+  "desc": "",
+  "note": "",
+  "n": "",
+  "site": "liver",
+  "parent": "PA0334",
+  "units": [
+   "Liver and biliary tract"
+  ],
+  "unit": "Liver and biliary tract",
+  "alt": []
+ },
+ {
+  "id": "PA0064",
+  "dxfull": "Submassive necrosis",
+  "dx": "Submassive necrosis",
+  "organ": "",
+  "desc": "",
+  "note": "",
+  "n": "",
+  "site": "liver",
+  "parent": "PA0282",
+  "units": [
+   "Liver and biliary tract"
+  ],
+  "unit": "Liver and biliary tract",
+  "alt": []
+ },
+ {
+  "id": "PA0063",
+  "dxfull": "Primary biliary cirrhosis",
+  "dx": "Primary biliary cirrhosis",
+  "organ": "",
+  "desc": "",
+  "note": "",
+  "n": "",
+  "site": "liver",
+  "parent": "PA0265",
+  "units": [
+   "Liver and biliary tract"
+  ],
+  "unit": "Liver and biliary tract",
+  "alt": []
+ },
+ {
+  "id": "PA0181",
+  "dxfull": "Primary biliary cirrhosis",
+  "dx": "Primary biliary cirrhosis",
+  "organ": "",
+  "desc": "",
+  "note": "",
+  "n": "",
+  "site": "liver",
+  "parent": "PA0265",
+  "units": [
+   "Liver and biliary tract"
+  ],
+  "unit": "Liver and biliary tract",
+  "alt": []
+ },
+ {
+  "id": "PA0068",
+  "dxfull": "Primary sclerosing cholangitis",
+  "dx": "Primary sclerosing cholangitis",
+  "organ": "",
+  "desc": "",
+  "note": "",
+  "n": "",
+  "site": "liver",
+  "parent": "PA0333",
+  "units": [
+   "Liver and biliary tract"
+  ],
+  "unit": "Liver and biliary tract",
+  "alt": []
+ },
+ {
+  "id": "PA0283",
+  "dxfull": "Primary sclerosing cholangitis",
+  "dx": "Primary sclerosing cholangitis",
+  "organ": "",
+  "desc": "",
+  "note": "",
+  "n": "",
+  "site": "",
+  "parent": "PA0333",
+  "units": [
+   "Liver and biliary tract"
+  ],
+  "unit": "Liver and biliary tract",
+  "alt": []
+ },
+ {
+  "id": "PA0072",
+  "dxfull": "Neonatal hepatitis",
+  "dx": "Neonatal hepatitis",
+  "organ": "",
+  "desc": "",
+  "note": "",
+  "n": "56",
+  "site": "Liver",
+  "parent": "PA0069",
+  "units": [
+   "Liver and biliary tract"
+  ],
+  "unit": "Liver and biliary tract",
+  "alt": []
+ },
+ {
+  "id": "PA0065",
+  "dxfull": "Biliary atresia, intrahepatic",
+  "dx": "Biliary atresia, intrahepatic",
+  "organ": "",
+  "desc": "",
+  "note": "",
+  "n": "",
+  "site": "liver",
+  "parent": "PA0311",
+  "units": [
+   "Liver and biliary tract"
+  ],
+  "unit": "Liver and biliary tract",
+  "alt": []
+ },
+ {
+  "id": "PA0073",
+  "dxfull": "Biliary atresia",
+  "dx": "Biliary atresia",
+  "organ": "",
+  "desc": "",
+  "note": "",
+  "n": "",
+  "site": "liver",
+  "parent": "PA0311",
+  "units": [
+   "Liver and biliary tract"
+  ],
+  "unit": "Liver and biliary tract",
+  "alt": []
+ },
+ {
+  "id": "PA0078",
+  "dxfull": "Chronic cholecystitis",
+  "dx": "Chronic cholecystitis",
+  "organ": "",
+  "desc": "",
+  "note": "",
+  "n": "",
+  "site": "gall bladder",
+  "parent": "PA0345",
+  "units": [
+   "Liver and biliary tract"
+  ],
+  "unit": "Liver and biliary tract",
+  "alt": []
+ },
+ {
+  "id": "PA0043",
+  "dxfull": "Ameloblastoma",
+  "dx": "Ameloblastoma",
+  "organ": "",
+  "desc": "",
+  "note": "",
+  "n": "",
+  "site": "mandible",
+  "parent": "PA0273",
+  "units": [
+   "Head and neck"
+  ],
+  "unit": "Head and neck",
+  "alt": []
+ },
+ {
+  "id": "PA0048",
+  "dxfull": "Adenocarcinoma, signet ring cell type (signet ring cell carcinoma)",
+  "dx": "Adenocarcinoma, signet ring cell type (signet ring cell carcinoma)",
+  "organ": "",
+  "desc": "",
+  "note": "",
+  "n": "",
+  "site": "stomach",
+  "parent": "PA0279",
+  "units": [
+   "GI tract and pancreas"
+  ],
+  "unit": "GI tract and pancreas",
+  "alt": []
+ },
+ {
+  "id": "PA0049",
+  "dxfull": "Adenocarcinoma, intestinal type",
+  "dx": "Adenocarcinoma, intestinal type",
+  "organ": "",
+  "desc": "",
+  "note": "",
+  "n": "",
+  "site": "stomach",
+  "parent": "PA0309",
+  "units": [
+   "GI tract and pancreas"
+  ],
+  "unit": "GI tract and pancreas",
+  "alt": []
+ },
+ {
+  "id": "PA0179",
+  "dxfull": "Adenocarcinoma",
+  "dx": "Adenocarcinoma",
+  "organ": "",
+  "desc": "",
+  "note": "",
+  "n": "",
+  "site": "rectum",
+  "parent": "PA0249",
+  "units": [
+   "Epithelial neoplasm",
+   "GI tract and pancreas"
+  ],
+  "unit": "Epithelial neoplasm",
+  "alt": []
+ },
+ {
+  "id": "PA0054",
+  "dxfull": "Crohn's disease",
+  "dx": "Crohn's disease",
+  "organ": "",
+  "desc": "",
+  "note": "",
+  "n": "",
+  "site": "small intestine",
+  "parent": "PA0280",
+  "units": [
+   "GI tract and pancreas"
+  ],
+  "unit": "GI tract and pancreas",
+  "alt": []
+ },
+ {
+  "id": "PA0328",
+  "dxfull": "Crohn's disease",
+  "dx": "Crohn's disease",
+  "organ": "",
+  "desc": "",
+  "note": "",
+  "n": "35",
+  "site": "large intestine/colon",
+  "parent": "PA0280",
+  "units": [
+   "GI tract and pancreas"
+  ],
+  "unit": "GI tract and pancreas",
+  "alt": []
+ },
+ {
+  "id": "PA0329",
+  "dxfull": "Ulcerative colitis",
+  "dx": "Ulcerative colitis",
+  "organ": "",
+  "desc": "",
+  "note": "",
+  "n": "40",
+  "site": "large intestine/colon",
+  "parent": "PA0310",
+  "units": [
+   "GI tract and pancreas"
+  ],
+  "unit": "GI tract and pancreas",
+  "alt": []
+ },
+ {
+  "id": "PA0250",
+  "dxfull": "Ulcerative colitis",
+  "dx": "Ulcerative colitis",
+  "organ": "",
+  "desc": "",
+  "note": "",
+  "n": "",
+  "site": "",
+  "parent": "PA0310",
+  "units": [
+   "GI tract and pancreas"
+  ],
+  "unit": "GI tract and pancreas",
+  "alt": []
+ },
+ {
+  "id": "PA0180",
+  "dxfull": "Chronic ulcerative colitis",
+  "dx": "Chronic ulcerative colitis",
+  "organ": "",
+  "desc": "",
+  "note": "",
+  "n": "",
+  "site": "descending colon",
+  "parent": "PA0310",
+  "units": [
+   "GI tract and pancreas"
+  ],
+  "unit": "GI tract and pancreas",
+  "alt": []
+ },
+ {
+  "id": "PA0079",
+  "dxfull": "Chronic pancreatitis",
+  "dx": "Chronic pancreatitis",
+  "organ": "",
+  "desc": "",
+  "note": "",
+  "n": "",
+  "site": "pancreas",
+  "parent": "PA0312",
+  "units": [
+   "GI tract and pancreas"
+  ],
+  "unit": "GI tract and pancreas",
+  "alt": []
  }
 ]

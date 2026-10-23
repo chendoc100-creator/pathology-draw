@@ -1,0 +1,2489 @@
+{
+"list": [
+{
+"id": "PA0001",
+"n": "",
+"dx": "infective endocarditis; 60M; mitral valve",
+"pdx": "",
+"on": 1
+},
+{
+"id": "PA0002",
+"n": "5",
+"dx": "cardiac myxoma; 68F; left atrium of heart",
+"pdx": "cardiac myxoma",
+"on": 1
+},
+{
+"id": "PA0003",
+"n": "",
+"dx": "cardiac myxoma; 68F; left atrium of heart",
+"pdx": "",
+"on": 1
+},
+{
+"id": "PA0004",
+"n": "",
+"dx": "myocardial infarction; 54M; heart",
+"pdx": "",
+"on": 1
+},
+{
+"id": "PA0005",
+"n": "",
+"dx": "follicular hyperplasia; 44F; axillary lymph node",
+"pdx": "",
+"on": 1
+},
+{
+"id": "PA0006",
+"n": "8",
+"dx": "follicular lymphoma; 46F; neck lymph node",
+"pdx": "follicular lymphoma",
+"on": 1
+},
+{
+"id": "PA0007",
+"n": "",
+"dx": "metastatic neuroendocrine tumor (metastatic carcinoid tumor) (Ref: 1427930C5); 74M; lymph node",
+"pdx": "",
+"on": 1
+},
+{
+"id": "PA0008",
+"n": "10",
+"dx": "congestive splenomegaly; 15M; spleen",
+"pdx": "congestive splenomegaly",
+"on": 1
+},
+{
+"id": "PA0009",
+"n": "",
+"dx": "B-acute lymphoblastic leukemia; 16M; bone marrow",
+"pdx": "",
+"on": 1
+},
+{
+"id": "PA0010",
+"n": "",
+"dx": "normal bone marrow; 32F; bone marrow",
+"pdx": "",
+"on": 1
+},
+{
+"id": "PA0011",
+"n": "",
+"dx": "plasma cell myeloma; 52M; bone marrow",
+"pdx": "",
+"on": 1
+},
+{
+"id": "PA0012",
+"n": "",
+"dx": "acute myeloid leukemia; 28F; bone marrow",
+"pdx": "",
+"on": 1
+},
+{
+"id": "PA0013",
+"n": "",
+"dx": "chronic myeloid leukemia; 64F; bone marrow",
+"pdx": "",
+"on": 1
+},
+{
+"id": "PA0014",
+"n": "16",
+"dx": "aplastic anemia; 14M; bone marrow",
+"pdx": "aplastic anemia",
+"on": 1
+},
+{
+"id": "PA0015",
+"n": "17",
+"dx": "aspergillosis; 86F; right lower lung",
+"pdx": "aspergillosis",
+"on": 1
+},
+{
+"id": "PA0016",
+"n": "",
+"dx": "aspergillosis; 86F; right lower lung",
+"pdx": "",
+"on": 1
+},
+{
+"id": "PA0017",
+"n": "18",
+"dx": "anthracosis; 60F; left lower lung",
+"pdx": "anthracosis",
+"on": 1
+},
+{
+"id": "PA0018",
+"n": "",
+"dx": "small cell carcinoma; 82M; left lung",
+"pdx": "",
+"on": 1
+},
+{
+"id": "PA0019",
+"n": "",
+"dx": "CMV pneumonitis; 16F; left upper lung",
+"pdx": "",
+"on": 1
+},
+{
+"id": "PA0020",
+"n": "21",
+"dx": "sclerosing pneumocytoma (sclerosing hemangioma); 34F; right middle lung",
+"pdx": "sclerosing pneumocytoma (sclerosing hemangioma)",
+"on": 1
+},
+{
+"id": "PA0021",
+"n": "22",
+"dx": "squamous cell carcinoma; 60M; right middle and lower lung",
+"pdx": "squamous cell carcinoma",
+"on": 1
+},
+{
+"id": "PA0022",
+"n": "9",
+"dx": "mucormycosis; 10M; spleen",
+"pdx": "mucormycosis",
+"on": 1
+},
+{
+"id": "PA0023",
+"n": "",
+"dx": "invasive mucinous adenocarcinoma; 78F; right middle lung",
+"pdx": "",
+"on": 1
+},
+{
+"id": "PA0024",
+"n": "24",
+"dx": "(1) bronchopneumonia; (2) diffuse alveolar damage; 72F; left upper lung",
+"pdx": "(1) bronchopneumonia; (2) diffuse alveolar damage",
+"on": 1
+},
+{
+"id": "PA0025",
+"n": "",
+"dx": "caseating granulomatous inflammation; 68M; right upper lung",
+"pdx": "",
+"on": 1
+},
+{
+"id": "PA0026",
+"n": "",
+"dx": "acid-fast bacilli(+); 68M; right upper lung",
+"pdx": "",
+"on": 1
+},
+{
+"id": "PA0027",
+"n": "",
+"dx": "adenocarcinoma; 62F; left upper lung",
+"pdx": "",
+"on": 1
+},
+{
+"id": "PA0028",
+"n": "",
+"dx": "CK7(+); 62F; left upper lung",
+"pdx": "",
+"on": 1
+},
+{
+"id": "PA0029",
+"n": "",
+"dx": "TTF-1(+); 62F; left upper lung",
+"pdx": "",
+"on": 1
+},
+{
+"id": "PA0030",
+"n": "25",
+"dx": "amyloidoma; 54F; left upper lung",
+"pdx": "amyloidoma",
+"on": 1
+},
+{
+"id": "PA0031",
+"n": "",
+"dx": "small cell carcinoma; 74M; left lower lung",
+"pdx": "",
+"on": 1
+},
+{
+"id": "PA0032",
+"n": "",
+"dx": "CK(+); 74M; left lower lung",
+"pdx": "",
+"on": 1
+},
+{
+"id": "PA0033",
+"n": "",
+"dx": "synaptophysin(+); 74M; left lower lung",
+"pdx": "",
+"on": 1
+},
+{
+"id": "PA0034",
+"n": "",
+"dx": "chomorganin A(+); 74M; left lower lung",
+"pdx": "",
+"on": 1
+},
+{
+"id": "PA0035",
+"n": "",
+"dx": "TTF-1(+); 74M; left lower lung",
+"pdx": "",
+"on": 1
+},
+{
+"id": "PA0036",
+"n": "",
+"dx": "metastatic synovial sarcoma (history: thigh synovial sarcoma); 68M; right upper lung",
+"pdx": "",
+"on": 1
+},
+{
+"id": "PA0037",
+"n": "",
+"dx": "metastatic synovial sarcoma (history: thigh synovial sarcoma); 68M; left upper lung",
+"pdx": "",
+"on": 1
+},
+{
+"id": "PA0038",
+"n": "",
+"dx": "(1) diffuse alveolar damage; (2) cytomegaloviral pneumonitis; 17F; left lingual lobe",
+"pdx": "",
+"on": 1
+},
+{
+"id": "PA0039",
+"n": "",
+"dx": "CMV(+); 17F; left lingual lobe",
+"pdx": "",
+"on": 1
+},
+{
+"id": "PA0040",
+"n": "26",
+"dx": "diffuse alveolar damage; 52M; lung",
+"pdx": "diffuse alveolar damage",
+"on": 1
+},
+{
+"id": "PA0041",
+"n": "27",
+"dx": "mesothelioma; 56M; pleura",
+"pdx": "mesothelioma",
+"on": 1
+},
+{
+"id": "PA0042",
+"n": "172",
+"dx": "lymphoid hyperplasia (chronic tonsillitis); 6M; tonsil",
+"pdx": "lymphoid hyperplasia (chronic tonsillitis)",
+"on": 1
+},
+{
+"id": "PA0043",
+"n": "",
+"dx": "ameloblastoma; 14M; mandible",
+"pdx": "",
+"on": 1
+},
+{
+"id": "PA0044",
+"n": "29",
+"dx": "chronic sinusitis; 32M; bilateral maxillay sinus",
+"pdx": "chronic sinusitis",
+"on": 1
+},
+{
+"id": "PA0045",
+"n": "30",
+"dx": "Warthin tumor; 43M; left parotid gland",
+"pdx": "Warthin tumor",
+"on": 1
+},
+{
+"id": "PA0046",
+"n": "31",
+"dx": "pleomorphic adenoma; 35F; parotid gland",
+"pdx": "pleomorphic adenoma",
+"on": 1
+},
+{
+"id": "PA0047",
+"n": "32",
+"dx": "squamous cell carcinoma; 60M; esophagus",
+"pdx": "squamous cell carcinoma",
+"on": 1
+},
+{
+"id": "PA0048",
+"n": "",
+"dx": "adenocarcinoma, signet ring cell type (signet ring cell carcinoma); 47M; stomach",
+"pdx": "",
+"on": 1
+},
+{
+"id": "PA0049",
+"n": "",
+"dx": "adenocarcinoma, intestinal type; 86M; stomach",
+"pdx": "",
+"on": 1
+},
+{
+"id": "PA0050",
+"n": "",
+"dx": "adenocarcinoma; 66M; esophagogastric junction",
+"pdx": "",
+"on": 1
+},
+{
+"id": "PA0051",
+"n": "",
+"dx": "adenocarcinoma; 66M; esophagogastric junction",
+"pdx": "",
+"on": 1
+},
+{
+"id": "PA0052",
+"n": "",
+"dx": "adenocarcinoma; 66M; esophagogastric junction",
+"pdx": "",
+"on": 1
+},
+{
+"id": "PA0053",
+"n": "",
+"dx": "ulcer (peptic ulcer); 79M; stomach",
+"pdx": "",
+"on": 1
+},
+{
+"id": "PA0054",
+"n": "",
+"dx": "Crohn's disease; 36M; small intestine",
+"pdx": "",
+"on": 1
+},
+{
+"id": "PA0055",
+"n": "36",
+"dx": "neuroendocrine tumor (carcinoid tumor); 74M; ileum",
+"pdx": "neuroendocrine tumor (carcinoid tumor)",
+"on": 1
+},
+{
+"id": "PA0056",
+"n": "",
+"dx": "acute suppurative appendicitis; 37F; appendix",
+"pdx": "",
+"on": 1
+},
+{
+"id": "PA0057",
+"n": "",
+"dx": "actinomycosis; 49F; transverse colon",
+"pdx": "",
+"on": 1
+},
+{
+"id": "PA0058",
+"n": "",
+"dx": "hemorrhoid; 60M; anorectal junction",
+"pdx": "",
+"on": 1
+},
+{
+"id": "PA0059",
+"n": "41",
+"dx": "hemorrhoid; 51F; anorectal junction",
+"pdx": "hemorrhoid",
+"on": 1
+},
+{
+"id": "PA0060",
+"n": "",
+"dx": "acute hepatitis; 82M; liver",
+"pdx": "",
+"on": 1
+},
+{
+"id": "PA0061",
+"n": "43",
+"dx": "acute cellular rejection; 49F; liver",
+"pdx": "acute cellular rejection",
+"on": 1
+},
+{
+"id": "PA0062",
+"n": "",
+"dx": "chronic hepatitis b; 30M; liver",
+"pdx": "",
+"on": 1
+},
+{
+"id": "PA0063",
+"n": "",
+"dx": "primary biliary cirrhosis; 36F; liver",
+"pdx": "",
+"on": 1
+},
+{
+"id": "PA0064",
+"n": "",
+"dx": "submassive necrosis; 6mM; liver",
+"pdx": "",
+"on": 1
+},
+{
+"id": "PA0065",
+"n": "",
+"dx": "biliary atresia, intrahepatic; 2mF; liver",
+"pdx": "",
+"on": 1
+},
+{
+"id": "PA0066",
+"n": "49",
+"dx": "cellular rejection; 47M; liver",
+"pdx": "cellular rejection",
+"on": 1
+},
+{
+"id": "PA0067",
+"n": "51",
+"dx": "focal nodular hyperplasia; 7M; liver",
+"pdx": "focal nodular hyperplasia",
+"on": 1
+},
+{
+"id": "PA0068",
+"n": "",
+"dx": "primary sclerosing cholangitis; 56M; liver",
+"pdx": "",
+"on": 1
+},
+{
+"id": "PA0069",
+"n": "53",
+"dx": "neonatal hepatitis (giant cell hepatitis); 4mM; liver",
+"pdx": "neonatal hepatitis (giant cell hepatitis)",
+"on": 1
+},
+{
+"id": "PA0070",
+"n": "54",
+"dx": "Budd-Chiari syndrome; 23F; liver",
+"pdx": "Budd-Chiari syndrome",
+"on": 1
+},
+{
+"id": "PA0071",
+"n": "55",
+"dx": "hepatocellular carcinoma; 56M; liver",
+"pdx": "hepatocellular carcinoma",
+"on": 1
+},
+{
+"id": "PA0072",
+"n": "56",
+"dx": "neonatal hepatitis; 2mM; Liver",
+"pdx": "neonatal hepatitis",
+"on": 1
+},
+{
+"id": "PA0073",
+"n": "",
+"dx": "biliary atresia; 1mF; liver",
+"pdx": "",
+"on": 1
+},
+{
+"id": "PA0074",
+"n": "58",
+"dx": "steatosis (fatty change); 50F; liver",
+"pdx": "steatosis (fatty change)",
+"on": 1
+},
+{
+"id": "PA0075",
+"n": "59",
+"dx": "cirrhosis; 64M; liver",
+"pdx": "cirrhosis",
+"on": 1
+},
+{
+"id": "PA0076",
+"n": "61",
+"dx": "nutmeg liver (centrilobular congestion and necrosis); 57M; liver",
+"pdx": "nutmeg liver (centrilobular congestion and necrosis)",
+"on": 1
+},
+{
+"id": "PA0077",
+"n": "",
+"dx": "cholesterolosis; 73F; gall bladder",
+"pdx": "",
+"on": 1
+},
+{
+"id": "PA0078",
+"n": "",
+"dx": "chronic cholecystitis; 71F; gall bladder",
+"pdx": "",
+"on": 1
+},
+{
+"id": "PA0079",
+"n": "",
+"dx": "chronic pancreatitis; 52M; pancreas",
+"pdx": "",
+"on": 1
+},
+{
+"id": "PA0080",
+"n": "64",
+"dx": "neuroendocrine tumor (islet cell tumor); 52M; pancreas",
+"pdx": "neuroendocrine tumor (islet cell tumor)",
+"on": 1
+},
+{
+"id": "PA0081",
+"n": "65",
+"dx": "(1) fat necrosis; (2) traumatic pancreatitis; 19M; pancreas",
+"pdx": "(1) fat necrosis; (2) traumatic pancreatitis",
+"on": 1
+},
+{
+"id": "PA0082",
+"n": "66",
+"dx": "non-invasive papillary urothelial carcinoma, high grade; 71F; kidney",
+"pdx": "non-invasive papillary urothelial carcinoma, high grade",
+"on": 1
+},
+{
+"id": "PA0083",
+"n": "67",
+"dx": "membranous nephropathy with segmental sclerosis; 69M; kidney",
+"pdx": "membranous nephropathy with segmental sclerosis",
+"on": 1
+},
+{
+"id": "PA0084",
+"n": "",
+"dx": "PAS highlight basement membrane; 69M; kidney",
+"pdx": "",
+"on": 1
+},
+{
+"id": "PA0085",
+"n": "",
+"dx": "nephroblastoma (Wilms' tumor); 2F; kidney",
+"pdx": "",
+"on": 1
+},
+{
+"id": "PA0086",
+"n": "",
+"dx": "chronic rejection; 57F; graft kidney",
+"pdx": "",
+"on": 1
+},
+{
+"id": "PA0087",
+"n": "71",
+"dx": "autosomal dominant (adult) polycystic kidney disease; 47M; bilateral kidney",
+"pdx": "adult polycystic kidney disease",
+"on": 1
+},
+{
+"id": "PA0088",
+"n": "72",
+"dx": "clear cell renal cell carcinoma; 53M; right kidney",
+"pdx": "clear cell renal cell carcinoma",
+"on": 1
+},
+{
+"id": "PA0089",
+"n": "73",
+"dx": "chronic pyelonephritis; 60F; kidney",
+"pdx": "chronic pyelonephritis",
+"on": 1
+},
+{
+"id": "PA0090",
+"n": "",
+"dx": "crescentic glomerulonephritis; 73M; kidney",
+"pdx": "",
+"on": 1
+},
+{
+"id": "PA0091",
+"n": "",
+"dx": "lupus nephritis, class IV; 26M; kidney",
+"pdx": "",
+"on": 1
+},
+{
+"id": "PA0092",
+"n": "",
+"dx": "diabetic glomerulosclerosis; 43M; kidney",
+"pdx": "",
+"on": 1
+},
+{
+"id": "PA0093",
+"n": "",
+"dx": "focal segmental glomerulonephritis; 39M; kidney",
+"pdx": "",
+"on": 1
+},
+{
+"id": "PA0094",
+"n": "74",
+"dx": "fibrosing interstitial nephritis; 51M; kidney",
+"pdx": "interstitial fibrosing nephritis",
+"on": 1
+},
+{
+"id": "PA0095",
+"n": "75",
+"dx": "autosomal recessive (childhood) polycystic kidney disease; ??; kidney",
+"pdx": "autosomal recessive polycystic kidney disease (infantile polycystic kidney)",
+"on": 1
+},
+{
+"id": "PA0096",
+"n": "76",
+"dx": "(1) infarct; (2) acute tubular necrosis; 52M; kidney",
+"pdx": "(1) infarct; (2) acute tubular necrosis",
+"on": 1
+},
+{
+"id": "PA0097",
+"n": "77",
+"dx": "acute tubular necrosis; 49M; kidney",
+"pdx": "acute tubular necrosis",
+"on": 1
+},
+{
+"id": "PA0098",
+"n": "",
+"dx": "prostate adenocarcinoma; 57M; prostate",
+"pdx": "",
+"on": 1
+},
+{
+"id": "PA0099",
+"n": "",
+"dx": "condyloma acuminatum; 27M; penile shaft",
+"pdx": "",
+"on": 1
+},
+{
+"id": "PA0100",
+"n": "81",
+"dx": "malignant melanoma; 55F; vulva",
+"pdx": "malignant melanoma",
+"on": 1
+},
+{
+"id": "PA0101",
+"n": "",
+"dx": "high grade squamous intraepithelial lesion, with glandular involvement; 43F; cervix",
+"pdx": "",
+"on": 1
+},
+{
+"id": "PA0102",
+"n": "83",
+"dx": "squamous cell carcinoma; 61F; uterine cervix",
+"pdx": "squamous cell carcinoma",
+"on": 1
+},
+{
+"id": "PA0103",
+"n": "84",
+"dx": "adenomyosis; 49F; uterus",
+"pdx": "adenomyosis",
+"on": 1
+},
+{
+"id": "PA0104",
+"n": "85",
+"dx": "leiomyoma; 43F; uterus",
+"pdx": "leiomyoma",
+"on": 1
+},
+{
+"id": "PA0105",
+"n": "",
+"dx": "endometrioid adenocarcinoma; 61F; uterus",
+"pdx": "",
+"on": 1
+},
+{
+"id": "PA0106",
+"n": "",
+"dx": "tubal pregnancy; 35F; fallopian tube",
+"pdx": "",
+"on": 1
+},
+{
+"id": "PA0107",
+"n": "",
+"dx": "mature cystic teratoma; 21F; ovary",
+"pdx": "",
+"on": 1
+},
+{
+"id": "PA0108",
+"n": "89",
+"dx": "endometriosis; 37F; ovary",
+"pdx": "endometriosis",
+"on": 1
+},
+{
+"id": "PA0109",
+"n": "",
+"dx": "adult granulosa cell tumor; 68F; Ovary",
+"pdx": "",
+"on": 1
+},
+{
+"id": "PA0110",
+"n": "91",
+"dx": "high grade serous carcinoma (serous adenocarcinoma); 49F; right ovary",
+"pdx": "high grade serous carcinoma (serous adenocarcinoma)",
+"on": 1
+},
+{
+"id": "PA0111",
+"n": "",
+"dx": "dysgerminoma; 32F; ovary",
+"pdx": "",
+"on": 1
+},
+{
+"id": "PA0112",
+"n": "",
+"dx": "yolk sac tumor; 5F; ovary",
+"pdx": "",
+"on": 1
+},
+{
+"id": "PA0113",
+"n": "",
+"dx": "yolk sac tumor; 5F; ovary",
+"pdx": "",
+"on": 1
+},
+{
+"id": "PA0114",
+"n": "94",
+"dx": "mucinous cystadenoma; 52F; left ovary",
+"pdx": "mucinous cystadenoma",
+"on": 1
+},
+{
+"id": "PA0115",
+"n": "95",
+"dx": "clear cell carcinoma; 51F; Ovary",
+"pdx": "clear cell carcinoma",
+"on": 1
+},
+{
+"id": "PA0116",
+"n": "",
+"dx": "invasive hydatidiform mole (invasive mole); 48F; uterus",
+"pdx": "",
+"on": 1
+},
+{
+"id": "PA0117",
+"n": "97",
+"dx": "(1) choriocarcinoma; (2) adenomyosis; 38F; uterine corpus",
+"pdx": "choriocarcinoma; adenomyosis",
+"on": 1
+},
+{
+"id": "PA0118",
+"n": "",
+"dx": "complete hydatidiform mole; 23F; uterus",
+"pdx": "",
+"on": 1
+},
+{
+"id": "PA0119",
+"n": "98",
+"dx": "complete hydatidiform mole; 45F; uterus",
+"pdx": "complete hydatidiform mole",
+"on": 1
+},
+{
+"id": "PA0120",
+"n": "",
+"dx": "invasive lobular carcinoma; 48F; breast",
+"pdx": "",
+"on": 1
+},
+{
+"id": "PA0121",
+"n": "100",
+"dx": "Paget's disease; 56F; nipple",
+"pdx": "Paget's disease",
+"on": 1
+},
+{
+"id": "PA0122",
+"n": "",
+"dx": "fibroadenoma; 27F; breast",
+"pdx": "",
+"on": 1
+},
+{
+"id": "PA0123",
+"n": "",
+"dx": "(1) invasive carcinoma of no special type; (2) ductal carcinoma in situ, high grade; 49F; breast",
+"pdx": "",
+"on": 1
+},
+{
+"id": "PA0124",
+"n": "",
+"dx": "(1) invasive carcinoma of no special type; (2) ductal carcinoma in situ, low grade; 53F; breast",
+"pdx": "",
+"on": 1
+},
+{
+"id": "PA0125",
+"n": "",
+"dx": "fibrocystic change; 47F; breast",
+"pdx": "",
+"on": 1
+},
+{
+"id": "PA0126",
+"n": "104",
+"dx": "nodular hyperplasia (nodular goiter); 43F; thyroid",
+"pdx": "nodular hyperplasia (nodular goiter)",
+"on": 1
+},
+{
+"id": "PA0127",
+"n": "",
+"dx": "papillary thyroid carcinoma; 18F; thyroid gland",
+"pdx": "",
+"on": 1
+},
+{
+"id": "PA0128",
+"n": "106",
+"dx": "Hashimoto's thyroiditis; 67F; thyroid",
+"pdx": "Hashimoto's thyroiditis",
+"on": 1
+},
+{
+"id": "PA0129",
+"n": "",
+"dx": "Hashimoto's thyroiditis; 26F; thyroid gland",
+"pdx": "",
+"on": 1
+},
+{
+"id": "PA0130",
+"n": "",
+"dx": "parathyroid adenoma; 74M; parathyroid",
+"pdx": "",
+"on": 1
+},
+{
+"id": "PA0131",
+"n": "",
+"dx": "neuroblastoma; 5mF; adrenal gland",
+"pdx": "",
+"on": 1
+},
+{
+"id": "PA0132",
+"n": "108",
+"dx": "pheochromocytoma; 26M; left adrenal gland",
+"pdx": "pheochromocytoma",
+"on": 1
+},
+{
+"id": "PA0133",
+"n": "109",
+"dx": "adrenocortical adenoma; 51F; left adrenal gland",
+"pdx": "adrenocortical adenoma",
+"on": 1
+},
+{
+"id": "PA0134",
+"n": "110",
+"dx": "pituitary adenoma; 71M; suprasella",
+"pdx": "pituitary adenoma",
+"on": 1
+},
+{
+"id": "PA0135",
+"n": "111",
+"dx": "adamantinomatous craniopharyngioma; 30F; suprasella (recurrent in third ventricle)",
+"pdx": "adamantinomatous craniopharyngioma",
+"on": 1
+},
+{
+"id": "PA0136",
+"n": "112",
+"dx": "erythema multiforme; 32M; lower leg",
+"pdx": "erythema multiforme",
+"on": 1
+},
+{
+"id": "PA0137",
+"n": "113",
+"dx": "verruca vulgaris; 28M; right index finger",
+"pdx": "verruca vulgaris",
+"on": 1
+},
+{
+"id": "PA0138",
+"n": "114",
+"dx": "lobular capillary hemangioma (pyogenic granuloma); 26F; scalp",
+"pdx": "lobular capillary hemangioma (pyogenic granuloma)",
+"on": 1
+},
+{
+"id": "PA0139",
+"n": "",
+"dx": "bullous pemphigoid; 91F; ankle",
+"pdx": "",
+"on": 1
+},
+{
+"id": "PA0140",
+"n": "",
+"dx": "psoriasis; 36M; forearm",
+"pdx": "",
+"on": 1
+},
+{
+"id": "PA0141",
+"n": "",
+"dx": "molluscum contagiosum; 43M; shin",
+"pdx": "",
+"on": 1
+},
+{
+"id": "PA0142",
+"n": "",
+"dx": "basal cell carcinoma; 83M; lip",
+"pdx": "",
+"on": 1
+},
+{
+"id": "PA0143",
+"n": "119",
+"dx": "suture granuloma; 38F; lower abdomen",
+"pdx": "suture granuloma",
+"on": 1
+},
+{
+"id": "PA0144",
+"n": "120",
+"dx": "intradermal nevus; 15F; scalp",
+"pdx": "intradermal nevus",
+"on": 1
+},
+{
+"id": "PA0145",
+"n": "122",
+"dx": "osteopetrosis; 47M; femur head",
+"pdx": "osteopetrosis",
+"on": 1
+},
+{
+"id": "PA0146",
+"n": "",
+"dx": "osteosarcoma; 14M; humerus",
+"pdx": "",
+"on": 1
+},
+{
+"id": "PA0147",
+"n": "",
+"dx": "chondrosarcoma; 34M; finger",
+"pdx": "",
+"on": 1
+},
+{
+"id": "PA0148",
+"n": "",
+"dx": "osteochondroma; 10M; femur",
+"pdx": "",
+"on": 1
+},
+{
+"id": "PA0149",
+"n": "125",
+"dx": "giant cell tumor of bone; 43F; tibia",
+"pdx": "giant cell tumor of bone",
+"on": 1
+},
+{
+"id": "PA0150",
+"n": "",
+"dx": "enchondroma; 38F; Phalanx of second toe",
+"pdx": "",
+"on": 1
+},
+{
+"id": "PA0151",
+"n": "",
+"dx": "fibrous dysplasia; 39F; Femur",
+"pdx": "",
+"on": 1
+},
+{
+"id": "PA0152",
+"n": "128",
+"dx": "tenosynovial giant cell tumor, diffuse type (pigmented villonodular synovitis); 57F; knee",
+"pdx": "tenosynovial giant cell tumor, diffuse type (pigmented villonodular synovitis)",
+"on": 1
+},
+{
+"id": "PA0153",
+"n": "129",
+"dx": "gouty tophi; 69M; knee",
+"pdx": "gouty tophi",
+"on": 1
+},
+{
+"id": "PA0154",
+"n": "130",
+"dx": "desmoid-type fibromatosis (desmoid tumor); 35F; abdominal wall",
+"pdx": "desmoid-type fibromatosis (desmoid tumor)",
+"on": 1
+},
+{
+"id": "PA0155",
+"n": "",
+"dx": "myxoid liposarcoma; 57M; thigh",
+"pdx": "",
+"on": 1
+},
+{
+"id": "PA0156",
+"n": "",
+"dx": "lymphangioma; 7mF; lower leg",
+"pdx": "",
+"on": 1
+},
+{
+"id": "PA0157",
+"n": "",
+"dx": "synovial sarcoma; 37M; foot",
+"pdx": "",
+"on": 1
+},
+{
+"id": "PA0158",
+"n": "135",
+"dx": "schwannoma; 52F; near T-level vertebra",
+"pdx": "schwannoma",
+"on": 1
+},
+{
+"id": "PA0159",
+"n": "136",
+"dx": "oligodendroglioma; 46F; frontal lobe of brain",
+"pdx": "oligodendroglioma",
+"on": 1
+},
+{
+"id": "PA0160",
+"n": "",
+"dx": "glioblastoma; 56M; Right posterior frontal and parietal lobe",
+"pdx": "",
+"on": 1
+},
+{
+"id": "PA0161",
+"n": "",
+"dx": "normal cerebrum; 78F; temporal lobe",
+"pdx": "",
+"on": 1
+},
+{
+"id": "PA0162",
+"n": "138",
+"dx": "encephalomalacia; ??; brain",
+"pdx": "encephalomalacia",
+"on": 1
+},
+{
+"id": "PA0163",
+"n": "",
+"dx": "pilocytic astrocytoma; 24F; cerebellum",
+"pdx": "",
+"on": 1
+},
+{
+"id": "PA0164",
+"n": "140",
+"dx": "myxopapillary ependymoma; 28M; spinal cord, vertebra level L2-4",
+"pdx": "myxopapillary ependymoma",
+"on": 1
+},
+{
+"id": "PA0165",
+"n": "",
+"dx": "meningioma; 81F; meninx",
+"pdx": "",
+"on": 1
+},
+{
+"id": "PA0166",
+"n": "",
+"dx": "transitional meningioma; 54M; meninx",
+"pdx": "",
+"on": 1
+},
+{
+"id": "PA0167",
+"n": "",
+"dx": "retinoblastoma; 5F; eye",
+"pdx": "",
+"on": 1
+},
+{
+"id": "PA0168",
+"n": "",
+"dx": "retinoblastoma; 3F; eye",
+"pdx": "",
+"on": 1
+},
+{
+"id": "PA0169",
+"n": "1",
+"dx": "atherosclerosis; 57M; heart, coronary artery",
+"pdx": "atherosclerosis",
+"on": 1
+},
+{
+"id": "PA0170",
+"n": "",
+"dx": "atherosclerotic plaque (atheroma); 68M; descending aorta",
+"pdx": "",
+"on": 1
+},
+{
+"id": "PA0171",
+"n": "3",
+"dx": "amyloidosis; 60M; heart",
+"pdx": "amyloidosis",
+"on": 1
+},
+{
+"id": "PA0172",
+"n": "",
+"dx": "blue; 60M; heart",
+"pdx": "",
+"on": 1
+},
+{
+"id": "PA0173",
+"n": "",
+"dx": "apple green birefrigency under polarized light; 60M; heart",
+"pdx": "",
+"on": 1
+},
+{
+"id": "PA0174",
+"n": "19",
+"dx": "adenocarcinoma; 58M; right lower lung",
+"pdx": "adenocarcinoma",
+"on": 1
+},
+{
+"id": "PA0175",
+"n": "",
+"dx": "cryptococcosis; 40F; lung",
+"pdx": "",
+"on": 1
+},
+{
+"id": "PA0176",
+"n": "",
+"dx": "GMS(+); 40F; lung",
+"pdx": "",
+"on": 1
+},
+{
+"id": "PA0177",
+"n": "",
+"dx": "mucin(+); 40F; lung",
+"pdx": "",
+"on": 1
+},
+{
+"id": "PA0178",
+"n": "",
+"dx": "(1)CMV enteritis; (2)ulcer; 1mM; small intestine",
+"pdx": "",
+"on": 1
+},
+{
+"id": "PA0179",
+"n": "",
+"dx": "adenocarcinoma; 50M; rectum",
+"pdx": "",
+"on": 1
+},
+{
+"id": "PA0180",
+"n": "",
+"dx": "chronic ulcerative colitis; 62M; descending colon",
+"pdx": "",
+"on": 1
+},
+{
+"id": "PA0181",
+"n": "",
+"dx": "primary biliary cirrhosis; 36F; liver",
+"pdx": "",
+"on": 1
+},
+{
+"id": "PA0182",
+"n": "46",
+"dx": "massive necrosis; 35F; liver",
+"pdx": "massive necrosis",
+"on": 1
+},
+{
+"id": "PA0183",
+"n": "",
+"dx": "chronic hepatitis b; 60M; liver",
+"pdx": "",
+"on": 1
+},
+{
+"id": "PA0184",
+"n": "60",
+"dx": "cholangiocarcinoma; 74M; liver",
+"pdx": "cholangiocarcinoma",
+"on": 1
+},
+{
+"id": "PA0185",
+"n": "",
+"dx": "CK7(+); 74M; liver",
+"pdx": "",
+"on": 1
+},
+{
+"id": "PA0186",
+"n": "",
+"dx": "gallbladder stone; 62F; gall bladder",
+"pdx": "",
+"on": 1
+},
+{
+"id": "PA0187",
+"n": "70",
+"dx": "multicystic renal dysplasia; 4mF; kidney",
+"pdx": "multicystic renal dysplasia",
+"on": 1
+},
+{
+"id": "PA0188",
+"n": "79",
+"dx": "teratoma; 23M; testis",
+"pdx": "teratoma",
+"on": 1
+},
+{
+"id": "PA0189",
+"n": "178",
+"dx": "seminoma; 31M; testis",
+"pdx": "seminoma",
+"on": 1
+},
+{
+"id": "PA0190",
+"n": "",
+"dx": "condyloma acuminatum; 29F; vulva",
+"pdx": "",
+"on": 1
+},
+{
+"id": "PA0191",
+"n": "",
+"dx": "invasive carcinoma of no special type, low grade; 50F; breast",
+"pdx": "",
+"on": 1
+},
+{
+"id": "PA0192",
+"n": "",
+"dx": "Paget's disease; 44F; nipple",
+"pdx": "",
+"on": 1
+},
+{
+"id": "PA0193",
+"n": "121",
+"dx": "seborrhiec keratosis; 55F; trunk",
+"pdx": "seborrheic keratosis",
+"on": 1
+},
+{
+"id": "PA0194",
+"n": "",
+"dx": "chondrosarcoma, dedifferentiated; ??; ?",
+"pdx": "",
+"on": 1
+},
+{
+"id": "PA0195",
+"n": "134",
+"dx": "neurofibroma, plexiform and diffuse; 12M; cheek",
+"pdx": "neurofibroma, plexiform and diffuse",
+"on": 1
+},
+{
+"id": "PA0196",
+"n": "",
+"dx": "retinoblastoma; 2mF; eye",
+"pdx": "",
+"on": 1
+},
+{
+"id": "PA0197",
+"n": "143",
+"dx": "acute rheumatic pancarditis; ??; heart",
+"pdx": "acute rheumatic pancarditis",
+"on": 1
+},
+{
+"id": "PA0198",
+"n": "144",
+"dx": "caseating granulomatous inflammation; 57M; left lower lung",
+"pdx": "caseating granulomatous inflammation",
+"on": 1
+},
+{
+"id": "PA0199",
+"n": "",
+"dx": "paragonimiasis; ??; lung",
+"pdx": "",
+"on": 1
+},
+{
+"id": "PA0200",
+"n": "",
+"dx": "hyaline membrane disease; GA34+4F; lung",
+"pdx": "",
+"on": 1
+},
+{
+"id": "PA0201",
+"n": "147",
+"dx": "candidiasis; ??; esophagus",
+"pdx": "candidiasis",
+"on": 1
+},
+{
+"id": "PA0202",
+"n": "148",
+"dx": "chronic ulcer; 37M; stomach",
+"pdx": "chronic ulcer",
+"on": 1
+},
+{
+"id": "PA0203",
+"n": "",
+"dx": "amebiasis; 52M; cecum",
+"pdx": "",
+"on": 1
+},
+{
+"id": "PA0204",
+"n": "",
+"dx": "amebiasis; 52M; cecum",
+"pdx": "",
+"on": 1
+},
+{
+"id": "PA0205",
+"n": "149",
+"dx": "schistosomiasis and trichuirasis; ??; appendix",
+"pdx": "schistosomiasis and trichuriasis",
+"on": 1
+},
+{
+"id": "PA0206",
+"n": "150",
+"dx": "amebiasis; ??; appendix",
+"pdx": "amebiasis",
+"on": 1
+},
+{
+"id": "PA0207",
+"n": "151",
+"dx": "familial adenomatous polyposis; 20F; large intestine",
+"pdx": "familial adenomatous polyposis",
+"on": 1
+},
+{
+"id": "PA0208",
+"n": "152",
+"dx": "melanosis coli; 49F; colon",
+"pdx": "melanosis coli",
+"on": 1
+},
+{
+"id": "PA0209",
+"n": "",
+"dx": "cytomegaloviral colitis; 80M; transverse colon",
+"pdx": "",
+"on": 1
+},
+{
+"id": "PA0210",
+"n": "",
+"dx": "cytomegaloviral colitis; 80M; transverse colon",
+"pdx": "",
+"on": 1
+},
+{
+"id": "PA0211",
+"n": "153",
+"dx": "hemosiderosis; 57F; liver",
+"pdx": "hemosiderosis",
+"on": 1
+},
+{
+"id": "PA0212",
+"n": "154",
+"dx": "glycogen storage disease; 29F; liver",
+"pdx": "glycogen storage disease",
+"on": 1
+},
+{
+"id": "PA0213",
+"n": "155",
+"dx": "schistosomiasis; ??; liver",
+"pdx": "schistosomiasis",
+"on": 1
+},
+{
+"id": "PA0214",
+"n": "156",
+"dx": "obstructive cholestasis; ??; liver",
+"pdx": "obstructive cholestasis",
+"on": 1
+},
+{
+"id": "PA0215",
+"n": "157",
+"dx": "cardiac sclerosis; ??; liver",
+"pdx": "cardiac sclerosis",
+"on": 1
+},
+{
+"id": "PA0216",
+"n": "158",
+"dx": "malaria pigment; ??; liver",
+"pdx": "malaria pigment",
+"on": 1
+},
+{
+"id": "PA0217",
+"n": "",
+"dx": "alcoholic hepatitis; ??; liver",
+"pdx": "",
+"on": 1
+},
+{
+"id": "PA0218",
+"n": "160",
+"dx": "cytomegaloviral (CMV) nephritis; ??; kidney",
+"pdx": "cytomegaloviral (CMV) nephritis",
+"on": 1
+},
+{
+"id": "PA0219",
+"n": "",
+"dx": "invasive urothelial carcinoma; 83M; urinary bladder",
+"pdx": "",
+"on": 1
+},
+{
+"id": "PA0220",
+"n": "162",
+"dx": "nodular hyperplasia; 71M; prostate",
+"pdx": "nodular hyperplasia",
+"on": 1
+},
+{
+"id": "PA0221",
+"n": "163",
+"dx": "immature teratoma, grade III; 11F; ovary",
+"pdx": "immature teratoma, grade III",
+"on": 1
+},
+{
+"id": "PA0222",
+"n": "",
+"dx": "endometriosis; 30F; ovary",
+"pdx": "",
+"on": 1
+},
+{
+"id": "PA0223",
+"n": "164",
+"dx": "subacute granulomatous thyroiditis; 38F; thyroid gland",
+"pdx": "subacute granulomatous thyroiditis",
+"on": 1
+},
+{
+"id": "PA0224",
+"n": "165",
+"dx": "medullary carcinoma; 52F; thyroid gland",
+"pdx": "medullary carcinoma",
+"on": 1
+},
+{
+"id": "PA0225",
+"n": "166",
+"dx": "diffuse hyperplasia (Graves' disease); 29F; thyroid gland",
+"pdx": "diffuse hyperplasia (Graves' disease)",
+"on": 1
+},
+{
+"id": "PA0226",
+"n": "167",
+"dx": "embryonal rhabdomyosarcoma; ??; soft tissue",
+"pdx": "embryonal rhabdomyosarcoma",
+"on": 1
+},
+{
+"id": "PA0227",
+"n": "",
+"dx": "medulloblastoma, nodular/desmoplastic type; 10M; roof of fourth ventricle",
+"pdx": "",
+"on": 1
+},
+{
+"id": "PA0228",
+"n": "",
+"dx": "highlight nodular/desmoplastic pattern; 10M; roof of fourth ventricle",
+"pdx": "",
+"on": 1
+},
+{
+"id": "PA0229",
+"n": "",
+"dx": "choroid plexus papilloma; 47M; Foramen of Luschka",
+"pdx": "",
+"on": 1
+},
+{
+"id": "PA0230",
+"n": "169",
+"dx": "choroid plexus papilloma; 51F; fourth ventricle",
+"pdx": "choroid plexus papilloma",
+"on": 1
+},
+{
+"id": "PA0231",
+"n": "170",
+"dx": "germinoma; 25F; sellar region",
+"pdx": "germinoma",
+"on": 1
+},
+{
+"id": "PA0232",
+"n": "171",
+"dx": "ependymoma; 46F; spinal cord, vertebra level T3-6",
+"pdx": "ependymoma",
+"on": 1
+},
+{
+"id": "PA0233",
+"n": "",
+"dx": "classical Hodgkin lymphoma; 45M; lymph node",
+"pdx": "",
+"on": 1
+},
+{
+"id": "PA0234",
+"n": "",
+"dx": "positive on Reed-Sternberg cells; 45M; lymph node",
+"pdx": "",
+"on": 1
+},
+{
+"id": "PA0235",
+"n": "176",
+"dx": "diffuse large B cell lymphoma; 62F; tonsil",
+"pdx": "diffuse large B cell lymphoma",
+"on": 1
+},
+{
+"id": "PA0236",
+"n": "",
+"dx": "positive on tumor cells; 62F; tonsil",
+"pdx": "",
+"on": 1
+},
+{
+"id": "PA0237",
+"n": "177",
+"dx": "Burkitt's lymphoma; 12F; fallopian tube",
+"pdx": "Burkitt's lymphoma",
+"on": 1
+},
+{
+"id": "PA0238",
+"n": "179",
+"dx": "lupus nephritis, class IV; ??; kidney",
+"pdx": "lupus nephritis, class IV",
+"on": 1
+},
+{
+"id": "PA0239",
+"n": "180",
+"dx": "diabetic glomerulosclerosis; ??; kidney",
+"pdx": "diabetic glomerulosclerosis",
+"on": 1
+},
+{
+"id": "PA0240",
+"n": "181",
+"dx": "malignant nephrosclerosis; ??; kidney",
+"pdx": "malignant nephrosclerosis",
+"on": 1
+},
+{
+"id": "PA0241",
+"n": "182",
+"dx": "lupus nephritis, class IV, with crescent; ??; kidney",
+"pdx": "lupus nephritis, class IV, with crescent",
+"on": 1
+},
+{
+"id": "PA0242",
+"n": "183",
+"dx": "focal segmental glomerulonephritis; ??; kidney",
+"pdx": "focal segmental glomerulosclerosis",
+"on": 1
+},
+{
+"id": "PA0243",
+"n": "185",
+"dx": "cryptococcosis; 53M; lung",
+"pdx": "cryptococcosis",
+"on": 1
+},
+{
+"id": "PA0244",
+"n": "",
+"dx": "cryptococcosis; 53M; lung",
+"pdx": "",
+"on": 1
+},
+{
+"id": "PA0245",
+"n": "186",
+"dx": "arteriovenous malformation; 17M; left frontal lobe",
+"pdx": "arteriovenous malformation",
+"on": 1
+},
+{
+"id": "PA0246",
+"n": "184",
+"dx": "Acute glomerulonephritis",
+"pdx": "acute glomerulonephritis",
+"on": 1
+},
+{
+"id": "PA0247",
+"n": "142",
+"dx": "Retinoblastoma",
+"pdx": "retinoblastoma",
+"on": 1
+},
+{
+"id": "PA0248",
+"n": "187",
+"dx": "IgG4-related autoimmune pancreatitis",
+"pdx": "IgG4-related autoimmune pancreatitis",
+"on": 1
+},
+{
+"id": "PA0249",
+"n": "38",
+"dx": "Adenocarcinoma",
+"pdx": "adenocarcinoma",
+"on": 1
+},
+{
+"id": "PA0250",
+"n": "",
+"dx": "Ulcerative colitis",
+"pdx": "",
+"on": 1
+},
+{
+"id": "PA0251",
+"n": "39",
+"dx": "Actinomycosis",
+"pdx": "actinomycosis",
+"on": 1
+},
+{
+"id": "PA0252",
+"n": "",
+"dx": "Yolk sac tumor",
+"pdx": "",
+"on": 1
+},
+{
+"id": "PA0253",
+"n": "87",
+"dx": "Tubal pregnancy",
+"pdx": "tubal pregnancy",
+"on": 1
+},
+{
+"id": "PA0254",
+"n": "",
+"dx": "Lichen planus",
+"pdx": "",
+"on": 1
+},
+{
+"id": "PA0255",
+"n": "80",
+"dx": "Condyloma accuminatum",
+"pdx": "condyloma acuminatum",
+"on": 1
+},
+{
+"id": "PA0256",
+"n": "",
+"dx": "Dedifferentiated liposarcoma",
+"pdx": "",
+"on": 1
+},
+{
+"id": "PA0257",
+"n": "131",
+"dx": "Myxoid liposarcoma",
+"pdx": "myxoid liposarcoma",
+"on": 1
+},
+{
+"id": "PA0258",
+"n": "175",
+"dx": "Hodgkin's disease",
+"pdx": "Hodgkin's lymphoma",
+"on": 1
+},
+{
+"id": "PA0259",
+"n": "105",
+"dx": "Papillary carcinoma",
+"pdx": "papillary thyroid carcinoma",
+"on": 1
+},
+{
+"id": "PA0260",
+"n": "190",
+"dx": "Non-keratinizing carcinoma, undifferentiated",
+"pdx": "non-keratinizing carcinoma, undifferentiated",
+"on": 1
+},
+{
+"id": "PA0261",
+"n": "",
+"dx": "Pneumocystis jivovecii pneumonia",
+"pdx": "",
+"on": 1
+},
+{
+"id": "PA0262",
+"n": "",
+"dx": "Pneumocystis jivovecii pneumonia",
+"pdx": "",
+"on": 1
+},
+{
+"id": "PA0263",
+"n": "192",
+"dx": "Pneumoconiosis",
+"pdx": "pneumoconiosis",
+"on": 1
+},
+{
+"id": "PA0264",
+"n": "193",
+"dx": "allergic rhinitis",
+"pdx": "allergic rhinitis",
+"on": 1
+},
+{
+"id": "PA0265",
+"n": "45",
+"dx": "primary biliary cholangitis",
+"pdx": "primary biliary cirrhosis",
+"on": 1
+},
+{
+"id": "PA0266",
+"n": "194",
+"dx": "Cavernous hemangioma",
+"pdx": "cavernous hemangioma (right side of face)",
+"on": 1
+},
+{
+"id": "PA0267",
+"n": "101",
+"dx": "Fibroadenoma",
+"pdx": "fibroadenoma",
+"on": 1
+},
+{
+"id": "PA0268",
+"n": "",
+"dx": "Fibrocystic change",
+"pdx": "",
+"on": 1
+},
+{
+"id": "PA0269",
+"n": "195",
+"dx": "cellular rejection",
+"pdx": "cellular rejection",
+"on": 1
+},
+{
+"id": "PA0270",
+"n": "37",
+"dx": "acute suppurative appendicitis",
+"pdx": "acute suppurative appendicitis",
+"on": 1
+},
+{
+"id": "PA0271",
+"n": "117",
+"dx": "Molluscum contagiosum,",
+"pdx": "molluscum contagiosum",
+"on": 1
+},
+{
+"id": "PA0272",
+"n": "115",
+"dx": "bullous pemphigoid",
+"pdx": "bullous pemphigoid",
+"on": 1
+},
+{
+"id": "PA0273",
+"n": "28",
+"dx": "Ameloblastoma",
+"pdx": "ameloblastoma",
+"on": 1
+},
+{
+"id": "PA0274",
+"n": "",
+"dx": "Acute lymphoblastic leukemia",
+"pdx": "",
+"on": 1
+},
+{
+"id": "PA0275",
+"n": "12",
+"dx": "Normal bone marrow",
+"pdx": "normal bone marrow",
+"on": 1
+},
+{
+"id": "PA0276",
+"n": "",
+"dx": "Plasma cell myeloma",
+"pdx": "",
+"on": 1
+},
+{
+"id": "PA0277",
+"n": "14",
+"dx": "Acute myeloid leukemia",
+"pdx": "acute myeloid leukemia",
+"on": 1
+},
+{
+"id": "PA0278",
+"n": "",
+"dx": "chronic myeloid leukemia",
+"pdx": "",
+"on": 1
+},
+{
+"id": "PA0279",
+"n": "33",
+"dx": "Signet-ring cell carcinoma",
+"pdx": "adenocarcinoma, signet ring cell type (signet ring cell carcinoma)",
+"on": 1
+},
+{
+"id": "PA0280",
+"n": "",
+"dx": "Crohn disease",
+"pdx": "",
+"on": 1
+},
+{
+"id": "PA0281",
+"n": "42",
+"dx": "Acute hepatitis",
+"pdx": "acute hepatitis",
+"on": 1
+},
+{
+"id": "PA0282",
+"n": "47",
+"dx": "Submassive necrosis",
+"pdx": "submassive necrosis",
+"on": 1
+},
+{
+"id": "PA0283",
+"n": "",
+"dx": "Primary sclerosing cholangitis",
+"pdx": "",
+"on": 1
+},
+{
+"id": "PA0284",
+"n": "",
+"dx": "Chronic rejection",
+"pdx": "",
+"on": 1
+},
+{
+"id": "PA0285",
+"n": "88",
+"dx": "mature cystic teratoma",
+"pdx": "mature cystic teratoma",
+"on": 1
+},
+{
+"id": "PA0286",
+"n": "159",
+"dx": "steatohepatitis",
+"pdx": "steatohepatitis",
+"on": 1
+},
+{
+"id": "PA0287",
+"n": "",
+"dx": "aspergillosis",
+"pdx": "",
+"on": 1
+},
+{
+"id": "PA0288",
+"n": "",
+"dx": "aspergillosis (GMS)",
+"pdx": "",
+"on": 1
+},
+{
+"id": "PA0289",
+"n": "68",
+"dx": "Nephroblastoma (Wilms' tumor)",
+"pdx": "nephroblastoma",
+"on": 1
+},
+{
+"id": "PA0290",
+"n": "103",
+"dx": "Fibrocystic change",
+"pdx": "fibrocystic change",
+"on": 1
+},
+{
+"id": "PA0291",
+"n": "78",
+"dx": "Prostate adenocarcinoma",
+"pdx": "prostate adenocarcinoma",
+"on": 1
+},
+{
+"id": "PA0292",
+"n": "",
+"dx": "Breast invasive lobular carcinoma",
+"pdx": "",
+"on": 1
+},
+{
+"id": "PA0293",
+"n": "173",
+"dx": "Parathyroid adenoma",
+"pdx": "parathyroid adenoma",
+"on": 1
+},
+{
+"id": "PA0294",
+"n": "116",
+"dx": "Psoriasis",
+"pdx": "psoriasis",
+"on": 1
+},
+{
+"id": "PA0295",
+"n": "118",
+"dx": "Basal cell carcinoma",
+"pdx": "basal cell carcinoma",
+"on": 1
+},
+{
+"id": "PA0296",
+"n": "124",
+"dx": "Osteochondroma",
+"pdx": "osteochondroma",
+"on": 1
+},
+{
+"id": "PA0297",
+"n": "126",
+"dx": "Enchondroma",
+"pdx": "enchondroma",
+"on": 1
+},
+{
+"id": "PA0298",
+"n": "127",
+"dx": "Fibrous dysplasia",
+"pdx": "fibrous dysplasia",
+"on": 1
+},
+{
+"id": "PA0299",
+"n": "137",
+"dx": "Glioblastoma",
+"pdx": "glioblastoma",
+"on": 1
+},
+{
+"id": "PA0300",
+"n": "141",
+"dx": "Meningioma",
+"pdx": "meningioma",
+"on": 1
+},
+{
+"id": "PA0301",
+"n": "168",
+"dx": "Medulloblastoma",
+"pdx": "medulloblastoma",
+"on": 1
+},
+{
+"id": "PA0302",
+"n": "191",
+"dx": "Pneumocystis jivovecii pneumonia",
+"pdx": "pneumocystis jirovecii pneumonia",
+"on": 1
+},
+{
+"id": "PA0303",
+"n": "11",
+"dx": "B-Acute lymphoblastic leukemia",
+"pdx": "B-acute lymphoblastic leukemia",
+"on": 1
+},
+{
+"id": "PA0304",
+"n": "",
+"dx": "Plasma cell myeloma",
+"pdx": "",
+"on": 1
+},
+{
+"id": "PA0305",
+"n": "107",
+"dx": "Neuroblastoma, adrenal gland, 1mM",
+"pdx": "neuroblastoma, adrenal gland",
+"on": 1
+},
+{
+"id": "PA0306",
+"n": "4",
+"dx": "Infective endocarditis, aortic valve, 49M",
+"pdx": "infective endocarditis, aortic valve",
+"on": 1
+},
+{
+"id": "PA0307",
+"n": "20",
+"dx": "Small cell carcinoma, lung, 76F",
+"pdx": "small cell carcinoma, lung",
+"on": 1
+},
+{
+"id": "PA0308",
+"n": "23",
+"dx": "Invasive mucinous adenocarcinoma, lung, 72F",
+"pdx": "invasive mucinous adenocarcinoma",
+"on": 1
+},
+{
+"id": "PA0309",
+"n": "34",
+"dx": "Adenocarcinoma, intestinal type, stomach, 70M",
+"pdx": "adenocarcinoma, intestinal type, stomach",
+"on": 1
+},
+{
+"id": "PA0310",
+"n": "",
+"dx": "Ulcerative colitis, colon, 40F",
+"pdx": "",
+"on": 1
+},
+{
+"id": "PA0311",
+"n": "48",
+"dx": "Biliary atresia, liver, 8mF",
+"pdx": "biliary atresia, liver",
+"on": 1
+},
+{
+"id": "PA0312",
+"n": "63",
+"dx": "Chronic panbcreatitis, pancreas, 49M",
+"pdx": "chronic pancreatitis, pancreas",
+"on": 1
+},
+{
+"id": "PA0313",
+"n": "196",
+"dx": "necrotizing enterocolitis, colon, 0M",
+"pdx": "necrotizing enterocolitis, colon",
+"on": 1
+},
+{
+"id": "PA0314",
+"n": "197",
+"dx": "Hemangioma, skin, 35M",
+"pdx": "hemangioma, skin",
+"on": 1
+},
+{
+"id": "PA0315",
+"n": "",
+"dx": "High-grade squamous intraepithelial lesion, cervix, 44F",
+"pdx": "",
+"on": 1
+},
+{
+"id": "PA0316",
+"n": "198",
+"dx": "Cryptococcosis, lung, 64M",
+"pdx": "cryptococcosis, lung",
+"on": 1
+},
+{
+"id": "PA0317",
+"n": "7",
+"dx": "Reactive lymphoid hyperplasia (follicular hyperplasia), lymph node, 48F",
+"pdx": "Reactive lymphoid hyperplasia (follicular hyperplasia), lymph node",
+"on": 1
+},
+{
+"id": "PA0318",
+"n": "",
+"dx": "Adult granulosa cell tumor, ovary ,48F",
+"pdx": "",
+"on": 1
+},
+{
+"id": "PA0319",
+"n": "93",
+"dx": "Yolk sac tumor, ovary, 33F",
+"pdx": "yolk sac tumor, ovary",
+"on": 1
+},
+{
+"id": "PA0320",
+"n": "123",
+"dx": "Osteosarcoma, bone (femur), 13M",
+"pdx": "osteosarcoma, bone (femur)",
+"on": 1
+},
+{
+"id": "PA0321",
+"n": "133",
+"dx": "Synovial sarcoma, soft tissue (chest wall), 31M",
+"pdx": "synovial sarcoma, soft tissue (chest wall)",
+"on": 1
+},
+{
+"id": "PA0322",
+"n": "139",
+"dx": "Pilocytic astrocytoma, cerebellum, 5F",
+"pdx": "pilocytic astrocytoma, cerebellum",
+"on": 1
+},
+{
+"id": "PA0323",
+"n": "",
+"dx": "Chondrosarcoma, bone (pelvic), 58M",
+"pdx": "",
+"on": 1
+},
+{
+"id": "PA0324",
+"n": "189",
+"dx": "Dedifferentiated liposarcoma, soft tissue (retroperitoneum), 48F",
+"pdx": "dedifferentiated liposarcoma, soft tissue (retroperitoneum)",
+"on": 1
+},
+{
+"id": "PA0325",
+"n": "199",
+"dx": "Sertoli-Leydig cell tumor, ovary, 38F",
+"pdx": "Sertoli-Leydig cell tumor, ovary",
+"on": 1
+},
+{
+"id": "PA0326",
+"n": "200",
+"dx": "Osteoarthritis, bone (femur), 73F",
+"pdx": "osteoarthritis, bone (femur)",
+"on": 1
+},
+{
+"id": "PA0327",
+"n": "44",
+"dx": "Dermatofibroma, skin, 48M",
+"pdx": "dermatofibroma, skin",
+"on": 1
+},
+{
+"id": "PA0328",
+"n": "35",
+"dx": "Crohn's disease, large intestine/colon, 26F",
+"pdx": "Crohn's disease",
+"on": 1
+},
+{
+"id": "PA0329",
+"n": "40",
+"dx": "Ulcerative colitis, large intestine/colon, 65M",
+"pdx": "ulcerative colitis, colon",
+"on": 1
+},
+{
+"id": "PA0330",
+"n": "99",
+"dx": "Invasive lobular carcinoma, breast, 74F",
+"pdx": "invasive lobular carcinoma",
+"on": 1
+},
+{
+"id": "PA0331",
+"n": "",
+"dx": "Cholesterolosis, gallbladder, 65M",
+"pdx": "",
+"on": 1
+},
+{
+"id": "PA0332",
+"n": "",
+"dx": "herpes infection, thigh, 85M",
+"pdx": "",
+"on": 1
+},
+{
+"id": "PA0333",
+"n": "52",
+"dx": "Primary sclerosing cholangitis, liver, 34M",
+"pdx": "primary sclerosing cholangitis, liver",
+"on": 1
+},
+{
+"id": "PA0334",
+"n": "50",
+"dx": "Chronic hepatitis, liver, 72M",
+"pdx": "chronic hepatitis, liver",
+"on": 1
+},
+{
+"id": "PA0335",
+"n": "6",
+"dx": "Myocardial infarction, remote, heart, 69M",
+"pdx": "myocardial infarction, remote, heart",
+"on": 1
+},
+{
+"id": "PA0336",
+"n": "132",
+"dx": "Lymphangioma, pericardial soft tissue, 9M",
+"pdx": "lymphangioma, pericardial soft tissue",
+"on": 1
+},
+{
+"id": "PA0337",
+"n": "",
+"dx": "HSIL, CIN2, 45F",
+"pdx": "",
+"on": 1
+},
+{
+"id": "PA0338",
+"n": "96",
+"dx": "HSIL, CIN3, 43F",
+"pdx": "high-grade squamous intraepithelial lesion (HSIL, CIN3), cervix",
+"on": 1
+},
+{
+"id": "PA0339",
+"n": "174",
+"dx": "Chondrosarcoma, rib, 59M",
+"pdx": "chondrosarcoma, rib",
+"on": 1
+},
+{
+"id": "PA0340",
+"n": "2",
+"dx": "Atherosclerosis, artery, 62F",
+"pdx": "atherosclerosis, artery",
+"on": 1
+},
+{
+"id": "PA0341",
+"n": "146",
+"dx": "Hyaline membrane disease",
+"pdx": "hyaline membrane disease",
+"on": 1
+},
+{
+"id": "PA0342",
+"n": "69",
+"dx": "Alcoholic steatohepatitis",
+"pdx": "Alcoholic steatohepatitis",
+"on": 1
+},
+{
+"id": "PA0343",
+"n": "57",
+"dx": "Intraductal papillary mucinous neoplasm(IPMN)",
+"pdx": "Intraductal papillary mucinous neoplasm (IPMN)",
+"on": 1
+},
+{
+"id": "PA0344",
+"n": "82",
+"dx": "Ductal adenocarcinoma",
+"pdx": "Ductal adenocarcinoma",
+"on": 1
+},
+{
+"id": "PA0345",
+"n": "62",
+"dx": "Chronic cholecystitis",
+"pdx": "chronic cholecystitis",
+"on": 1
+},
+{
+"id": "PA0346",
+"n": "92",
+"dx": "Seminoma, testis",
+"pdx": "Seminoma",
+"on": 1
+},
+{
+"id": "PA0347",
+"n": "86",
+"dx": "endometrioid adenocarcinoma, uterine corpus (46F)",
+"pdx": "endometrioid adenocarcinoma",
+"on": 1
+},
+{
+"id": "PA0348",
+"n": "90",
+"dx": "adult granulosa cell tumor, ovary",
+"pdx": "adult granulosa cell tumor, ovary",
+"on": 1
+},
+{
+"id": "PA0250_X",
+"n": "",
+"dx": "(無說明)",
+"pdx": "",
+"on": 1
+},
+{
+"id": "PA0349",
+"n": "13",
+"dx": "",
+"pdx": "plasma cell myeloma",
+"on": 0
+},
+{
+"id": "PA0350",
+"n": "15",
+"dx": "",
+"pdx": "chronic myeloid leukemia",
+"on": 0
+},
+{
+"id": "PA0351",
+"n": "102",
+"dx": "",
+"pdx": "(1) invasive carcinoma of no special type; (2) ductal carcinoma in situ, low grade",
+"on": 0
+},
+{
+"id": "PA0354",
+"n": "145",
+"dx": "",
+"pdx": "herpes virus infection, oral cavity, mouth floor",
+"on": 0
+},
+{
+"id": "PA0352",
+"n": "161",
+"dx": "",
+"pdx": "invasive urothelial carcinoma",
+"on": 0
+},
+{
+"id": "PA0353",
+"n": "188",
+"dx": "",
+"pdx": "lichen planus",
+"on": 0
+}
+]
+}

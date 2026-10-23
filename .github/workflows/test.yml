@@ -22,7 +22,8 @@ jobs:
       - name: Browser tests (Chromium, Firefox, WebKit/iPhone, Android)
         if: always()
         run: |
-          firebase emulators:exec --only firestore,auth --project demo-pd "bash -c 'python3 -m http.server 5055 --directory dist >/dev/null 2>&1 & sleep 1; node test/ui.mjs'" 2>&1 | tail -80
+          cp node_modules/openseadragon/build/openseadragon/openseadragon.min.js test/sample.png test/mock/
+          firebase emulators:exec --only firestore,auth --project demo-pd "bash test/serve-and-run.sh" 2>&1 | tail -120
           test "$(cat ci-out/status.txt)" = PASS
       - name: Publish results to ci-results branch
         if: always()

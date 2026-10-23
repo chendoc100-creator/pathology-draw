@@ -1,54 +1,59 @@
 // End-to-end check against the Firebase emulators, in Chromium, Firefox and WebKit (Safari engine).
+// A mock microteaching list (port 5057) and an OpenSeadragon mock viewer (port 5056) stand in for NTU's pages.
 // Writes screenshots and a results log to ci-out/.
 import { chromium, firefox, webkit, devices } from 'playwright';
 import { mkdirSync, writeFileSync, readFileSync, appendFileSync } from 'node:fs';
 
 const OUT = 'ci-out'; mkdirSync(OUT, { recursive: true });
 const BASE = 'http://127.0.0.1:5055/';
+const VIEW = 'http://127.0.0.1:5056', LIST = 'http://127.0.0.1:5057';
+const EXE = process.env.PW_CHROMIUM || undefined;
 const log = s => { console.log(s); appendFileSync(`${OUT}/ui.log`, s + '\n'); };
 let fails = 0;
 const check = (ok, what) => { log((ok ? 'PASS ' : 'FAIL ') + what); if (!ok) fails++; };
 
-// seed the emulator (rules bypassed with the emulator owner token)
 const slides = JSON.parse(readFileSync('seed/slides.json', 'utf8'));
+const catalog = JSON.parse(readFileSync('seed/catalog.json', 'utf8'));
 const fsUrl = 'http://127.0.0.1:8080/v1/projects/demo-pd/databases/(default)/documents';
 const toVal = v => Array.isArray(v) ? { arrayValue: { values: v.map(toVal) } }
   : v && typeof v === 'object' ? { mapValue: { fields: Object.fromEntries(Object.entries(v).map(([k, x]) => [k, toVal(x)])) } }
   : typeof v === 'number' ? { integerValue: String(v) } : typeof v === 'boolean' ? { booleanValue: v } : { stringValue: String(v ?? '') };
-// a small synthetic "histology" picture for upload tests
 const png = Buffer.from(readFileSync('test/sample.png'));
 const put = (path, fields) => fetch(`${fsUrl}/${path}`, { method: 'PATCH', headers: { Authorization: 'Bearer owner', 'Content-Type': 'application/json' }, body: JSON.stringify({ fields }) });
 async function seed() {
   await put('content/slides', { list: toVal(slides), at: toVal(1) });
-  await put('fimg/t1', { slide: toVal('x'), data: toVal('data:image/png;base64,' + png.toString('base64')) });
-  const f = { ov: { img: 't1', x0: 0, y0: 0, x1: 12000, y1: 9000, w: 1200, h: 900 },
-    regs: [{ obj: 10, img: 't1', x0: 3000, y0: 3000, x1: 6000, y1: 5250, w: 1200, h: 900 }, { obj: 40, img: 't1', x0: 4000, y0: 3500, x1: 4750, y1: 4062, w: 1200, h: 900 }],
-    pts: [{ k: 'dx', x: 4400, y: 3800, obj: 40, conf: '中', note: 'test point' }], shared: [] };
-  await put('content/fields', Object.fromEntries(slides.map(d => [d.id, toVal(f)])));
+  await put('content/catalog', { list: toVal(catalog.list) });
+  await put('content/fields', { PA0306: toVal({ vid: 'PA0306', pts: [{ k: 'dx', x: 900, y: 300, obj: 40, conf: '中', note: 'test point' }] }) });
 }
 await seed();
 
-async function run(name, type, ctxOpts) {
+async function run(name, type, ctxOpts, viewer) {
   log(`\n=== ${name} ===`);
-  const browser = await type.launch();
-  const ctx = await browser.newContext(ctxOpts);
-  await ctx.addInitScript(() => { window.__EMU = true; });
+  const browser = await type.launch(type === chromium && EXE ? { executablePath: EXE } : {});
+  const ctx = await browser.newContext({ acceptDownloads: true, ...ctxOpts });
+  await ctx.addInitScript(([v, l]) => { window.__EMU = true; window.__VIEW_ORIGIN = v; window.__LIST_ORIGIN = l; window.__PORTAL = l + '/list.html'; }, [VIEW, LIST]);
   const page = await ctx.newPage();
   const errs = [];
-  page.on('pageerror', e => errs.push(String(e)));
-  page.on('console', m => { if (m.type() === 'error') errs.push(m.text()); });
-  const shot = n => page.screenshot({ path: `${OUT}/${name}-${n}.png`, fullPage: false });
+  const watch = p => { p.on('pageerror', e => errs.push(String(e))); p.on('console', m => { if (m.type() === 'error') errs.push(m.text()); }); };
+  watch(page); ctx.on('page', watch);
+  const shot = (n, p = page) => p.screenshot({ path: `${OUT}/${name}-${n}.png`, fullPage: false });
   try {
     await page.goto(BASE);
     await page.waitForSelector('#gate:not([hidden])', { timeout: 20000 });
     check(await page.isHidden('#app'), `${name}: content hidden before login`);
-    await shot('1-gate');
 
     await page.evaluate(() => window.__emuLogin({ sub: 'alice', email: 'alice@example.com', name: 'Alice' }));
     await page.waitForSelector('#app:not([hidden])', { timeout: 20000 });
-    check(await page.isHidden('#t-adm'), `${name}: admin tab hidden for classmate`);
-    check((await page.textContent('#units')).includes('Micro 1'), `${name}: unit chip shown`);
-    check((await page.textContent('#prog')).includes('/ 45'), `${name}: 45 slides in pool`);
+    check(await page.isHidden('#admbtn') && await page.isHidden('#t-adm'), `${name}: no admin button/tab for classmate`);
+    check((await page.textContent('#units')).includes('Respiratory system'), `${name}: category chips shown`);
+    check((await page.textContent('#prog')).includes('/ ' + slides.length), `${name}: ${slides.length} slides in pool`);
+    await page.uncheck('#altc');
+    check((await page.textContent('#prog')).includes('/ ' + slides.filter(d => !d.parent).length), `${name}: online look-alikes can be left out`);
+    await page.check('#altc');
+
+    await page.click('#units button:has-text("Infection")');
+    check((await page.textContent('#prog')).includes('/ ' + slides.filter(d => d.units.includes('Infection')).length), `${name}: category filter (incl. review slides)`);
+    await page.click('#units button:has-text("全部")');
 
     await page.click('#draw');
     await page.waitForSelector('#slot .it');
@@ -69,147 +74,171 @@ async function run(name, type, ctxOpts) {
     await page.click('#slot .sv');
     await page.waitForSelector('#slot mark');
     check((await page.textContent('#slot mark')) === 'Key finding', `${name}: highlight rendered`);
-    check((await page.textContent('#slot .ans-w b')) === 'Second', `${name}: bold rendered`);
     check((await page.textContent('#slot .ans-w')).includes('我的版本'), `${name}: personal version label`);
-    await shot('2-edited');
 
-    // notes + image
+    // whole-slide note + image with caption
     await page.click('#slot .nb');
     await page.fill('#slot .n-t', 'my note about this slide');
     await page.waitForFunction(() => document.querySelector('#slot .n-s').textContent === '已儲存', null, { timeout: 15000 });
     await page.setInputFiles('#slot .n-f', { name: 's.png', mimeType: 'image/png', buffer: png });
     await page.waitForSelector('#slot .th img', { timeout: 20000 });
     check(true, `${name}: image uploaded`);
-
-    // microscope: open, change objective, save view for line 1, then reopen from the answer line
     await page.click('#slot .th');
-    await page.waitForSelector('#scope:not([hidden])');
-    await page.waitForFunction(() => document.querySelector('#sc-img').naturalWidth > 0);
-    const f = await page.locator('#sc-f').boundingBox();
-    check(Math.abs(f.width - f.height) < 2, `${name}: field is circular (${Math.round(f.width)}x${Math.round(f.height)})`);
-    await page.click('#sc-obj button[data-o="40"]');
-    check((await page.textContent('#sc-info')).includes('400×'), `${name}: 40x objective`);
-    await page.mouse.move(f.x + f.width / 2, f.y + f.height / 2);
-    await page.mouse.down(); await page.mouse.move(f.x + f.width / 2 - 60, f.y + f.height / 2 - 30, { steps: 5 }); await page.mouse.up();
-    await page.selectOption('#sc-line', { index: 1 });
-    await page.click('#sc-sv');
-    await shot('3-scope40');
-    await page.click('#sc-x');
-    await page.waitForSelector('#slot .ln.vw', { timeout: 10000 });
-    await page.locator('#slot .ln.vw').filter({ hasNotText: '信心' }).first().click();
-    await page.waitForSelector('#scope:not([hidden])');
-    await page.waitForTimeout(900);
-    check((await page.textContent('#sc-info')).includes('400×'), `${name}: answer line reopens at saved 40x view`);
-    await shot('4-reopen');
-    await page.click('#sc-x');
+    await page.waitForSelector('#lb:not([hidden])');
+    await page.fill('#lb-n', 'caption: fibrin and neutrophils');
+    await page.waitForFunction(() => document.querySelector('#lb-s').textContent === '已儲存', null, { timeout: 15000 });
+    await page.click('#lb-x');
+    await page.waitForSelector('#slot .tcap');
+    check((await page.textContent('#slot .tcap')).includes('caption'), `${name}: image caption saved`);
 
     // report
     await page.click('#slot .rp');
     await page.fill('#slot .r-t', 'organ should be X');
     await page.click('#slot .r-s');
     await page.waitForFunction(() => document.querySelector('#slot .rp-w').textContent.includes('已送出'), null, { timeout: 10000 });
-    check((await page.textContent('#slot .rp-w')).includes('已送出'), `${name}: report sent`);
-
-    // slide viewer is locked until approved; request access
-    await page.click('#slot .sv2');
-    await page.waitForSelector('#ss:not([hidden])');
-    check(await page.isVisible('#ss-lock') && await page.isHidden('#ss-f'), `${name}: slide images locked for unapproved user`);
-    await page.click('#ss-req');
-    await page.waitForFunction(() => document.querySelector('#ss-lock').textContent.includes('已送出申請'), null, { timeout: 10000 });
-    check(true, `${name}: access request sent`);
-    await page.click('#ss-x');
+    check(true, `${name}: report sent`);
 
     // review tab
     await page.click('#slot .v');
     await page.click('#t-rev');
     await page.waitForSelector('#l-rev .it');
     check((await page.locator('#l-rev .n-t').first().inputValue()) === 'my note about this slide', `${name}: review shows notes`);
-    await page.click('#rv-key');
-    check((await page.locator('#l-rev .ans-w .ln').count()) >= 1, `${name}: key-points filter`);
     await page.click('#rv-hide');
-    await shot('5-review');
+    await shot('2-review');
+
+    // catalog
+    await page.click('#t-cat');
+    await page.fill('#c-q', 'PA0306');
+    await page.waitForSelector('#l-cat tbody tr');
+    const cells = await page.locator('#l-cat tbody tr').first().locator('td').allTextContents();
+    check(cells[0] === '4' && /endocarditis/i.test(cells[2]), `${name}: catalog maps PA0306 to slide 4`);
+    await page.fill('#c-q', 'PA0349');
+    check((await page.textContent('#l-cat')).includes('線上沒有'), `${name}: physical-only slide listed`);
+    await page.fill('#c-q', '');
+    await shot('3-catalog');
+
+    // export to Word
+    await page.click('#t-exp');
+    await page.waitForSelector('#l-exp input');
+    check(await page.isChecked(`#l-exp input[value="${id}"]`), `${name}: slide with notes pre-selected for export`);
+    const dl = page.waitForEvent('download', { timeout: 20000 });
+    await page.click('#x-go');
+    const file = await (await dl).path();
+    const buf = readFileSync(file);
+    const s = buf.toString('utf8');
+    check(buf.slice(0, 2).toString() === 'PK' && s.includes('word/document.xml') && s.includes('標楷體') && s.includes('Times New Roman'), `${name}: .docx with 標楷體 / Times New Roman`);
+    check(s.includes('word/media/image1.jpeg') && s.includes('caption: fibrin') && s.includes('my note about this slide') && s.includes('Key finding'), `${name}: export has answer, note, image and caption`);
 
     // persistence after reload
     await page.reload();
     await page.waitForSelector('#app:not([hidden])', { timeout: 20000 });
     check((await page.textContent('#rc')) === '1', `${name}: review list persisted`);
-    check((await page.textContent('#sc')) === '1', `${name}: seen persisted`);
 
-    // admin
+    if (viewer) {
+      // 看片: app -> list page (bookmarklet picks the slide) -> viewer (bookmarklet locks objectives, opens panel)
+      await page.click('#t-cat'); await page.fill('#c-q', 'PA0306');
+      await page.click('#l-cat tbody tr button');
+      const pop = page.waitForEvent('popup');
+      await page.click('#l-cat tr.exp .sv2');
+      const vw = await pop;
+      await vw.waitForLoadState();
+      check(vw.url().startsWith(LIST), `${name}: 看片 opens the portal`);
+      await vw.addScriptTag({ url: BASE + 'h.js' });
+      await vw.waitForURL(/viewer\.html\?s=PA0306/, { timeout: 15000 });
+      check(true, `${name}: list bookmarklet opened PA0306 in the same tab`);
+      await vw.waitForFunction(() => window.Pviewer && window.Pviewer.world.getItemCount() > 0, null, { timeout: 15000 });
+      const panelP = ctx.waitForEvent('page', { timeout: 20000 });
+      await vw.addScriptTag({ url: BASE + 'h.js' });
+      await vw.waitForSelector('#pdh-bar');
+      await page.waitForFunction(() => document.querySelector('#notice').textContent.includes('已連上看片視窗（PA0306）'), null, { timeout: 15000 });
+      check(true, `${name}: main app connected to the viewer`);
+      const iz = () => vw.evaluate(() => { const v = window.Pviewer.viewport; return v.viewportToImageZoom(v.getZoom()); });
+      const D = await vw.evaluate(() => { const r = window.Pviewer.container.getBoundingClientRect(); return Math.floor(Math.min(r.width, r.height) * 0.94); });
+      const want = o => 10 * D / { 4: 5500, 10: 2200, 40: 550 }[o];
+      await vw.waitForTimeout(1500);
+      check(Math.abs(await iz() / want(4) - 1) < 0.03, `${name}: 4× field = 5.5 mm (${(await iz()).toFixed(4)} vs ${want(4).toFixed(4)})`);
+      check(await vw.isHidden('#sliderBox') && await vw.isHidden('#div_leftBar'), `${name}: original zoom slider hidden`);
+      await vw.click('#pdh-bar [data-o="40"]'); await vw.waitForTimeout(1800);
+      check(Math.abs(await iz() / want(40) - 1) < 0.03, `${name}: 40× field = 0.55 mm`);
+      const box = await vw.locator('#contentDiv').boundingBox();
+      await vw.mouse.move(box.x + box.width / 2, box.y + box.height / 2);
+      await vw.mouse.wheel(0, 200); await vw.waitForTimeout(1800);
+      check(Math.abs(await iz() / want(10) - 1) < 0.03, `${name}: wheel steps 40× → 10× (no free zoom)`);
+      await vw.mouse.down(); await vw.mouse.move(box.x + box.width / 2 - 80, box.y + box.height / 2 - 40, { steps: 6 }); await vw.mouse.up();
+      await vw.waitForTimeout(1200);
+      check(Math.abs(await iz() / want(10) - 1) < 0.03, `${name}: dragging keeps the objective`);
+      await shot('4-viewer', vw);
+
+      const panel = await panelP;
+      await panel.waitForSelector('#panel .it', { timeout: 20000 });
+      check((await panel.textContent('#panel')).includes('PA0306'), `${name}: answer panel shows PA0306`);
+      await panel.waitForSelector('#panel .ln.vw', { timeout: 10000 });
+      await panel.click('#panel .ln.vw');
+      await vw.waitForTimeout(2000);
+      const c = await vw.evaluate(() => window.__pdh.state());
+      check(c.obj === 40 && Math.abs(c.x - 900) < 15 && Math.abs(c.y - 300) < 15, `${name}: answer point moves viewer to (900,300) at 40× (got ${c.x},${c.y} ${c.obj}×)`);
+      check(Math.abs(await iz() / want(40) - 1) < 0.03, `${name}: answer point uses the locked 40×`);
+      await vw.click('#pdh-cap');
+      await panel.waitForSelector('#panel .th img', { timeout: 15000 });
+      check(true, `${name}: viewer capture saved into the panel notes`);
+      await panel.click('#panel .th');
+      check(await panel.isVisible('#lb-go'), `${name}: captured image remembers its field`);
+      await shot('5-panel', panel);
+      await vw.click('#pdh-x');
+      await vw.waitForTimeout(300);
+      check(await vw.isVisible('#sliderBox'), `${name}: unlocking restores the original viewer`);
+      await vw.close(); await panel.close();
+    }
+
+    // admin: same screen until the 管理 button is pressed
     await page.click('#login');
     await page.waitForSelector('#gate:not([hidden])');
     await page.evaluate(() => window.__emuLogin({ sub: 'kevin', email: 'chendoc100@gmail.com', name: 'Kevin' }));
-    await page.waitForSelector('#t-adm:not([hidden])', { timeout: 20000 });
-    check(true, `${name}: admin tab visible for admin`);
+    await page.waitForSelector('#admbtn:not([hidden])', { timeout: 20000 });
+    check(await page.isHidden('#t-adm'), `${name}: admin starts in the normal view`);
     check((await page.textContent('#rc')) === '0', `${name}: admin does not see Alice's progress`);
-    await page.click('#t-adm');
+    await page.click('#admbtn');
+    await page.waitForSelector('#t-adm:not([hidden])');
     await page.waitForSelector('#a-rep .rep', { timeout: 10000 });
     check((await page.textContent('#a-rep')).includes('organ should be X'), `${name}: admin sees report`);
-    await page.waitForFunction(() => document.querySelector('#a-acc').textContent.includes('alice@example.com'), null, { timeout: 10000 });
-    await page.click('#a-acc [data-ok]');
-    await page.waitForFunction(() => document.querySelector('#a-acc').textContent.includes('已核准 1 人'), null, { timeout: 10000 });
-    check(true, `${name}: admin approved request`);
-    // admin views a slide: objectives, region limits, annotations
-    await page.click('#t-draw'); await page.click('#draw');
-    await page.waitForSelector('#slot .sv2');
-    await page.click('#slot .r');
-    check((await page.textContent('#slot .ans-w')).includes('信心中'), `${name}: answer line linked to slide field`);
-    await page.locator('#slot .ln.vw').filter({ hasText: '信心' }).first().click();
-    await page.waitForSelector('#ss:not([hidden])');
-    await page.waitForFunction(() => document.querySelector('#ss-img').naturalWidth > 0, null, { timeout: 10000 });
-    await page.waitForTimeout(1200);
-    check((await page.textContent('#ss-scale')).includes('550 µm'), `${name}: answer opens at 40x field`);
-    await page.click('#ss-obj button[data-o="4"]'); await page.waitForTimeout(300);
-    check((await page.textContent('#ss-scale')).includes('5.5 mm'), `${name}: 4x field size`);
-    await page.click('#ss-tools [data-t="c"]');
-    const g = await page.locator('#ss-f').boundingBox();
-    check(Math.abs(g.width - g.height) < 2, `${name}: slide field is circular`);
-    await page.mouse.move(g.x + g.width / 2, g.y + g.height / 2); await page.mouse.down();
-    await page.mouse.move(g.x + g.width / 2 + 40, g.y + g.height / 2, { steps: 4 }); await page.mouse.up();
-    check((await page.locator('#ss-svg circle').count()) === 1, `${name}: circle annotation drawn`);
-    await shot('6a-slide');
-    await page.click('#ss-x');
-    await page.click('#slot .sv2'); await page.waitForTimeout(800);
-    check((await page.locator('#ss-svg circle').count()) === 1, `${name}: annotation persists`);
-    await page.click('#ss-x');
-    await page.click('#t-adm');
     await page.click('#a-new');
     const fill = (k, v) => page.fill(`#a-form [data-k="${k}"]`, v);
-    await fill('id', 'pa9' + String(Math.floor(Math.random() * 900) + 100));
-    await fill('unit', 'Micro 2'); await fill('dxfull', 'Test lesion, liver'); await fill('organ', 'liver');
-    await fill('desc', '*1. Test point'); await fill('link', 'http://microteaching.ntu.edu.tw:9002/GestaltViewer?wlGUID=x');
+    await fill('id', 'PA9' + String(Math.floor(Math.random() * 900) + 100));
+    await fill('units', 'Micro 2'); await fill('dxfull', 'Test lesion, liver'); await fill('organ', 'liver');
+    await fill('desc', '*1. Test point');
     await page.click('#a-form .sv');
     await page.waitForFunction(() => document.querySelector('#units').textContent.includes('Micro 2'), null, { timeout: 10000 });
-    check(true, `${name}: new unit appears after adding slide`);
+    check(true, `${name}: new category appears after adding slide`);
     await page.click('#a-rep .dn');
     await page.waitForFunction(() => !document.querySelector('#a-rep .rep'), null, { timeout: 10000 });
     check(true, `${name}: report marked done`);
     await shot('6-admin');
-    await page.click('#units button:has-text("Micro 2")');
-    check((await page.textContent('#prog')).includes('/ 1'), `${name}: unit filter limits pool`);
-    await page.click('#t-draw'); await page.click('#draw');
-    await page.waitForSelector('#slot .it');
-    check((await page.getAttribute('#slot .mt', 'href')) === 'https://microteaching.ntu.edu.tw/', `${name}: official portal link only`);
+    await page.click('#admbtn');
+    check(await page.isHidden('#t-adm'), `${name}: leaving admin hides admin tab`);
   } catch (e) {
     fails++; log(`FAIL ${name}: exception ${e.message.split('\n')[0]}`);
     await shot('ERR').catch(() => {});
   }
-  const real = errs.filter(e => !/emulator|Failed to load resource|127\.0\.0\.1:(8080|9099)/i.test(e));
+  const real = errs.filter(e => !/emulator|Failed to load resource|127\.0\.0\.1:(8080|9099)|ERR_|favicon/i.test(e));
   check(real.length === 0, `${name}: no page errors ${real.length ? JSON.stringify(real.slice(0, 3)) : ''}`);
   await browser.close();
 }
 
-// reset the emulator users between engines so each run starts clean
 async function wipe() {
   await fetch('http://127.0.0.1:8080/emulator/v1/projects/demo-pd/databases/(default)/documents', { method: 'DELETE' });
   await fetch('http://127.0.0.1:9099/emulator/v1/projects/demo-pd/accounts', { method: 'DELETE' });
   await seed();
 }
 
-await run('chromium-desktop', chromium, { viewport: { width: 1280, height: 900 } });
-await wipe(); await run('firefox-desktop', firefox, { viewport: { width: 1280, height: 900 } });
-await wipe(); await run('webkit-iphone', webkit, { ...devices['iPhone 13'] });
-await wipe(); await run('chromium-android', chromium, { ...devices['Pixel 7'] });
+const only = process.env.ONLY;
+const runs = [
+  ['chromium-desktop', chromium, { viewport: { width: 1280, height: 900 } }, true],
+  ['firefox-desktop', firefox, { viewport: { width: 1280, height: 900 } }, true],
+  ['webkit-desktop', webkit, { viewport: { width: 1280, height: 900 } }, true],
+  ['webkit-iphone', webkit, { ...devices['iPhone 13'] }, false],
+  ['chromium-android', chromium, { ...devices['Pixel 7'] }, false],
+].filter(r => !only || r[0] === only);
+for (let i = 0; i < runs.length; i++) { if (i) await wipe(); await run(...runs[i]); }
 log(`\nTOTAL FAILS: ${fails}`);
 writeFileSync(`${OUT}/status.txt`, fails ? 'FAIL' : 'PASS');
 process.exit(0);

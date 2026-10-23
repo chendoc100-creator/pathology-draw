@@ -11,6 +11,13 @@ var MOBILE=/Android|iPhone|iPad|iPod|Mobile/i.test(UA)||(navigator.platform==='M
 var FB='https://www.gstatic.com/firebasejs/10.14.1/';
 var CFG={apiKey:"AIzaSyC1V6sxv106LZcaWZ3aSxtnBhzHL6aez2U",authDomain:HOME,projectId:"pathology-draw",storageBucket:"pathology-draw.firebasestorage.app",messagingSenderId:"1077378446876",appId:"1:1077378446876:web:3297bee90fa287e7c211d9"};
 if(window.__EMU){CFG.authDomain=location.host;CFG.projectId="demo-pd"}
+/* microteaching: slide list (https) and slide viewer (http, port 9002) */
+var PORTAL=window.__PORTAL||'https://microteaching.ntu.edu.tw/';
+var LIST_ORIGIN=window.__LIST_ORIGIN||'https://microteaching.ntu.edu.tw';
+var VIEW_ORIGIN=window.__VIEW_ORIGIN||'http://microteaching.ntu.edu.tw:9002';
+var QS=new URLSearchParams(location.search);
+var PANEL=(QS.get('p')||'').toUpperCase().replace(/[^A-Z0-9_]/g,'')||null;   /* answer panel next to the slide viewer */
+var FIELD={4:5500,10:2200,40:550};
 
 var $=function(id){return document.getElementById(id)};
 var esc=function(s){return String(s==null?'':s).replace(/[&<>"']/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]})};
@@ -21,21 +28,21 @@ function numOf(id){var m=String(id).match(/\d+/);return m?parseInt(m[0],10):1e9}
 function byNum(a,b){return numOf(a)-numOf(b)||(a<b?-1:a>b?1:0)}
 function hash(s){var h=0;s=String(s||'');for(var i=0;i<s.length;i++){h=(h*31+s.charCodeAt(i))|0}return h.toString(36)}
 function uniq(a){var o=[],k={};(a||[]).forEach(function(x){if(!k[x]){k[x]=1;o.push(x)}});return o}
-function note(t){$('notice').hidden=!t;$('notice').textContent=t||''}
+function note(t){$('notice').hidden=!t;$('notice').textContent=t||'';if(t&&PANEL)$('notice').scrollIntoView({block:'nearest'})}
 function el(tag,cls,html){var e=document.createElement(tag);if(cls)e.className=cls;if(html!=null)e.innerHTML=html;return e}
+function fsz(um){return um>=1000?(um/1000)+' mm':um+' µm'}
 
 /* ---------- state ---------- */
-var fb=null,user=null,isAdmin=false;
-var SL=[],BY={};                         /* master slide list */
-var P={seen:[],review:[],rseen:[],last:'',rlast:'',units:null}; /* progress */
-var U={overrides:{},notes:{},views:{},marks:{}};  /* personal data */
-var IMG={};                              /* slideId -> [{id,data,w,h}] (loaded on demand) */
-var REPORTS=[];
-var FLD={},APPROVED=false,REQUESTED=false,LINKS={};  /* slide fields (coords, no images), image access */
+var fb=null,user=null,isAdmin=false,adm=false;
+var SL=[],BY={},CAT=[],CBY={};          /* quiz slides; catalog of every slide (physical + online) */
+var P={seen:[],review:[],rseen:[],last:'',rlast:'',units:null,alt:true};
+var U={overrides:{},notes:{}};
+var IMG={};                              /* slideId -> [{id,data,w,h,at,note,view}] */
+var REPORTS=[],FLD={};                   /* FLD: answer points {id:{pts:[{k,x,y,obj,conf,note}]}} */
 var tab='draw',pool='all',rvHide=false,rvKey=false;
 var live=[];
 
-function cleanP(o){var b={seen:[],review:[],rseen:[],last:'',rlast:'',units:null};if(o){['seen','review','rseen'].forEach(function(k){if(Array.isArray(o[k]))b[k]=o[k].filter(function(x){return BY[x]})});b.last=o.last||'';b.rlast=o.rlast||'';if(Array.isArray(o.units))b.units=o.units}return b}
+function cleanP(o){var b={seen:[],review:[],rseen:[],last:'',rlast:'',units:null,alt:true};if(o){['seen','review','rseen'].forEach(function(k){if(Array.isArray(o[k]))b[k]=o[k].filter(function(x){return BY[x]})});b.last=o.last||'';b.rlast=o.rlast||'';if(Array.isArray(o.units))b.units=o.units;if(o.alt===false)b.alt=false}return b}
 
 /* ---------- firebase ---------- */
 async function fbLoad(){
@@ -43,7 +50,6 @@ async function fbLoad(){
   var app=m[0].initializeApp(CFG);
   fb={au:m[1],fs:m[2],auth:m[1].getAuth(app),db:m[2].getFirestore(app)};
   if(window.__EMU){m[1].connectAuthEmulator(fb.auth,'http://127.0.0.1:9099',{disableWarnings:true});m[2].connectFirestoreEmulator(fb.db,'127.0.0.1',8080);
-    /* test-only hook: sign in against the local auth emulator */
     window.__emuLogin=function(o){return m[1].signInWithCredential(fb.auth,m[1].GoogleAuthProvider.credential(JSON.stringify({sub:o.sub,email:o.email,email_verified:true,name:o.name})))}}
 }
 function D(){var a=[fb.db].concat([].slice.call(arguments));return fb.fs.doc.apply(null,a)}
@@ -56,7 +62,7 @@ function saveU(field,id){if(!user)return;var v=U[field][id];var fp=new fb.fs.Fie
 
 /* ---------- auth ---------- */
 function showGate(){
-  $('app').hidden=true;$('gate').hidden=false;$('login').hidden=true;$('acct').textContent='未登入';
+  $('app').hidden=true;$('gate').hidden=false;$('login').hidden=true;$('acct').textContent='未登入';$('admbtn').hidden=true;
   if(IN_APP){$('inapp').hidden=false;$('inapp').innerHTML='你現在是在 App 內建的瀏覽器（LINE、IG、FB 等）裡，Google 不允許在這裡登入。請按右上角「…」選「用瀏覽器開啟」，或複製網址貼到 Safari / Chrome。<div class="row" style="margin-top:6px"><button type="button" class="btn sm" id="cpy">複製網址</button></div>';
     $('cpy').onclick=function(){copy('https://'+HOME+'/').then(function(ok){$('cpy').textContent=ok?'已複製':'請長按網址列複製'})}}
 }
@@ -75,8 +81,8 @@ async function login(){
   }
 }
 async function onUser(u){
-  user=u;isAdmin=false;IMG={};
-  if(!u){SL=[];BY={};P=cleanP(null);U={overrides:{},notes:{},views:{},marks:{}};FLD={};APPROVED=false;showGate();return}
+  user=u;isAdmin=false;adm=false;IMG={};
+  if(!u){SL=[];BY={};CAT=[];CBY={};P=cleanP(null);U={overrides:{},notes:{}};FLD={};showGate();return}
   $('gate').hidden=true;$('acct').textContent='讀取中…';$('login').hidden=false;$('login').textContent='登出';
   try{
     var r=await Promise.all([
@@ -85,31 +91,36 @@ async function onUser(u){
       fb.fs.getDoc(D('users',u.uid)),
       fb.fs.getDoc(D('admin','flag')).then(function(){return true},function(){return false}),
       fb.fs.getDoc(D('content','fields')).then(function(x){return x.exists()?x.data():{}},function(){return {}}),
-      fb.fs.getDoc(D('access',u.uid)).then(function(x){return x.exists()},function(){return false}),
-      fb.fs.getDoc(D('requests',u.uid)).then(function(x){return x.exists()},function(){return false})
+      fb.fs.getDoc(D('content','catalog')).then(function(x){return x.exists()?(x.data().list||[]):[]},function(){return []})
     ]);
-    FLD=r[4]||{};APPROVED=r[5];REQUESTED=r[6];
-    SL=(r[0].exists()&&r[0].data().list)||[];BY={};SL.forEach(function(d){BY[d.id]=d});
+    FLD=r[4]||{};CAT=r[5];CBY={};CAT.forEach(function(c){CBY[c.id]=c});
+    SL=(r[0].exists()&&r[0].data().list)||[];BY={};SL.forEach(function(d){if(!d.units)d.units=[d.unit||'未分類'];BY[d.id]=d});
     P=cleanP(r[1].exists()?r[1].data():null);
-    if(r[2].exists()){var x=r[2].data();U={overrides:x.overrides||{},notes:x.notes||{},views:x.views||{},marks:x.marks||{}}}
-    else{U={overrides:{},notes:{},views:{},marks:{}};await fb.fs.setDoc(D('users',u.uid),{overrides:{},notes:{},views:{},marks:{}})}
+    if(r[2].exists()){var x=r[2].data();U={overrides:x.overrides||{},notes:x.notes||{}}}
+    else{U={overrides:{},notes:{}};await fb.fs.setDoc(D('users',u.uid),{overrides:{},notes:{}})}
     isAdmin=r[3];
   }catch(e){
     $('acct').textContent='已登入';note('讀取資料失敗（'+(e.code||e.message)+'）。請重新整理；一直失敗的話告訴管理者。');return
   }
   $('acct').textContent=(u.displayName||u.email||'已登入')+'（資料只有你看得到）';
   note(SL.length?'':'題庫還是空的。');
-  $('app').hidden=false;$('t-adm').hidden=!isAdmin;
-  if(isAdmin){loadReports();admInit()}
-  renderUnits();setPool(pool);showTab(tab==='adm'&&!isAdmin?'draw':tab);counts();
+  $('app').hidden=false;$('admbtn').hidden=!isAdmin;setAdm(false);
+  if(isAdmin)loadReports();
+  if(PANEL){renderPanel();return}
+  renderUnits();setPool(pool);showTab(tab==='adm'?'draw':tab);counts();
 }
 
+/* ---------- admin mode: hidden behind one button so the admin's normal view matches everyone's ---------- */
+function setAdm(on){adm=!!(on&&isAdmin);document.body.classList.toggle('adm',adm);$('admbtn').setAttribute('aria-pressed',adm);$('admbtn').textContent=adm?'離開管理':'管理';
+  $('t-adm').hidden=!adm;if(!adm&&tab==='adm')showTab('draw');refreshLive();if(PANEL&&user)renderPanel()}
+
 /* ---------- units ---------- */
-function allUnits(){return uniq(SL.map(function(d){return d.unit||'未分類'}))}
+function unitsOf(d){return d.units||[d.unit||'未分類']}
+function allUnits(){var a=[];SL.forEach(function(d){a=a.concat(unitsOf(d))});return uniq(a)}
 function selUnits(){var a=allUnits();if(!P.units)return a;var s=P.units.filter(function(x){return a.indexOf(x)>=0});return s.length?s:a}
-function inUnits(id){var d=BY[id];return d&&selUnits().indexOf(d.unit||'未分類')>=0}
+function inUnits(id){var d=BY[id];if(!d)return false;var s=selUnits();return unitsOf(d).some(function(u){return s.indexOf(u)>=0})}
 function renderUnits(){
-  var a=allUnits(),box=$('units');box.innerHTML='<span class="lb">單元</span>';
+  var a=allUnits(),box=$('units');box.innerHTML='<span class="lb">分類</span>';
   var all=el('button',null,'全部');all.type='button';all.setAttribute('aria-pressed',!P.units);
   all.onclick=function(){P.units=null;saveP();unitsChanged()};box.appendChild(all);
   a.forEach(function(u){var b=el('button',null,esc(u));b.type='button';
@@ -119,40 +130,51 @@ function renderUnits(){
 }
 function unitsChanged(){renderUnits();setPool(pool);renderAll()}
 
-/* ---------- effective answer ---------- */
-function eff(id){var d=BY[id],o=U.overrides[id];
-  return {dx:o&&o.dxfull!=null?o.dxfull:(d.n?d.dxfull:d.dx),organ:o&&o.organ!=null?o.organ:d.organ,desc:o&&o.desc!=null?o.desc:d.desc,note:d.note,mine:!!o,stale:!!(o&&o.base!==baseOf(d))}}
+/* ---------- slide info ---------- */
+function info(id){if(BY[id])return BY[id];var c=CBY[id];if(!c)return null;
+  return {id:id,n:c.n||'',dxfull:c.dx||c.pdx||'',dx:c.dx||c.pdx||'',organ:'',desc:'',note:c.on?'':'線上沒有這張，只有實體片。',units:[],cat:true}}
+function viewId(id){var d=BY[id];return (d&&d.view)||id}
+function isOnline(vid){var c=CBY[vid];return c?!!c.on:!!(BY[vid])}
+function headOf(d){return esc(d.id)+(d.n?' <small>('+esc(d.n)+')</small>':'')}
+function eff(id){var d=info(id),o=U.overrides[id];
+  return {dx:o&&o.dxfull!=null?o.dxfull:d.dxfull,organ:o&&o.organ!=null?o.organ:d.organ,desc:o&&o.desc!=null?o.desc:d.desc,note:d.note,mine:!!o,stale:!!(o&&o.base!==baseOf(d))}}
 function baseOf(d){return hash([d.dxfull,d.organ,d.desc].join('|'))}
 function lineKey(l){return strip(l).replace(/\s+/g,' ').trim()}
+function ptsOf(id){var f=FLD[id];return (f&&f.pts)||[]}
+function ptMap(id){var o={};ptsOf(id).forEach(function(p){o[p.k]=p});return o}
 
 /* ---------- slide card ---------- */
 function mk(id,opt){
   opt=opt||{};
-  var d=BY[id],online=!d.n;
+  var d=info(id);if(!d){var x=el('div','it','<div class="empty">找不到 '+esc(id)+'</div>');return {el:x,id:id,upd:function(){},ans:function(){},opt:opt}}
+  var vid=viewId(id),can=isOnline(vid),par=d.parent&&BY[d.parent];
   var e=el('div','it'+(opt.big?' big':''));
-  var nImg=(IMG[id]||[]).length;
-  e.innerHTML='<div class="head">'+esc(d.id)+(online?'<span class="badge on">線上</span>':' <small>('+esc(d.n)+')</small>')+(opt.seen?'<span class="badge">已抽過</span>':'')+' <small class="small">'+esc(d.unit||'')+'</small></div>'+
-   '<div class="row"><button type="button" class="btn sm q">作答</button><button type="button" class="btn sm r">'+(opt.open?'隱藏答案':'顯示答案')+'</button><button type="button" class="btn sm warn v"></button>'+
-   '<button type="button" class="btn sm nb">筆記／圖片<span class="cnt"></span></button>'+
-   (hasSlide(id)?'<button type="button" class="btn sm primary sv2">看片</button>':'')+
-   '<a class="btn sm mt" href="https://microteaching.ntu.edu.tw/" target="_blank" rel="noopener noreferrer">開官方頁面</a>'+
-   '<button type="button" class="reset rp">回報答案錯誤</button></div>'+
+  e.innerHTML='<div class="head">'+headOf(d)+(d.n?'':'<span class="badge on">線上</span>')+(par?'<span class="badge">類似 '+esc(par.id)+'</span>':'')+(opt.seen?'<span class="badge">已抽過</span>':'')+
+     ' <small class="small">'+esc(unitsOf(d).join('、'))+'</small></div>'+
+   (d.warn?'<div class="warn">'+esc(d.warn)+'</div>':'')+
+   (d.alt&&d.alt.length?'<div class="small alts">線上類似：'+d.alt.map(function(a){return '<button type="button" class="lk" data-v="'+esc(a)+'">'+esc(a)+'</button>'}).join('　')+'</div>':'')+
+   '<div class="row">'+(d.cat?'':'<button type="button" class="btn sm q">作答</button>')+'<button type="button" class="btn sm r">'+(opt.open?'隱藏答案':'顯示答案')+'</button>'+
+   (d.cat?'':'<button type="button" class="btn sm warn v"></button>')+
+   '<button type="button" class="btn sm nb">筆記<span class="cnt"></span></button>'+
+   '<button type="button" class="btn sm primary sv2"'+(can?'':' disabled title="線上沒有這張"')+'>看片'+(vid!==id?' '+esc(vid):'')+'</button>'+
+   (d.cat?'':'<button type="button" class="reset rp">回報答案錯誤</button>')+'</div>'+
    '<div class="fm f" hidden><label>診斷</label><input class="a-dx" autocomplete="off">'+
-   (online?'':'<label>器官</label><input class="a-og" autocomplete="off"><label>描述（英文關鍵字，一行一點或用逗號分開）</label><textarea class="a-ds"></textarea>')+
+   (d.organ?'<label>器官</label><input class="a-og" autocomplete="off">':'')+(d.desc?'<label>描述（英文關鍵字，一行一點或用逗號分開）</label><textarea class="a-ds"></textarea>':'')+
    '<div class="row"><button type="button" class="btn sm primary g">批改</button></div></div>'+
    '<div class="res-w" hidden></div><div class="ans-w"'+(opt.open?'':' hidden')+'></div><div class="nt-w" hidden></div><div class="rp-w" hidden></div>';
   var q=e.querySelector('.q'),r=e.querySelector('.r'),v=e.querySelector('.v'),f=e.querySelector('.f'),rw=e.querySelector('.res-w'),aw=e.querySelector('.ans-w'),nw=e.querySelector('.nt-w'),pw=e.querySelector('.rp-w');
-  if(hasSlide(id))e.querySelector('.sv2').onclick=function(){openSlide(id,null)};
-  e.querySelector('.mt').addEventListener('click',function(){copy(id).then(function(ok){if(ok)note('已複製片號 '+id+'，登入後在官方清單的 Search 欄貼上即可找到（需校內網路或台大 VPN）。')})});
-  q.onclick=function(){f.hidden=!f.hidden;if(!f.hidden)f.querySelector('.a-dx').focus()};
+  e.querySelector('.sv2').onclick=function(){openView(vid)};
+  e.querySelectorAll('.alts .lk').forEach(function(b){b.onclick=function(){openView(b.dataset.v)}});
+  if(q)q.onclick=function(){f.hidden=!f.hidden;if(!f.hidden)f.querySelector('.a-dx').focus()};
   var obj={el:e,id:id,big:!!opt.big,opt:opt,
-    upd:function(){v.textContent=P.review.indexOf(id)>=0?'移出複習':'加入複習';var n=(IMG[id]||[]).length,t=(U.notes[id]||'').trim()?1:0;e.querySelector('.cnt').textContent=(n||t)?' ('+(t?'筆記':'')+(t&&n?'＋':'')+(n?n+' 圖':'')+')':''},
-    ans:function(){if(!aw.hidden)renderAns(aw,id,obj)}};
+    upd:function(){if(v)v.textContent=P.review.indexOf(id)>=0?'移出複習':'加入複習';var n=(IMG[id]||[]).length,t=(U.notes[id]||'').trim()?1:0;e.querySelector('.cnt').textContent=(n||t)?' ('+(t?'整題':'')+(t&&n?'＋':'')+(n?n+' 圖':'')+')':''},
+    ans:function(){if(!aw.hidden)renderAns(aw,id,obj)},
+    notes:function(){if(!nw.hidden)renderNotes(nw,id,obj)}};
   r.onclick=function(){aw.hidden=!aw.hidden;r.textContent=aw.hidden?'顯示答案':'隱藏答案';obj.ans()};
-  e.querySelector('.g').onclick=function(){rw.innerHTML=gradeHTML(id,f);rw.hidden=false};
-  v.onclick=function(){toggleRev(id)};
+  if(!d.cat)e.querySelector('.g').onclick=function(){rw.innerHTML=gradeHTML(id,f);rw.hidden=false};
+  if(v)v.onclick=function(){toggleRev(id)};
   e.querySelector('.nb').onclick=function(){nw.hidden=!nw.hidden;if(!nw.hidden)renderNotes(nw,id,obj)};
-  e.querySelector('.rp').onclick=function(){pw.hidden=!pw.hidden;if(!pw.hidden)renderReport(pw,id)};
+  var rp=e.querySelector('.rp');if(rp)rp.onclick=function(){pw.hidden=!pw.hidden;if(!pw.hidden)renderReport(pw,id)};
   obj.upd();obj.ans();
   if(opt.notes){nw.hidden=false;renderNotes(nw,id,obj)}
   live.push(obj);return obj;
@@ -161,39 +183,39 @@ function refreshLive(id){live=live.filter(function(o){return document.body.conta
 
 /* ---------- answer panel ---------- */
 function renderAns(box,id,obj){
-  var d=BY[id],online=!d.n,a=eff(id),vw=viewsFor(id),keyOnly=obj&&obj.opt.keyOnly,hide=obj&&obj.opt.hide;
+  var d=info(id),a=eff(id),pm=ptMap(id),keyOnly=obj&&obj.opt.keyOnly,hide=obj&&obj.opt.hide;
   var showOrig=box.dataset.orig==='1';
-  if(showOrig)a={dx:online?d.dx:d.dxfull,organ:d.organ,desc:d.desc,note:d.note,mine:false};
-  var h='<div class="ans ansblk"><div><span class="lab">診斷'+(a.mine?'<span class="mine">我的版本</span>':'')+(showOrig?'<span class="mine">原始答案</span>':'')+'</span>'+lineHTML(a.dx,'dx',vw)+'</div>';
-  if(!online&&a.organ)h+='<div><span class="lab">器官</span>'+fmt(a.organ)+'</div>';
-  if(!online||a.desc){
+  if(showOrig)a={dx:d.dxfull,organ:d.organ,desc:d.desc,note:d.note,mine:false};
+  var h='<div class="ans ansblk"><div><span class="lab">診斷'+(a.mine?'<span class="mine">我的版本</span>':'')+(showOrig?'<span class="mine">原始答案</span>':'')+'</span>'+lineHTML(a.dx,'dx',pm)+'</div>';
+  if(a.organ)h+='<div><span class="lab">器官</span>'+fmt(a.organ)+'</div>';
+  if(d.site)h+='<div><span class="lab">取材部位（線上片說明）</span>'+esc(d.site)+'</div>';
+  if(a.desc){
     var lines=String(a.desc||'').split('\n');
     if(keyOnly)lines=lines.filter(function(l){return /^\s*\*/.test(l)||hasMark(l)});
-    h+='<div><span class="lab">說明</span><div class="pre">'+(lines.map(function(l){return lineHTML(l,lineKey(l),vw)}).join('')||'<span class="small">（沒有標記的重點）</span>')+'</div></div>';
-  }
+    h+='<div><span class="lab">說明</span><div class="pre">'+(lines.map(function(l){return lineHTML(l,lineKey(l),pm)}).join('')||'<span class="small">（沒有標記的重點）</span>')+'</div></div>';
+  }else if(!d.parent&&!d.cat)h+='<div><span class="lab">說明</span><span class="small">這張的描述答案還沒有。</span></div>';
   if(a.note&&!keyOnly)h+='<div><span class="lab">備註</span><div class="pre">'+fmt(a.note)+'</div></div>';
   h+='</div><div class="row" style="margin-top:8px"><button type="button" class="btn sm ed">編輯我的版本</button>'+
     (a.mine||showOrig?'<button type="button" class="btn sm og">'+(showOrig?'看我的版本':'看原始答案')+'</button>':'')+
-    (isAdmin?'<button type="button" class="btn sm warn ad">編輯總答案</button>':'')+'</div>'+
+    (adm&&!d.cat?'<button type="button" class="btn sm warn ad">編輯總答案</button>':'')+'</div>'+
     (a.stale&&!showOrig?'<div class="tag">提醒：你編輯之後，原始答案有更新過，可以按「看原始答案」比對。</div>':'')+
-    '<div class="tag">畫底線的點可以點，會用顯微鏡帶你到那個視野（「信心」是判讀位置的把握程度，不是答案本身）。</div><div class="edw"></div>';
+    (ptsOf(id).length?'<div class="tag">有標「視野」的點可以點，看片視窗會移到那裡（「信心」是位置判讀的把握程度）。</div>':'')+
+    (adm&&!d.cat?'<div class="admpt"></div>':'')+'<div class="edw"></div>';
   box.innerHTML=h;box.className='ans-w'+(hide?' hid':'');
   var blk=box.querySelector('.ansblk');
   if(hide)blk.onclick=function(){box.classList.remove('hid')};
-  box.querySelectorAll('.ln.vw').forEach(function(n){n.onclick=function(ev){if(box.classList.contains('hid'))return;ev.stopPropagation();var v=vw[n.dataset.k];if(v.slide)openSlide(id,v);else openScope(id,v)}});
+  box.querySelectorAll('.ln.vw').forEach(function(n){n.onclick=function(ev){if(box.classList.contains('hid'))return;ev.stopPropagation();gotoPt(id,pm[n.dataset.k])}});
   box.querySelector('.ed').onclick=function(){editor(box.querySelector('.edw'),id,false)};
   var og=box.querySelector('.og');if(og)og.onclick=function(){box.dataset.orig=showOrig?'':'1';renderAns(box,id,obj)};
   var ad=box.querySelector('.ad');if(ad)ad.onclick=function(){showTab('adm');admForm(id)};
+  var ap=box.querySelector('.admpt');if(ap)admPoints(ap,id,a);
 }
-function lineHTML(text,key,vw){var v=key&&vw[key];if(!String(text).trim())return '<div class="ln">&nbsp;</div>';
-  return '<div class="ln'+(v?' vw':'')+'"'+(v?' data-k="'+esc(key)+'" title="點一下開顯微鏡"':'')+'>'+fmt(text)+(v?'<span class="go">'+v.obj+'× 視野'+(v.conf?'・信心'+esc(v.conf):'')+'</span>':'')+'</div>'}
-function hasSlide(id){var f=FLD[id];return !!(f&&f.ov)}
-function viewsFor(id){var o={},u=U.views[id]||{},f=FLD[id];Object.keys(u).forEach(function(k){o[k]=u[k]});
-  if(f&&f.pts)f.pts.forEach(function(p){o[p.k]={slide:true,x:p.x,y:p.y,obj:p.obj,conf:p.conf,note:p.note}});return o}
+function lineHTML(text,key,pm){var v=key&&pm[key];if(!String(text).trim())return '<div class="ln">&nbsp;</div>';
+  return '<div class="ln'+(v?' vw':'')+'"'+(v?' data-k="'+esc(key)+'" title="在看片視窗移到這裡"':'')+'>'+fmt(text)+(v?'<span class="go">'+v.obj+'× 視野'+(v.conf?'・信心'+esc(v.conf):'')+'</span>':'')+'</div>'}
 
 /* ---------- editor (personal or master) ---------- */
 function editor(box,id,master){
-  var d=BY[id],a=master?{dx:d.dxfull,organ:d.organ,desc:d.desc}:eff(id);
+  var d=info(id),a=master?{dx:d.dxfull,organ:d.organ,desc:d.desc}:eff(id);
   box.innerHTML='<div class="fm" style="margin-top:8px"><label>診斷</label><input class="e-dx"><label>器官</label><input class="e-og"><label>說明（一行一點；開頭 * = 必寫）</label>'+
     '<div class="tb"><button type="button" data-m="==">螢光</button><button type="button" data-m="__"><b>粗體</b></button><button type="button" data-m="">清除格式</button></div>'+
     '<textarea class="e-ds" style="min-height:12rem"></textarea><div class="row"><button type="button" class="btn sm primary sv">儲存</button><button type="button" class="btn sm cx">取消</button>'+
@@ -211,7 +233,7 @@ function editor(box,id,master){
 }
 function wrap(t,m){
   var s=t.selectionStart,e=t.selectionEnd,v=t.value;
-  if(!m){var seg=v.slice(s,e);if(s===e){/* clear the whole line */var ls=v.lastIndexOf('\n',s-1)+1,le=v.indexOf('\n',s);if(le<0)le=v.length;s=ls;e=le;seg=v.slice(s,e)}
+  if(!m){var seg=v.slice(s,e);if(s===e){var ls=v.lastIndexOf('\n',s-1)+1,le=v.indexOf('\n',s);if(le<0)le=v.length;s=ls;e=le;seg=v.slice(s,e)}
     var c=strip(seg);t.value=v.slice(0,s)+c+v.slice(e);t.setSelectionRange(s,s+c.length);t.focus();return}
   if(s===e){t.focus();return}
   var sel=v.slice(s,e);
@@ -220,56 +242,83 @@ function wrap(t,m){
   t.focus();
 }
 
-/* ---------- notes & images ---------- */
+/* ---------- notes: whole-slide note + images with captions ---------- */
 async function loadImgs(id){
   if(IMG[id])return IMG[id];
   var q=fb.fs.query(C('users',user.uid,'images'),fb.fs.where('slide','==',id));
-  var s=await fb.fs.getDocs(q);var a=[];s.forEach(function(x){var y=x.data();a.push({id:x.id,data:y.data,w:y.w,h:y.h,at:y.at||0})});
+  var s=await fb.fs.getDocs(q);var a=[];s.forEach(function(x){var y=x.data();a.push({id:x.id,data:y.data,w:y.w,h:y.h,at:y.at||0,note:y.note||'',view:y.view||null})});
   a.sort(function(p,q){return p.at-q.at});IMG[id]=a;return a;
 }
+async function addImg(id,c,view,msg){
+  var doc={slide:id,data:c.data,w:c.w,h:c.h,at:Date.now(),note:''};if(view)doc.view=view;
+  var ref=await fb.fs.addDoc(C('users',user.uid,'images'),doc);
+  doc.id=ref.id;(IMG[id]=IMG[id]||[]).push(doc);
+  live.forEach(function(o){if(o.id===id){o.upd();o.notes()}});
+  if(msg)msg.textContent='已加入。';
+}
 function renderNotes(box,id,obj){
-  box.innerHTML='<div class="fm"><label>我的筆記（只有自己看得到，會自動存）</label><textarea class="n-t"></textarea><div class="small n-s"></div>'+
-    '<label>我的圖片（上傳後點圖片可以用顯微鏡看：圓形視野、4× / 10× / 40×）</label><div class="thumbs"></div>'+
-    '<div class="row"><label class="btn sm" style="cursor:pointer">上傳圖片<input type="file" accept="image/*" multiple hidden class="n-f"></label></div><div class="msg n-m"></div></div>';
+  box.innerHTML='<div class="fm"><label>整題筆記（只有自己看得到，會自動存）</label><textarea class="n-t"></textarea><div class="small n-s"></div>'+
+    '<label>圖片＋附註（點圖片可以放大、寫附註）</label><div class="thumbs"></div>'+
+    '<div class="row"><label class="btn sm" style="cursor:pointer">上傳圖片<input type="file" accept="image/*" multiple hidden class="n-f"></label>'+
+    '<button type="button" class="btn sm n-c">從看片畫面擷取</button></div><div class="msg n-m"></div></div>';
   var t=box.querySelector('.n-t'),st=box.querySelector('.n-s'),tm=null;
   t.value=U.notes[id]||'';
   t.oninput=function(){st.textContent='儲存中…';clearTimeout(tm);tm=setTimeout(function(){var v=t.value;if(v.trim())U.notes[id]=v;else delete U.notes[id];saveU('notes',id);queue(function(){st.textContent='已儲存'});obj&&obj.upd()},700)};
   var th=box.querySelector('.thumbs'),msg=box.querySelector('.n-m');
   function draw(){
     var a=IMG[id]||[];th.innerHTML=a.length?'':'<span class="small">還沒有圖片。</span>';
-    a.forEach(function(im,i){var b=el('button','th');b.type='button';b.title='用顯微鏡看';
-      b.innerHTML='<img alt="">';b.querySelector('img').src=im.data;
-      var x=el('span','del','刪除');x.setAttribute('role','button');
-      x.onclick=async function(ev){ev.stopPropagation();if(x.dataset.a!=='1'){x.dataset.a='1';x.textContent='確定？';setTimeout(function(){x.dataset.a='';x.textContent='刪除'},3000);return}
-        try{await fb.fs.deleteDoc(D('users',user.uid,'images',im.id));IMG[id]=a.filter(function(z){return z.id!==im.id});dropViews(id,im.id);draw();obj&&obj.upd()}catch(e){msg.textContent='刪除失敗：'+(e.code||e.message)}};
-      b.appendChild(x);b.onclick=function(){openScope(id,{img:im.id})};th.appendChild(b)});
+    a.forEach(function(im){var w=el('div','tw');var b=el('button','th');b.type='button';b.title='放大';
+      b.innerHTML='<img alt="">';b.querySelector('img').src=im.data;b.onclick=function(){openLB(id,im.id)};
+      w.appendChild(b);if(im.note)w.appendChild(el('div','tcap',esc(im.note.length>40?im.note.slice(0,38)+'…':im.note)));th.appendChild(w)});
   }
   th.innerHTML='<span class="small">讀取中…</span>';
   loadImgs(id).then(function(){draw();obj&&obj.upd()},function(e){th.innerHTML='';msg.textContent='讀取圖片失敗：'+(e.code||e.message)});
   box.querySelector('.n-f').onchange=async function(ev){
     var files=[].slice.call(ev.target.files||[]);ev.target.value='';
     for(var i=0;i<files.length;i++){
-      msg.textContent='處理第 '+(i+1)+' / '+files.length+' 張…';
-      try{var c=await shrink(files[i]);
-        var ref=await fb.fs.addDoc(C('users',user.uid,'images'),{slide:id,data:c.data,w:c.w,h:c.h,at:Date.now()});
-        (IMG[id]=IMG[id]||[]).push({id:ref.id,data:c.data,w:c.w,h:c.h,at:Date.now()});draw();obj&&obj.upd();
-      }catch(e){msg.textContent='第 '+(i+1)+' 張上傳失敗：'+(e.code||e.message||e);return}
+      msg.textContent='壓縮第 '+(i+1)+' / '+files.length+' 張…';
+      try{var c=await shrink(files[i]);await addImg(id,c,null,null)}catch(e){msg.textContent='第 '+(i+1)+' 張上傳失敗：'+(e.code||e.message||e);return}
     }
     msg.textContent='上傳完成。';
   };
+  box.querySelector('.n-c').onclick=function(){captureFromViewer(id,msg)};
 }
-function dropViews(id,imgId){var v=U.views[id];if(!v)return;var ch=false;Object.keys(v).forEach(function(k){if(v[k].img===imgId){delete v[k];ch=true}});if(ch){if(!Object.keys(v).length)delete U.views[id];saveU('views',id)}}
 function loadImage(src){return new Promise(function(res,rej){var i=new Image();i.onload=function(){res(i)};i.onerror=function(){rej('這個檔案讀不出來（HEIC 請先轉成 JPG）')};i.src=src})}
+/* compress hard: free storage is shared by everyone */
 async function shrink(file){
-  var url=URL.createObjectURL(file);
-  try{var im=await loadImage(url);var W=im.naturalWidth,H=im.naturalHeight,max=2000,q=.85;
-    for(var k=0;k<8;k++){var s=Math.min(1,max/Math.max(W,H)),w=Math.round(W*s),h=Math.round(H*s);
+  var url=typeof file==='string'?file:URL.createObjectURL(file);
+  try{var im=await loadImage(url);var W=im.naturalWidth,H=im.naturalHeight,max=1400,q=.8;
+    for(var k=0;k<10;k++){var s=Math.min(1,max/Math.max(W,H)),w=Math.round(W*s),h=Math.round(H*s);
       var c=document.createElement('canvas');c.width=w;c.height=h;var x=c.getContext('2d');x.fillStyle='#fff';x.fillRect(0,0,w,h);x.drawImage(im,0,0,w,h);
-      var data=c.toDataURL('image/jpeg',q);if(data.length<900000)return {data:data,w:w,h:h};
-      if(q>.6)q-=.1;else max=Math.round(max*.8)}
+      var data=c.toDataURL('image/jpeg',q);if(data.length<400000)return {data:data,w:w,h:h};
+      if(q>.55)q-=.08;else max=Math.round(max*.8)}
     throw '圖片太大，壓縮後仍超過上限';
-  }finally{URL.revokeObjectURL(url)}
+  }finally{if(typeof file!=='string')URL.revokeObjectURL(url)}
 }
+/* lightbox: big image + caption (附註) */
+var LB=null;
+function openLB(id,imgId){
+  var a=IMG[id]||[],i=a.findIndex(function(x){return x.id===imgId});if(i<0)return;
+  LB={id:id,i:i};$('lb').hidden=false;document.body.style.overflow='hidden';showLB();
+}
+function showLB(){
+  var a=IMG[LB.id]||[];if(!a.length){closeLB();return}LB.i=(LB.i+a.length)%a.length;var im=a[LB.i];
+  $('lb-t').textContent=LB.id+'　圖 '+(LB.i+1)+' / '+a.length;$('lb-img').src=im.data;$('lb-n').value=im.note||'';$('lb-s').textContent='';
+  $('lb-go').hidden=!im.view;$('lb-prev').hidden=$('lb-next').hidden=a.length<2;
+  $('lb-del').textContent='刪除這張';$('lb-del').dataset.a='';
+}
+function closeLB(){$('lb').hidden=true;document.body.style.overflow='';LB=null}
+(function(){
+  var tm=null;
+  $('lb-x').onclick=closeLB;
+  $('lb-prev').onclick=function(){LB.i--;showLB()};$('lb-next').onclick=function(){LB.i++;showLB()};
+  $('lb-n').oninput=function(){var lb=LB,im=IMG[lb.id][lb.i],v=$('lb-n').value.slice(0,3000);$('lb-s').textContent='儲存中…';clearTimeout(tm);
+    tm=setTimeout(function(){im.note=v;queue(function(){return fb.fs.updateDoc(D('users',user.uid,'images',im.id),{note:v})}).then(function(){if(LB===lb)$('lb-s').textContent='已儲存';live.forEach(function(o){if(o.id===lb.id)o.notes()})})},600)};
+  $('lb-go').onclick=function(){var im=IMG[LB.id][LB.i];if(im.view)gotoPt(LB.id,im.view,im.view.vid)};
+  $('lb-del').onclick=async function(){var b=$('lb-del');if(b.dataset.a!=='1'){b.dataset.a='1';b.textContent='確定刪除？';return}
+    var id=LB.id,im=IMG[id][LB.i];try{await fb.fs.deleteDoc(D('users',user.uid,'images',im.id));IMG[id]=IMG[id].filter(function(z){return z.id!==im.id});live.forEach(function(o){if(o.id===id){o.upd();o.notes()}});showLB()}catch(e){$('lb-s').textContent='刪除失敗：'+(e.code||e.message)}};
+  document.addEventListener('keydown',function(e){if(!LB||e.target===$('lb-n'))return;if(e.key==='Escape')closeLB();else if(e.key==='ArrowLeft'){LB.i--;showLB()}else if(e.key==='ArrowRight'){LB.i++;showLB()}});
+})();
 
 /* ---------- report ---------- */
 function renderReport(box,id){
@@ -279,6 +328,94 @@ function renderReport(box,id){
     try{await fb.fs.addDoc(C('reports'),{slide:id,text:t,uid:user.uid,name:user.displayName||user.email||'',at:Date.now(),done:false});
       box.innerHTML='<div class="msg">已送出，謝謝。</div>'}catch(e){m.textContent='送出失敗：'+(e.code||e.message)}};
 }
+
+/* ---------- slide viewer bridge (microteaching + bookmarklet) ---------- */
+var VW=null,WANT='',CAPQ={};
+function bmCode(){return 'javascript:(function(d){var s=d.createElement("script");s.src="https://'+HOME+'/h.js?"+Date.now();d.body.appendChild(s)})(document)'}
+function alive(w){try{return w&&!w.closed}catch(e){return false}}
+function openView(vid){
+  if(!isOnline(vid)){note(vid+' 線上沒有，只能看實體片。');return}
+  WANT=vid;copy(vid);
+  if(VW&&alive(VW.win)&&VW.id===vid){try{VW.win.focus()}catch(e){}note('看片視窗已經是 '+vid+'。');return}
+  window.open(PORTAL,'pdlist');
+  note((MOBILE?'手機不適合看片（書籤在手機上不好用），建議用電腦。':'')+'已開 microteaching（片號 '+vid+' 已複製）。登入後在片子清單按書籤「抽號器看片」會自動開這張；開到看片畫面再按一次書籤，就會鎖定 4×／10×／40×。第一次用請先到「看片設定」安裝書籤。');
+}
+function sendVW(m){if(!VW||!alive(VW.win))return false;m.pd=1;try{VW.win.postMessage(m,VIEW_ORIGIN);return true}catch(e){return false}}
+function gotoPt(id,p,vidOverride){
+  var vid=vidOverride||viewId(id);
+  if(!VW||!alive(VW.win)){note('先按「看片」開 '+vid+'，在看片畫面按書籤「抽號器看片」，再點一次這個點。');return}
+  if(VW.id!==vid){note('看片視窗現在是 '+VW.id+'，這個點在 '+vid+'。請按「看片」改開 '+vid+'。');return}
+  sendVW({t:'goto',x:p.x,y:p.y,obj:p.obj});try{VW.win.focus()}catch(e){}
+  note(PANEL?'':'已移到 '+p.obj+'× 視野，請切到看片視窗。');
+}
+function captureFromViewer(id,msg){
+  var vid=viewId(id);
+  if(!VW||!alive(VW.win)){msg.textContent='先按「看片」開這張，在看片畫面按書籤「抽號器看片」。';return}
+  if(VW.id!==vid&&VW.id!==id){msg.textContent='看片視窗現在是 '+VW.id+'，不是 '+vid+'。';return}
+  var req=Math.random().toString(36).slice(2);CAPQ[req]={id:id,msg:msg};msg.textContent='擷取中…';
+  if(!sendVW({t:'cap',req:req}))msg.textContent='連不到看片視窗。';
+  setTimeout(function(){if(CAPQ[req]){delete CAPQ[req];msg.textContent='看片視窗沒有回應，請在看片畫面再按一次書籤。'}},8000);
+}
+/* the panel/app keeps the slide id the viewer reports, and which quiz slide it belongs to */
+function slideForView(vid){var hit=null;SL.forEach(function(d){if(!hit&&d.view===vid)hit=d.id});if(!hit&&BY[vid])hit=vid;return hit||vid}
+window.addEventListener('message',async function(ev){
+  var m=ev.data;if(!m||m.pd!==1)return;
+  if(ev.origin===LIST_ORIGIN&&m.t==='want'){try{ev.source.postMessage({pd:1,t:'want-r',id:WANT},LIST_ORIGIN)}catch(e){}return}
+  if(ev.origin!==VIEW_ORIGIN)return;
+  var vid=String(m.id||'').toUpperCase().replace(/[^A-Z0-9_]/g,'');
+  if(m.t==='hello'||m.t==='view'){
+    var isNew=!VW||VW.win!==ev.source||VW.id!==vid;
+    VW={win:ev.source,id:vid,x:+m.x,y:+m.y,obj:+m.obj};
+    if(m.t==='hello'&&!PANEL)note('已連上看片視窗（'+vid+'）。答案裡標「視野」的點可以直接點。');
+    if(isNew&&PANEL&&user)renderPanel();
+    if(PANEL){var s=$('pn-pos');if(s)s.textContent='目前：'+VW.obj+'× 視野　中心 ('+VW.x+', '+VW.y+')'}
+    return;
+  }
+  if(m.t==='cap'&&user){
+    var q=m.req&&CAPQ[m.req];if(m.req)delete CAPQ[m.req];
+    if(m.err){if(q)q.msg.textContent=m.err;return}
+    if(typeof m.data!=='string'||!/^data:image\/jpeg;base64,[A-Za-z0-9+\/=]+$/.test(m.data)||m.data.length>990000)return;
+    var id=q?q.id:slideForView(vid);
+    try{var c=m.data.length<400000?{data:m.data,w:+m.w||0,h:+m.h||0}:await shrink(m.data);
+      await addImg(id,c,{vid:vid,x:Math.round(+m.x)||0,y:Math.round(+m.y)||0,obj:FIELD[+m.obj]?+m.obj:4},q&&q.msg);
+      if(!q)note('已把擷取的視野存進 '+id+' 的筆記。');
+    }catch(e){var t='存圖失敗：'+(e.code||e.message||e);if(q)q.msg.textContent=t;else note(t)}
+  }
+});
+
+/* ---------- panel mode: one slide beside the viewer ---------- */
+function renderPanel(){
+  document.body.classList.add('panel');
+  var vid=VW?VW.id:PANEL,id=slideForView(vid);
+  var box=$('panel');box.hidden=false;box.innerHTML='';
+  var c=CBY[vid];
+  box.appendChild(el('div','small','看片：<b>'+esc(vid)+'</b>'+(c&&c.n?'（實體 '+esc(c.n)+' 號）':'')+(c?'　'+esc(c.dx||c.pdx):'')+'<div id="pn-pos"></div>'));
+  if(!VW)box.appendChild(el('div','notice','還沒連上看片視窗。請在看片畫面按書籤「抽號器看片」。'));
+  var o=mk(id,{open:true,notes:true});box.appendChild(o.el);
+  if(id!==vid&&info(id))box.appendChild(el('div','small','這張看片 '+esc(vid)+' 對應抽號器的 '+esc(id)+'。'));
+}
+if(PANEL&&window.opener){try{window.opener.postMessage({pd:1,t:'hi'},VIEW_ORIGIN)}catch(e){}}
+
+/* ---------- admin: set answer points from the current viewer field ---------- */
+function admPoints(box,id,a){
+  var keys=[['dx','診斷（整體）']].concat(String(a.desc||'').split('\n').filter(function(l){return l.trim()}).map(function(l){return [lineKey(l),lineKey(l)]}));
+  var pm=ptMap(id);
+  box.innerHTML='<div class="rep"><b>答案視野（管理）</b><div class="small">在看片視窗移到要的位置和倍率，再按「存目前視野」。</div>'+
+    '<select class="ap-k">'+keys.map(function(k){return '<option value="'+esc(k[0])+'">'+(pm[k[0]]?'● ':'')+esc(k[1].length>60?k[1].slice(0,58)+'…':k[1])+'</option>'}).join('')+'</select>'+
+    '<div class="row"><select class="ap-c"><option>高</option><option selected>中</option><option>低</option></select><input class="inp ap-n" placeholder="說明（可空白）"></div>'+
+    '<div class="row"><button type="button" class="btn sm primary ap-s">存目前視野</button><button type="button" class="btn sm warn ap-d">刪除這點</button></div><div class="msg ap-m"></div></div>';
+  var k=box.querySelector('.ap-k'),m=box.querySelector('.ap-m');
+  function sync(){var p=pm[k.value];box.querySelector('.ap-c').value=p&&p.conf||'中';box.querySelector('.ap-n').value=p&&p.note||''}
+  k.onchange=sync;sync();
+  box.querySelector('.ap-s').onclick=async function(){
+    if(!VW||!alive(VW.win)){m.textContent='沒有連上看片視窗。';return}
+    if(VW.id!==viewId(id)){m.textContent='看片視窗是 '+VW.id+'，不是 '+viewId(id)+'。';return}
+    var f=FLD[id]=FLD[id]||{pts:[]};f.vid=viewId(id);
+    f.pts=(f.pts||[]).filter(function(p){return p.k!==k.value}).concat([{k:k.value,x:VW.x,y:VW.y,obj:VW.obj,conf:box.querySelector('.ap-c').value,note:box.querySelector('.ap-n').value.trim().slice(0,300)}]);
+    await saveFields(id);refreshLive(id)};
+  box.querySelector('.ap-d').onclick=async function(){var f=FLD[id];if(!f)return;f.pts=(f.pts||[]).filter(function(p){return p.k!==k.value});await saveFields(id);refreshLive(id)};
+}
+async function saveFields(id){var o={};o[id]=FLD[id];try{await fb.fs.setDoc(D('content','fields'),o,{merge:true});note('答案視野已儲存。')}catch(e){note('儲存失敗：'+(e.code||e.message))}}
 
 /* ---------- review list / lists ---------- */
 function toggleRev(id){
@@ -296,13 +433,13 @@ function listSeen(){fill($('l-seen'),P.seen,'還沒有抽過的片子。')}
 function listRev(){fill($('l-rev'),P.review,'複習清單是空的。在任何一張片子按「加入複習」。',{open:true,notes:true,keyOnly:rvKey,hide:rvHide})}
 
 /* ---------- draw ---------- */
-function poolIds(){return (pool==='all'?SL.map(function(d){return d.id}):P.review.slice()).filter(inUnits)}
+function poolIds(){return (pool==='all'?SL.map(function(d){return d.id}):P.review.slice()).filter(function(x){return inUnits(x)&&(P.alt||!BY[x].parent)})}
 function seenArr(){return pool==='all'?P.seen:P.rseen}
 function progress(){var p=poolIds(),sa=seenArr(),s=p.filter(function(x){return sa.indexOf(x)>=0}).length;
-  $('prog').textContent='已抽 '+s+' / '+p.length+'（'+selUnits().join('、')+'）';$('barfill').style.width=(p.length?s/p.length*100:0)+'%'}
+  $('prog').textContent='已抽 '+s+' / '+p.length+'（'+(P.units?selUnits().join('、'):'全部分類')+'）';$('barfill').style.width=(p.length?s/p.length*100:0)+'%';$('altc').checked=P.alt}
 function draw(){
   var p=poolIds();$('msg').textContent='';
-  if(!p.length){$('msg').textContent=pool==='rev'?'這個單元的複習清單是空的。':'這個單元沒有片子。';return}
+  if(!p.length){$('msg').textContent=pool==='rev'?'這個分類的複習清單是空的。':'這個分類沒有片子。';return}
   var seen=seenArr(),lk=pool==='all'?'last':'rlast';
   var c=p.filter(function(x){return seen.indexOf(x)<0});
   if(!c.length){c=p.slice();$('msg').textContent='全部都抽過了，現在隨機重複。'}
@@ -313,7 +450,7 @@ function draw(){
   $('slot').innerHTML='';$('slot').appendChild(mk(id,{big:true,seen:was}).el);
 }
 function setPool(p){pool=p;$('p-all').setAttribute('aria-pressed',p==='all');$('p-rev').setAttribute('aria-pressed',p==='rev');$('msg').textContent='';progress();
-  $('slot').innerHTML='<div class="empty">'+(p==='all'?'按「抽下一張」開始。沒抽過的片子會先出現。':(P.review.filter(inUnits).length?'按「抽下一張」開始複習。':'這個單元的複習清單是空的。'))+'</div>'}
+  $('slot').innerHTML='<div class="empty">'+(p==='all'?'按「抽下一張」開始。沒抽過的片子會先出現。':(P.review.filter(inUnits).length?'按「抽下一張」開始複習。':'這個分類的複習清單是空的。'))+'</div>'}
 
 /* ---------- grading (approximate) ---------- */
 function norm(s){return strip(s).toLowerCase().replace(/[^a-z0-9\s]/g,' ').replace(/\s+/g,' ').trim()}
@@ -332,11 +469,11 @@ function matchField(ans,texts){
 }
 var STOP={};'with and the of in or to by for from that this are not may also slide some more less than their into only most both each other'.split(' ').forEach(function(w){STOP[w]=1});
 function gradeHTML(id,f){
-  var d=BY[id],a=eff(id),online=!d.n,val=function(c){var e=f.querySelector(c);return e?e.value:''};
+  var d=info(id),a=eff(id),val=function(c){var e=f.querySelector(c);return e?e.value:''};
   var mark=function(ok,label,right){return '<div><span class="'+(ok?'ok':'no')+'">'+(ok?'✓ ':'✗ ')+label+'</span>　正確：'+fmt(right)+'</div>'};
-  var h='<div class="res">'+mark(matchField(val('.a-dx'),[d.dx,a.dx]),'診斷',online?d.dx:a.dx);
-  if(!online){
-    h+=mark(matchField(val('.a-og'),[d.organ,a.organ]),'器官',a.organ);
+  var h='<div class="res">'+mark(matchField(val('.a-dx'),[d.dx,a.dx]),'診斷',a.dx);
+  if(f.querySelector('.a-og'))h+=mark(matchField(val('.a-og'),[d.organ,a.organ]),'器官',a.organ);
+  if(f.querySelector('.a-ds')){
     var raw=val('.a-ds'),at=norm(raw).split(' ').filter(Boolean);
     var lines=String(a.desc||'').split('\n').map(function(l){return l.replace(/^\s*\*/,'').trim()}).filter(Boolean);
     var ltoks=[],n=0;
@@ -353,236 +490,100 @@ function gradeHTML(id,f){
   return h+'</div>';
 }
 
-/* ---------- microscope ---------- */
-var FR={4:1,10:0.4,40:0.1};  /* fraction of the image's short side visible across the field */
-var SC=null;
-async function openScope(id,view){
-  view=view||{};
-  var a;try{a=await loadImgs(id)}catch(e){note('讀取圖片失敗');return}
-  if(!a.length){note('這張片子還沒有你的圖片。先在「筆記／圖片」上傳。');return}
-  var idx=0;if(view.img){a.forEach(function(x,i){if(x.id===view.img)idx=i})}
-  SC={id:id,imgs:a,idx:idx,obj:4,cx:0,cy:0,pt:false};
-  $('scope').hidden=false;document.body.style.overflow='hidden';
-  fillLines();await showImg(idx,true);
-  if(view.cx!=null){SC.cx=view.cx;SC.cy=view.cy;layout(false);
-    if(view.obj&&view.obj!==4){setTimeout(function(){setObj(view.obj)},250)}}
-  $('sc-x').focus();
+/* ---------- catalog (片庫) ---------- */
+function unitTags(id){var t=[];SL.forEach(function(d){if(d.id===id||d.view===id)t=t.concat(unitsOf(d).map(function(u){return d.parent?u+'（類似）':u}))});return uniq(t)}
+function listCat(){
+  var q=$('c-q').value.trim().toLowerCase(),only=$('c-sem').checked,box=$('l-cat');box.innerHTML='';
+  var rows=CAT.filter(function(c){var tg=unitTags(c.id);c._t=tg;if(only&&!tg.length)return false;
+    return !q||(c.id+' '+c.n+' '+c.dx+' '+c.pdx+' '+tg.join(' ')).toLowerCase().indexOf(q)>=0});
+  $('c-n').textContent=rows.length+' 張';
+  if(!rows.length){box.innerHTML='<div class="empty">找不到。</div>';return}
+  var tb=el('table','cat');tb.innerHTML='<thead><tr><th>實體</th><th>線上片號</th><th>是什麼</th><th></th></tr></thead>';
+  var bd=el('tbody');
+  rows.slice(0,400).forEach(function(c){
+    var tr=el('tr',null,'<td>'+esc(c.n||'—')+'</td><td>'+esc(c.id)+(c.on?'':'<br><span class="small">線上沒有</span>')+'</td><td>'+esc(c.dx||c.pdx)+
+      (c.pdx&&c.dx&&norm(c.pdx)!==norm(c.dx.split(';')[0])?'<div class="small">片單：'+esc(c.pdx)+'</div>':'')+
+      (c._t.length?'<div class="small">'+esc(c._t.join('、'))+'</div>':'')+'</td><td><button type="button" class="btn sm">打開</button></td>');
+    tr.querySelector('button').onclick=function(){var nx=tr.nextSibling;if(nx&&nx.classList.contains('exp')){nx.remove();return}
+      var x=el('tr','exp'),td=el('td');td.colSpan=4;td.appendChild(mk(c.id,{}).el);x.appendChild(td);tr.after(x)};
+    bd.appendChild(tr)});
+  tb.appendChild(bd);box.appendChild(tb);
 }
-function fillLines(){
-  var a=eff(SC.id),s=$('sc-line'),vw=U.views[SC.id]||{};
-  var opts=[['dx','診斷：'+strip(a.dx)]].concat(String(a.desc||'').split('\n').filter(function(l){return l.trim()}).map(function(l){return [lineKey(l),lineKey(l)]}));
-  s.innerHTML=opts.map(function(o){return '<option value="'+esc(o[0])+'">'+(vw[o[0]]?'● ':'')+esc(o[1].length>60?o[1].slice(0,58)+'…':o[1])+'</option>'}).join('');
+
+/* ---------- export (Word) ---------- */
+function listExp(){
+  var box=$('l-exp');box.innerHTML='';
+  var ids=uniq(Object.keys(U.notes).concat(Object.keys(U.overrides)).concat(SL.filter(function(d){return inUnits(d.id)}).map(function(d){return d.id}))).filter(function(id){return info(id)}).sort(byNum);
+  if(!ids.length){box.innerHTML='<div class="empty">沒有片子。</div>';return}
+  ids.forEach(function(id){var d=info(id),has=(U.notes[id]||'').trim()||U.overrides[id];
+    var r=el('label','xr','<input type="checkbox" value="'+esc(id)+'"'+(has?' checked':'')+'> <b>'+esc(d.n?d.n+'－':'')+esc(id)+'</b>　'+esc(strip(eff(id).dx))+(has?' <span class="small">（有筆記／修改）</span>':''));box.appendChild(r)});
 }
-function showImg(i,fit){
-  return new Promise(function(res){
-    SC.idx=(i+SC.imgs.length)%SC.imgs.length;var im=SC.imgs[SC.idx],img=$('sc-img');
-    img.onload=function(){SC.w=img.naturalWidth;SC.h=img.naturalHeight;img.style.width=SC.w+'px';img.style.height=SC.h+'px';if(fit){SC.cx=SC.w/2;SC.cy=SC.h/2;SC.obj=4}layout(false);res()};
-    img.src=im.data;
-    $('sc-t').textContent=SC.id+'　圖 '+(SC.idx+1)+' / '+SC.imgs.length;
-    $('sc-prev').hidden=$('sc-next').hidden=SC.imgs.length<2;
+async function doExport(){
+  var ids=[].slice.call($('l-exp').querySelectorAll('input:checked')).map(function(x){return x.value});
+  var m=$('x-m');if(!ids.length){m.textContent='請先勾選片子。';return}
+  m.textContent='準備中…';
+  try{
+    var all={};var s=await fb.fs.getDocs(C('users',user.uid,'images'));s.forEach(function(x){var y=x.data();if(ids.indexOf(y.slide)>=0)(all[y.slide]=all[y.slide]||[]).push({data:y.data,w:y.w,h:y.h,at:y.at||0,note:y.note||''})});
+    var items=ids.map(function(id){var d=info(id),a=eff(id);return {n:d.n||'',id:id,dx:strip(d.dxfull),a:a,note:U.notes[id]||'',imgs:(all[id]||[]).sort(function(p,q){return p.at-q.at})}});
+    var blob=await buildDocx(items);
+    var url=URL.createObjectURL(blob),x=el('a');x.href=url;x.download='病理筆記-'+new Date().toISOString().slice(0,10)+'.docx';document.body.appendChild(x);x.click();x.remove();
+    setTimeout(function(){URL.revokeObjectURL(url)},30000);m.textContent='已匯出 '+ids.length+' 張。';
+  }catch(e){m.textContent='匯出失敗：'+(e.code||e.message||e)}
+}
+/* minimal .docx writer: 中文標楷體、英文 Times New Roman */
+var CRC=(function(){var t=[];for(var n=0;n<256;n++){var c=n;for(var k=0;k<8;k++)c=c&1?0xEDB88320^(c>>>1):c>>>1;t[n]=c>>>0}return t})();
+function crc32(u){var c=0xFFFFFFFF;for(var i=0;i<u.length;i++)c=CRC[(c^u[i])&255]^(c>>>8);return (c^0xFFFFFFFF)>>>0}
+function zip(files){
+  var enc=new TextEncoder(),parts=[],cd=[],off=0;
+  files.forEach(function(f){var name=enc.encode(f.name),data=typeof f.data==='string'?enc.encode(f.data):f.data,crc=crc32(data);
+    var h=new DataView(new ArrayBuffer(30));h.setUint32(0,0x04034b50,true);h.setUint16(4,20,true);h.setUint16(6,0x0800,true);h.setUint16(8,0,true);h.setUint16(12,0x21,true);h.setUint32(14,crc,true);h.setUint32(18,data.length,true);h.setUint32(22,data.length,true);h.setUint16(26,name.length,true);
+    parts.push(h.buffer,name,data);
+    var c=new DataView(new ArrayBuffer(46));c.setUint32(0,0x02014b50,true);c.setUint16(4,20,true);c.setUint16(6,20,true);c.setUint16(8,0x0800,true);c.setUint16(14,0x21,true);c.setUint32(16,crc,true);c.setUint32(20,data.length,true);c.setUint32(24,data.length,true);c.setUint16(28,name.length,true);c.setUint32(42,off,true);
+    cd.push(c.buffer,name);off+=30+name.length+data.length});
+  var cdl=cd.reduce(function(s,b){return s+(b.byteLength||b.length)},0),e=new DataView(new ArrayBuffer(22));
+  e.setUint32(0,0x06054b50,true);e.setUint16(8,files.length,true);e.setUint16(10,files.length,true);e.setUint32(12,cdl,true);e.setUint32(16,off,true);
+  return new Blob(parts.concat(cd,[e.buffer]),{type:'application/vnd.openxmlformats-officedocument.wordprocessingml.document'});
+}
+function xe(s){return String(s==null?'':s).replace(/[&<>"]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]}).replace(/[\u0000-\u0008\u000B\u000C\u000E-\u001F]/g,'')}
+function runs(text,base){ /* ==highlight== and __bold__ */
+  var out='',re=/==([^=\n]+?)==|__([^_\n]+?)__/g,i=0,m;base=base||'';
+  function r(t,pr){return t?'<w:r><w:rPr>'+base+pr+'</w:rPr><w:t xml:space="preserve">'+xe(t)+'</w:t></w:r>':''}
+  while((m=re.exec(text))){out+=r(text.slice(i,m.index),'');out+=m[1]!=null?r(m[1],'<w:highlight w:val="yellow"/>'):r(m[2],'<w:b/>');i=m.index+m[0].length}
+  return out+r(text.slice(i),'');
+}
+function para(text,o){o=o||{};return '<w:p><w:pPr>'+(o.sp?'<w:spacing w:before="'+o.sp+'"/>':'')+(o.ind?'<w:ind w:left="'+o.ind+'"/>':'')+'</w:pPr>'+runs(text,(o.b?'<w:b/>':'')+(o.sz?'<w:sz w:val="'+o.sz+'"/><w:szCs w:val="'+o.sz+'"/>':'')+(o.c?'<w:color w:val="'+o.c+'"/>':''))+'</w:p>'}
+function b64bytes(d){var s=atob(d.split(',')[1]),u=new Uint8Array(s.length);for(var i=0;i<s.length;i++)u[i]=s.charCodeAt(i);return u}
+async function buildDocx(items){
+  var media=[],rels=[],body='',rid=10,pic=1;
+  body+=para('病理筆記',{b:1,sz:32})+para('匯出日期：'+new Date().toLocaleDateString('zh-TW'),{c:'666666'});
+  items.forEach(function(it,ix){
+    body+=para((it.n?'實體 '+it.n+'　':'')+it.id+'　'+it.dx,{b:1,sz:28,sp:ix?360:240});
+    body+=para('答案'+(it.a.mine?'（我修改過的版本）':''),{b:1,c:'4A3A78',sp:120});
+    body+=para('診斷：'+it.a.dx,{ind:240});
+    if(it.a.organ)body+=para('器官：'+it.a.organ,{ind:240});
+    String(it.a.desc||'').split('\n').forEach(function(l){if(l.trim())body+=para(l,{ind:240})});
+    if(it.note.trim()){body+=para('整題筆記',{b:1,c:'4A3A78',sp:120});it.note.split('\n').forEach(function(l){body+=para(l,{ind:240})})}
+    if(it.imgs.length){body+=para('圖片與附註',{b:1,c:'4A3A78',sp:120});
+      it.imgs.forEach(function(im){
+        var name='image'+pic+'.jpeg',id='rId'+(rid++),n=pic++,w=im.w||800,h=im.h||600,cx=Math.round(Math.min(4114800,w*9525)),cy=Math.round(cx*h/w);
+        if(cy>6400800){cx=Math.round(cx*6400800/cy);cy=6400800}
+        media.push({name:'word/media/'+name,data:b64bytes(im.data)});rels.push('<Relationship Id="'+id+'" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/image" Target="media/'+name+'"/>');
+        body+='<w:p><w:r><w:drawing><wp:inline distT="0" distB="0" distL="0" distR="0"><wp:extent cx="'+cx+'" cy="'+cy+'"/><wp:docPr id="'+n+'" name="Picture '+n+'"/><a:graphic xmlns:a="http://schemas.openxmlformats.org/drawingml/2006/main"><a:graphicData uri="http://schemas.openxmlformats.org/drawingml/2006/picture"><pic:pic xmlns:pic="http://schemas.openxmlformats.org/drawingml/2006/picture"><pic:nvPicPr><pic:cNvPr id="'+n+'" name="'+name+'"/><pic:cNvPicPr/></pic:nvPicPr><pic:blipFill><a:blip r:embed="'+id+'"/><a:stretch><a:fillRect/></a:stretch></pic:blipFill><pic:spPr><a:xfrm><a:off x="0" y="0"/><a:ext cx="'+cx+'" cy="'+cy+'"/></a:xfrm><a:prstGeom prst="rect"><a:avLst/></a:prstGeom></pic:spPr></pic:pic></a:graphicData></a:graphic></wp:inline></w:drawing></w:r></w:p>';
+        if(im.note.trim())im.note.split('\n').forEach(function(l){body+=para(l,{c:'333333'})});
+      })}
   });
+  var NS='xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main" xmlns:r="http://schemas.openxmlformats.org/officeDocument/2006/relationships" xmlns:wp="http://schemas.openxmlformats.org/drawingml/2006/wordprocessingDrawing"';
+  var doc='<?xml version="1.0" encoding="UTF-8" standalone="yes"?><w:document '+NS+'><w:body>'+body+'<w:sectPr><w:pgSz w:w="11906" w:h="16838"/><w:pgMar w:top="1134" w:right="1134" w:bottom="1134" w:left="1134" w:header="567" w:footer="567" w:gutter="0"/></w:sectPr></w:body></w:document>';
+  var font='<w:rFonts w:ascii="Times New Roman" w:hAnsi="Times New Roman" w:eastAsia="標楷體" w:cs="Times New Roman"/>';
+  var styles='<?xml version="1.0" encoding="UTF-8" standalone="yes"?><w:styles xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main"><w:docDefaults><w:rPrDefault><w:rPr>'+font+'<w:sz w:val="24"/><w:szCs w:val="24"/><w:lang w:val="en-US" w:eastAsia="zh-TW"/></w:rPr></w:rPrDefault><w:pPrDefault><w:pPr><w:spacing w:after="60" w:line="300" w:lineRule="auto"/></w:pPr></w:pPrDefault></w:docDefaults><w:style w:type="paragraph" w:default="1" w:styleId="Normal"><w:name w:val="Normal"/><w:rPr>'+font+'</w:rPr></w:style></w:styles>';
+  var files=[
+    {name:'[Content_Types].xml',data:'<?xml version="1.0" encoding="UTF-8" standalone="yes"?><Types xmlns="http://schemas.openxmlformats.org/package/2006/content-types"><Default Extension="rels" ContentType="application/vnd.openxmlformats-package.relationships+xml"/><Default Extension="xml" ContentType="application/xml"/><Default Extension="jpeg" ContentType="image/jpeg"/><Override PartName="/word/document.xml" ContentType="application/vnd.openxmlformats-officedocument.wordprocessingml.document.main+xml"/><Override PartName="/word/styles.xml" ContentType="application/vnd.openxmlformats-officedocument.wordprocessingml.styles+xml"/></Types>'},
+    {name:'_rels/.rels',data:'<?xml version="1.0" encoding="UTF-8" standalone="yes"?><Relationships xmlns="http://schemas.openxmlformats.org/package/2006/relationships"><Relationship Id="rId1" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/officeDocument" Target="word/document.xml"/></Relationships>'},
+    {name:'word/_rels/document.xml.rels',data:'<?xml version="1.0" encoding="UTF-8" standalone="yes"?><Relationships xmlns="http://schemas.openxmlformats.org/package/2006/relationships"><Relationship Id="rId1" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/styles" Target="styles.xml"/>'+rels.join('')+'</Relationships>'},
+    {name:'word/document.xml',data:doc},{name:'word/styles.xml',data:styles}].concat(media);
+  return zip(files);
 }
-function layout(anim){
-  if(!SC||!SC.w)return;var f=$('sc-f'),Dm=f.clientWidth,s=Math.min(SC.w,SC.h),k=Dm/(FR[SC.obj]*s);
-  SC.cx=Math.max(0,Math.min(SC.w,SC.cx));SC.cy=Math.max(0,Math.min(SC.h,SC.cy));
-  var img=$('sc-img');img.style.transition=anim?'transform .45s ease':'none';
-  img.style.transform='translate('+(Dm/2-SC.cx*k)+'px,'+(Dm/2-SC.cy*k)+'px) scale('+k+')';
-  [].forEach.call($('sc-obj').children,function(b){b.setAttribute('aria-pressed',+b.dataset.o===SC.obj)});
-  $('sc-info').textContent='物鏡 '+SC.obj+'×（總倍率 '+SC.obj*10+'×）　拖曳移動，滾輪或雙指縮放換物鏡'+(SC.obj===40?'。高倍是把截圖放大，清晰度取決於你上傳的圖。':'');
-}
-function setObj(o){if(!SC||!FR[o])return;SC.obj=o;layout(true)}
-function stepObj(dir){var L=[4,10,40],i=L.indexOf(SC.obj)+dir;if(i>=0&&i<L.length)setObj(L[i])}
-function closeScope(){$('scope').hidden=true;document.body.style.overflow='';SC=null}
-(function(){
-  var f=$('sc-f'),pts={},startD=0;
-  f.addEventListener('pointerdown',function(e){if(!SC)return;f.setPointerCapture(e.pointerId);pts[e.pointerId]={x:e.clientX,y:e.clientY};var k=Object.keys(pts);if(k.length===2){startD=dist()}});
-  f.addEventListener('pointermove',function(e){if(!SC||!pts[e.pointerId])return;var p=pts[e.pointerId],k=Object.keys(pts);
-    if(k.length===1){var Dm=f.clientWidth,s=Math.min(SC.w,SC.h),sc=Dm/(FR[SC.obj]*s);SC.cx-=(e.clientX-p.x)/sc;SC.cy-=(e.clientY-p.y)/sc;layout(false)}
-    p.x=e.clientX;p.y=e.clientY;
-    if(k.length===2&&startD){var d=dist();if(d/startD>1.5){stepObj(1);startD=d}else if(d/startD<0.67){stepObj(-1);startD=d}}});
-  function up(e){delete pts[e.pointerId];startD=0}
-  f.addEventListener('pointerup',up);f.addEventListener('pointercancel',up);
-  function dist(){var k=Object.keys(pts);if(k.length<2)return 0;var a=pts[k[0]],b=pts[k[1]];return Math.hypot(a.x-b.x,a.y-b.y)}
-  var wl=0;f.addEventListener('wheel',function(e){e.preventDefault();var t=Date.now();if(t-wl<250)return;wl=t;stepObj(e.deltaY<0?1:-1)},{passive:false});
-  [].forEach.call($('sc-obj').children,function(b){b.onclick=function(){setObj(+b.dataset.o)}});
-  $('sc-x').onclick=closeScope;
-  $('sc-prev').onclick=function(){showImg(SC.idx-1,true)};$('sc-next').onclick=function(){showImg(SC.idx+1,true)};
-  $('sc-pt').onclick=function(){SC.pt=!SC.pt;$('sc-ptr').hidden=!SC.pt;$('sc-pt').setAttribute('aria-pressed',SC.pt)};
-  $('sc-sv').onclick=function(){if(!SC)return;var k=$('sc-line').value,v=U.views[SC.id]=U.views[SC.id]||{};
-    v[k]={img:SC.imgs[SC.idx].id,cx:Math.round(SC.cx),cy:Math.round(SC.cy),obj:SC.obj};saveU('views',SC.id);fillLines();$('sc-line').value=k;
-    $('sc-info').textContent='已存。之後在答案點這一點，就會開到這個視野。';refreshLive(SC.id)};
-  document.addEventListener('keydown',function(e){if(!SC)return;var s=40;
-    if(e.key==='Escape')closeScope();else if(e.key==='ArrowLeft'){SC.cx-=s/ (FR[SC.obj]);layout(false)}else if(e.key==='ArrowRight'){SC.cx+=s/(FR[SC.obj]);layout(false)}
-    else if(e.key==='ArrowUp'){SC.cy-=s/(FR[SC.obj]);layout(false)}else if(e.key==='ArrowDown'){SC.cy+=s/(FR[SC.obj]);layout(false)}
-    else if(e.key==='+'||e.key==='=')stepObj(1);else if(e.key==='-')stepObj(-1)});
-  window.addEventListener('resize',function(){layout(false)});
-})();
-
-/* ---------- slide microscope (pre-captured fields; coordinates in µm on the slide) ---------- */
-var FIELD_UM={4:5500,10:2200,40:550};   /* field diameter of a 10x eyepiece (FN 22) with each objective */
-var FIMG={},SS=null;
-function fimg(id){if(FIMG[id])return FIMG[id];FIMG[id]=fb.fs.getDoc(D('fimg',id)).then(function(x){if(!x.exists())throw new Error('missing');return x.data().data});FIMG[id].catch(function(){delete FIMG[id]});return FIMG[id]}
-function inRect(r,x,y){return x>=r.x0&&x<=r.x1&&y>=r.y0&&y<=r.y1}
-function layerFor(f,obj,x,y){
-  if(obj===4)return f.ov;
-  var rs=(f.regs||[]).filter(function(r){return r.obj===obj});if(!rs.length)return null;
-  var inside=rs.filter(function(r){return inRect(r,x,y)});
-  var cd=function(r){return Math.hypot((r.x0+r.x1)/2-x,(r.y0+r.y1)/2-y)};
-  if(inside.length){inside.sort(function(a,b){return cd(a)-cd(b)});return inside[0]}
-  rs.sort(function(a,b){return Math.hypot((a.x0+a.x1)/2-x,(a.y0+a.y1)/2-y)-Math.hypot((b.x0+b.x1)/2-x,(b.y0+b.y1)/2-y)});return rs[0];
-}
-async function openSlide(id,pt){
-  var f=FLD[id];if(!f||!f.ov){note('這張片還沒有擷取影像。');return}
-  SS={id:id,obj:4,x:pt?pt.x:(f.ov.x0+f.ov.x1)/2,y:pt?pt.y:(f.ov.y0+f.ov.y1)/2,layer:null,tool:'move',pt:false,shared:false};
-  $('ss').hidden=false;document.body.style.overflow='hidden';
-  $('ss-t').textContent=id+'　'+(BY[id]?strip(BY[id].dxfull):'');
-  ssPoints();ssTools();
-  var ok=isAdmin||APPROVED;$('ss-lock').hidden=ok;$('ss-f').hidden=!ok;$('ss-ctl').hidden=!ok;$('ss-tools').hidden=!ok;
-  if(!ok){ssLock();return}
-  await ssShow(false);
-  if(pt&&pt.obj&&pt.obj!==4)setTimeout(function(){ssObj(pt.obj,true)},500);
-  if(pt&&pt.note)$('ss-info').textContent=pt.note;
-}
-function ssLock(){
-  var b=$('ss-lock');
-  b.innerHTML='<p>看片影像只開放給管理者核准的同學。</p>'+(REQUESTED?'<p class="small">已送出申請，等待核准。</p>':'<button type="button" class="btn sm primary" id="ss-req">申請看片</button>');
-  var q=$('ss-req');if(q)q.onclick=async function(){try{await fb.fs.setDoc(D('requests',user.uid),{name:user.displayName||'',email:user.email||'',at:Date.now()});REQUESTED=true;ssLock()}catch(e){note('申請失敗：'+(e.code||e.message))}};
-}
-function ssPoints(){
-  var f=FLD[SS.id],box=$('ss-pts');box.innerHTML='';
-  (f.pts||[]).forEach(function(p,i){var b=el('button','btn sm',esc((i+1)+'. '+(p.k==='dx'?'整體':p.k).slice(0,28))+(p.conf?' <small>信心'+esc(p.conf)+'</small>':''));b.type='button';b.title=p.k;
-    b.onclick=function(){SS.x=p.x;SS.y=p.y;SS.obj=4;ssShow(false).then(function(){if(p.obj!==4)setTimeout(function(){ssObj(p.obj,true)},350)});$('ss-info').textContent=p.note||''};box.appendChild(b)});
-}
-async function ssShow(anim){
-  var f=FLD[SS.id],L=layerFor(f,SS.obj,SS.x,SS.y);
-  if(!L){SS.obj=4;L=f.ov}
-  if(L!==SS.layer){
-    var img=$('ss-img');
-    try{img.src=await fimg(L.img)}catch(e){$('ss-info').textContent='影像讀取失敗：'+(e.code||e.message);return}
-    SS.layer=L;anim=false;
-  }
-  ssLayout(anim);
-}
-function ssLayout(anim){
-  if(!SS||!SS.layer)return;var L=SS.layer,Dm=$('ss-f').clientWidth,k=Dm/FIELD_UM[SS.obj],s=(L.x1-L.x0)/L.w;
-  SS.x=Math.max(L.x0,Math.min(L.x1,SS.x));SS.y=Math.max(L.y0,Math.min(L.y1,SS.y));
-  var img=$('ss-img');img.style.width=L.w+'px';img.style.height=L.h+'px';img.style.transition=anim?'transform .45s ease':'none';
-  img.style.transform='translate('+(Dm/2-(SS.x-L.x0)*k)+'px,'+(Dm/2-(SS.y-L.y0)*k)+'px) scale('+(k*s)+')';
-  [].forEach.call($('ss-obj').children,function(b){b.setAttribute('aria-pressed',+b.dataset.o===SS.obj)});
-  var h=FIELD_UM[SS.obj];$('ss-scale').textContent='視野直徑約 '+(h>=1000?(h/1000)+' mm':h+' µm')+'（物鏡 '+SS.obj+'×，總倍率 '+SS.obj*10+'×）';
-  ssMarks();
-}
-function ssObj(o,anim){
-  if(!SS)return;var f=FLD[SS.id];
-  if(o!==4){var L=layerFor(f,o,SS.x,SS.y);if(!L){$('ss-info').textContent='這張片沒有 '+o+'× 的影像。';return}
-    if(!inRect(L,SS.x,SS.y)){SS.x=(L.x0+L.x1)/2;SS.y=(L.y0+L.y1)/2;$('ss-info').textContent='高倍只有重點區域，已移到最近的區域。'}}
-  SS.obj=o;ssShow(anim);
-}
-function ssStep(d){var L=[4,10,40],i=L.indexOf(SS.obj)+d;if(i>=0&&i<L.length)ssObj(L[i],true)}
-function closeSlide(){$('ss').hidden=true;document.body.style.overflow='';SS=null}
-/* annotations: circle, arrow, text — stored in µm */
-function myMarks(){return (U.marks&&U.marks[SS.id])||[]}
-function sharedMarks(){var f=FLD[SS.id];return (f&&f.shared)||[]}
-function ssMarks(extra){
-  var Dm=$('ss-f').clientWidth,k=Dm/FIELD_UM[SS.obj],w=Dm/k,svg=$('ss-svg');
-  svg.setAttribute('viewBox',(SS.x-w/2)+' '+(SS.y-w/2)+' '+w+' '+w);
-  var fs=15/k,sw=2.5/k,h='<defs>'+[['y','#ffd400'],['g','#1a7f37']].map(function(c){return '<marker id="ah'+c[0]+'" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="5" markerHeight="5" orient="auto"><path d="M0 0L10 5L0 10z" fill="'+c[1]+'"/></marker>'}).join('')+'</defs>';
-  function draw(m,c){
-    if(m.t==='c')return '<circle cx="'+m.x+'" cy="'+m.y+'" r="'+m.r+'" fill="none" stroke="'+c+'" stroke-width="'+sw+'"/>';
-    if(m.t==='a')return '<line x1="'+m.x1+'" y1="'+m.y1+'" x2="'+m.x2+'" y2="'+m.y2+'" stroke="'+c+'" stroke-width="'+sw+'" marker-end="url(#ah'+(c==='#1a7f37'?'g':'y')+')"/>';
-    if(m.t==='t')return '<text x="'+m.x+'" y="'+m.y+'" font-size="'+fs+'" fill="'+c+'" stroke="#fff" stroke-width="'+(fs/6)+'" paint-order="stroke" font-family="Times New Roman,DFKai-SB,BiauKai,serif">'+esc(m.s)+'</text>';
-    return ''}
-  h+=sharedMarks().map(function(m){return draw(m,'#1a7f37')}).join('')+myMarks().map(function(m){return draw(m,'#ffd400')}).join('')+(extra?draw(extra,'#ffd400'):'');
-  svg.innerHTML=h;
-}
-function ssSaveMarks(list){
-  if(SS.shared&&isAdmin){var f=FLD[SS.id];f.shared=list;saveFields(SS.id)}
-  else{U.marks=U.marks||{};if(list.length)U.marks[SS.id]=list;else delete U.marks[SS.id];saveU('marks',SS.id)}
-}
-function ssTools(){
-  var box=$('ss-tools');
-  box.innerHTML=[['move','移動'],['c','畫圈'],['a','箭頭'],['t','文字']].map(function(t){return '<button type="button" data-t="'+t[0]+'" aria-pressed="'+(SS.tool===t[0])+'">'+t[1]+'</button>'}).join('')+
-    '<button type="button" class="ss-undo">復原</button><button type="button" class="ss-clr">清除'+(SS.shared?'共用':'我的')+'標註</button>'+(isAdmin?'<button type="button" class="ss-sh" aria-pressed="'+SS.shared+'">共用模式</button>':'');
-  box.querySelectorAll('[data-t]').forEach(function(b){b.onclick=function(){SS.tool=b.dataset.t;ssTools()}});
-  var cur=function(){return (SS.shared?sharedMarks():myMarks()).slice()};
-  box.querySelector('.ss-undo').onclick=function(){var l=cur();l.pop();ssSaveMarks(l);ssMarks()};
-  var clr=box.querySelector('.ss-clr');clr.onclick=function(){if(clr.dataset.a!=='1'){clr.dataset.a='1';clr.textContent='再按一次確認';return}ssSaveMarks([]);ssMarks();ssTools()};
-  var sh=box.querySelector('.ss-sh');if(sh)sh.onclick=function(){SS.shared=!SS.shared;ssTools()};
-  $('ss-f').style.cursor=SS.tool==='move'?'grab':'crosshair';
-}
-async function saveFields(id){var o={};o[id]=FLD[id];try{await fb.fs.setDoc(D('content','fields'),o,{merge:true})}catch(e){note('儲存失敗：'+(e.code||e.message))}}
-(function(){
-  var f=$('ss-f'),pts={},startD=0,drag=null;
-  function toUm(e){var r=f.getBoundingClientRect(),Dm=f.clientWidth,k=Dm/FIELD_UM[SS.obj];return {x:SS.x+(e.clientX-r.left-Dm/2)/k,y:SS.y+(e.clientY-r.top-Dm/2)/k}}
-  f.addEventListener('pointerdown',function(e){if(!SS)return;f.setPointerCapture(e.pointerId);pts[e.pointerId]={x:e.clientX,y:e.clientY};
-    if(Object.keys(pts).length===2){startD=dist();drag=null;return}
-    if(SS.tool!=='move'){var p=toUm(e);
-      if(SS.tool==='t'){var s=window.prompt('標註文字');if(s&&s.trim()){var l=(SS.shared?sharedMarks():myMarks()).slice();l.push({t:'t',x:Math.round(p.x),y:Math.round(p.y),s:s.trim().slice(0,60)});ssSaveMarks(l);ssMarks()}delete pts[e.pointerId];return}
-      drag={t:SS.tool,p:p}}});
-  f.addEventListener('pointermove',function(e){if(!SS||!pts[e.pointerId])return;var p0=pts[e.pointerId],k=Object.keys(pts);
-    if(k.length===2&&startD){var d=dist();if(d/startD>1.5){ssStep(1);startD=d}else if(d/startD<0.67){ssStep(-1);startD=d}p0.x=e.clientX;p0.y=e.clientY;return}
-    if(drag){var q=toUm(e),m=drag.t==='c'?{t:'c',x:drag.p.x,y:drag.p.y,r:Math.hypot(q.x-drag.p.x,q.y-drag.p.y)}:{t:'a',x1:drag.p.x,y1:drag.p.y,x2:q.x,y2:q.y};drag.m=m;ssMarks(m);return}
-    var Dm=f.clientWidth,kk=Dm/FIELD_UM[SS.obj];SS.x-=(e.clientX-p0.x)/kk;SS.y-=(e.clientY-p0.y)/kk;p0.x=e.clientX;p0.y=e.clientY;ssLayout(false)});
-  function up(e){delete pts[e.pointerId];startD=0;
-    if(drag&&drag.m){var m=drag.m,R=function(v){return Math.round(v)};
-      var ok=m.t==='c'?m.r*(f.clientWidth/FIELD_UM[SS.obj])>6:Math.hypot(m.x2-m.x1,m.y2-m.y1)*(f.clientWidth/FIELD_UM[SS.obj])>10;
-      if(ok){var l=(SS.shared?sharedMarks():myMarks()).slice();l.push(m.t==='c'?{t:'c',x:R(m.x),y:R(m.y),r:R(m.r)}:{t:'a',x1:R(m.x1),y1:R(m.y1),x2:R(m.x2),y2:R(m.y2)});ssSaveMarks(l)}
-      ssMarks()}drag=null}
-  f.addEventListener('pointerup',up);f.addEventListener('pointercancel',up);
-  function dist(){var k=Object.keys(pts);if(k.length<2)return 0;var a=pts[k[0]],b=pts[k[1]];return Math.hypot(a.x-b.x,a.y-b.y)}
-  var wl=0;f.addEventListener('wheel',function(e){e.preventDefault();var t=Date.now();if(t-wl<300)return;wl=t;ssStep(e.deltaY<0?1:-1)},{passive:false});
-  [].forEach.call($('ss-obj').children,function(b){b.onclick=function(){ssObj(+b.dataset.o,true)}});
-  $('ss-x').onclick=closeSlide;
-  $('ss-pt').onclick=function(){SS.pt=!SS.pt;$('ss-ptr').hidden=!SS.pt;$('ss-pt').setAttribute('aria-pressed',SS.pt)};
-  document.addEventListener('keydown',function(e){if(!SS)return;var s=FIELD_UM[SS.obj]/10;
-    if(e.key==='Escape')closeSlide();else if(e.key==='ArrowLeft'){SS.x-=s;ssLayout(false)}else if(e.key==='ArrowRight'){SS.x+=s;ssLayout(false)}
-    else if(e.key==='ArrowUp'){SS.y-=s;ssLayout(false)}else if(e.key==='ArrowDown'){SS.y+=s;ssLayout(false)}
-    else if(e.key==='+'||e.key==='=')ssStep(1);else if(e.key==='-')ssStep(-1)});
-  window.addEventListener('resize',function(){ssLayout(false)});
-})();
-
-/* ---------- admin: image access + capture bridge ---------- */
-var CAP_ORIGIN='http://microteaching.ntu.edu.tw:9002',capWin=null;
-async function admInit(){
-  try{var x=await fb.fs.getDoc(D('admin','links'));LINKS=x.exists()?(x.data().map||{}):{}}catch(e){LINKS={}}
-  /* one-time move: direct links leave the shared slide list (they were generated from the admin's own session) */
-  var moved=false;SL.forEach(function(d){if(d.link){LINKS[d.id]=d.link;delete d.link;moved=true}});
-  if(moved){try{await fb.fs.setDoc(D('admin','links'),{map:LINKS});await saveSlides(null)}catch(e){note('連結搬移失敗：'+(e.code||e.message))}}
-}
-window.addEventListener('message',async function(ev){
-  if(ev.origin!==CAP_ORIGIN||!isAdmin||!capWin||ev.source!==capWin)return;
-  var m=ev.data||{},reply=function(o){try{ev.source.postMessage(Object.assign({t:'pd-ack',n:m.n},o),CAP_ORIGIN)}catch(e){}};
-  try{
-    var f=FLD[m.slide]=FLD[m.slide]||{pts:[],regs:[],shared:[]};
-    if(m.t==='pd-img'){
-      if(!/^data:image\/jpeg;base64,/.test(m.data)||m.data.length>990000)throw new Error('bad image');
-      var ref=await fb.fs.addDoc(C('fimg'),{slide:m.slide,data:m.data,at:Date.now()});
-      var L={img:ref.id,x0:m.rect[0],y0:m.rect[1],x1:m.rect[2],y1:m.rect[3],w:m.w,h:m.h};
-      if(m.role==='ov')f.ov=L;else{L.obj=m.obj;f.regs=(f.regs||[]).concat([L])}
-      await saveFields(m.slide);reply({ok:true,id:ref.id});
-    }else if(m.t==='pd-pts'){f.pts=m.pts;await saveFields(m.slide);reply({ok:true})}
-    else if(m.t==='pd-reset'){
-      var ids=[f.ov&&f.ov.img].concat((f.regs||[]).map(function(r){return r.img})).filter(Boolean);
-      for(var i=0;i<ids.length;i++)await fb.fs.deleteDoc(D('fimg',ids[i]));
-      FLD[m.slide]={pts:[],regs:[],shared:f.shared||[]};await saveFields(m.slide);reply({ok:true})}
-    else reply({ok:false,err:'unknown'});
-    refreshLive(m.slide);
-  }catch(e){reply({ok:false,err:String(e.code||e.message||e)})}
-});
-function admCapture(id){if(!LINKS[id]){note(id+' 沒有連結。');return}capWin=window.open(LINKS[id],'pdcap')}
-async function admAccess(){
-  var box=$('a-acc');box.innerHTML='<div class="small">讀取中…</div>';
-  try{
-    var r=await Promise.all([fb.fs.getDocs(C('requests')),fb.fs.getDocs(C('access'))]);
-    var h='';r[0].forEach(function(x){var y=x.data();h+='<div class="rep"><div><b>申請：</b>'+esc(y.name)+' <span class="small">'+esc(y.email)+'</span></div><div class="row"><button type="button" class="btn sm primary" data-ok="'+x.id+'">核准</button><button type="button" class="btn sm warn" data-no="'+x.id+'">拒絕</button></div></div>'});
-    var n=0;r[1].forEach(function(x){n++;var y=x.data();h+='<div class="row" style="align-items:center"><span>'+esc(y.name)+' <span class="small">'+esc(y.email)+'</span></span><button type="button" class="reset" data-rm="'+x.id+'">取消權限</button></div>'});
-    box.innerHTML=(h||'<div class="empty">沒有申請。</div>')+'<div class="small">已核准 '+n+' 人</div>';
-    var reqs={};r[0].forEach(function(x){reqs[x.id]=x.data()});
-    box.querySelectorAll('[data-ok]').forEach(function(b){b.onclick=async function(){var id=b.dataset.ok,y=reqs[id];await fb.fs.setDoc(D('access',id),{name:y.name||'',email:y.email||'',at:Date.now()});await fb.fs.deleteDoc(D('requests',id));admAccess()}});
-    box.querySelectorAll('[data-no]').forEach(function(b){b.onclick=async function(){await fb.fs.deleteDoc(D('requests',b.dataset.no));admAccess()}});
-    box.querySelectorAll('[data-rm]').forEach(function(b){b.onclick=async function(){if(b.dataset.a!=='1'){b.dataset.a='1';b.textContent='再按一次確認';return}await fb.fs.deleteDoc(D('access',b.dataset.rm));admAccess()}});
-  }catch(e){box.innerHTML='<div class="msg">讀取失敗：'+esc(e.code||e.message)+'</div>'}
-}
+window.__buildDocx=buildDocx;  /* used by tests */
 
 /* ---------- admin ---------- */
 async function saveSlides(msg){
@@ -595,7 +596,6 @@ async function loadReports(){
   $('rdot').hidden=!REPORTS.length;if(tab==='adm')renderAdmin();
 }
 function renderAdmin(){
-  admAccess();
   var r=$('a-rep');r.innerHTML=REPORTS.length?'':'<div class="empty">沒有未處理的回報。</div>';
   REPORTS.forEach(function(x){var b=el('div','rep','<div><b>'+esc(x.slide)+'</b>　<span class="small">'+esc(x.name)+'・'+new Date(x.at).toLocaleString('zh-TW')+'</span></div><div class="pre">'+esc(x.text)+'</div><div class="row"><button type="button" class="btn sm go2">打開這張編輯</button><button type="button" class="btn sm warn dn">標為已處理</button></div>');
     b.querySelector('.go2').onclick=function(){if(BY[x.slide])admForm(x.slide)};
@@ -605,40 +605,38 @@ function renderAdmin(){
 }
 function admList(){
   var q=$('a-q').value.trim().toLowerCase(),box=$('a-list');box.innerHTML='';
-  SL.filter(function(d){return !q||(d.id+' '+d.dxfull+' '+d.unit).toLowerCase().indexOf(q)>=0}).slice().sort(function(a,b){return byNum(a.id,b.id)}).forEach(function(d){
-    var b=el('div','it','<div class="row" style="justify-content:space-between;align-items:center"><div><b>'+esc(d.id)+'</b> <span class="small">'+(d.n?'('+esc(d.n)+')':'線上')+'・'+esc(d.unit||'')+(LINKS[d.id]?'・有連結':'')+(hasSlide(d.id)?'・已擷取':'')+(d.desc?'':'・<span class="no">缺描述</span>')+'</span><div>'+esc(d.dxfull)+'</div></div><button type="button" class="btn sm">編輯</button></div>');
+  SL.filter(function(d){return !q||(d.id+' '+d.dxfull+' '+unitsOf(d).join(' ')).toLowerCase().indexOf(q)>=0}).slice().sort(function(a,b){return byNum(a.id,b.id)}).forEach(function(d){
+    var b=el('div','it','<div class="row" style="justify-content:space-between;align-items:center"><div><b>'+esc(d.id)+'</b> <span class="small">'+(d.n?'('+esc(d.n)+')':'線上')+'・'+esc(unitsOf(d).join('、'))+(d.parent?'・類似 '+esc(d.parent):'')+(ptsOf(d.id).length?'・'+ptsOf(d.id).length+' 個視野':'')+(d.desc||d.parent?'':'・<span class="no">缺描述</span>')+'</span><div>'+esc(d.dxfull)+'</div></div><button type="button" class="btn sm">編輯</button></div>');
     b.querySelector('button').onclick=function(){admForm(d.id)};
-    if(LINKS[d.id]){var c=el('button','btn sm','開擷取視窗');c.type='button';c.onclick=function(){admCapture(d.id)};b.querySelector('.row').appendChild(c)}
     box.appendChild(b)});
 }
 function admForm(id){
-  var isNew=!id,d=isNew?{id:'',n:'',unit:(P.units&&P.units[0])||allUnits()[allUnits().length-1]||'',dxfull:'',dx:'',organ:'',desc:'',note:'',link:''}:BY[id];
+  var isNew=!id,d=isNew?{id:'',n:'',units:P.units||[allUnits()[0]||''],dxfull:'',dx:'',organ:'',desc:'',note:'',view:'',alt:[],warn:'',parent:''}:BY[id];
   var box=$('a-form');
-  var F=[['id','片號（例 PA0400）'],['n','玻片號碼（空白 = 線上片）'],['unit','單元（例 Micro 2）'],['dxfull','診斷全文（顯示用）'],['dx','診斷關鍵字（批改用，空白 = 同上）'],['organ','器官'],['link','microteaching 連結（只有管理者看得到）']];
-  box.innerHTML='<div class="fm rep"><b>'+(isNew?'新增片子':'編輯 '+esc(id))+'</b>'+F.map(function(x){return '<label>'+x[1]+'</label><input data-k="'+x[0]+'"'+(x[0]==='unit'?' list="ul"':'')+'>'}).join('')+
-    '<datalist id="ul">'+allUnits().map(function(u){return '<option value="'+esc(u)+'">'}).join('')+'</datalist>'+
+  var F=[['id','片號（例 PA0400）'],['n','實體片號碼（空白 = 線上片）'],['units','分類（多個用逗號分開，例 Respiratory system, Infection）'],['dxfull','診斷全文（顯示用）'],['dx','診斷關鍵字（批改用，空白 = 同上）'],['organ','器官'],['view','看片用的線上片號（空白 = 同片號）'],['alt','線上類似片（逗號分開）'],['parent','是哪一張的類似片（空白 = 不是）'],['warn','提醒（顯示在片號下面）']];
+  box.innerHTML='<div class="fm rep"><b>'+(isNew?'新增片子':'編輯 '+esc(id))+'</b>'+F.map(function(x){return '<label>'+x[1]+'</label><input data-k="'+x[0]+'">'}).join('')+
     '<label>說明（一行一點；開頭 * = 必寫）</label><div class="tb"><button type="button" data-m="==">螢光</button><button type="button" data-m="__"><b>粗體</b></button><button type="button" data-m="">清除格式</button></div><textarea data-k="desc" style="min-height:12rem"></textarea>'+
     '<label>備註</label><textarea data-k="note"></textarea>'+
     '<div class="row"><button type="button" class="btn sm primary sv">儲存</button><button type="button" class="btn sm cx">關閉</button>'+(isNew?'':'<button type="button" class="btn sm warn del">刪除這張</button>')+'</div><div class="msg"></div></div>';
-  box.querySelectorAll('[data-k]').forEach(function(x){x.value=x.dataset.k==='link'?(LINKS[d.id]||''):(d[x.dataset.k]||'')});
+  box.querySelectorAll('[data-k]').forEach(function(x){var k=x.dataset.k,v=d[k];x.value=k==='units'?unitsOf(d).join(', '):k==='alt'?(v||[]).join(', '):(v||'')});
   var ds=box.querySelector('[data-k=desc]');
   box.querySelectorAll('.tb button').forEach(function(b){b.onmousedown=function(ev){ev.preventDefault()};b.onclick=function(){wrap(ds,b.dataset.m)}});
   var msg=box.querySelector('.msg');
   box.querySelector('.cx').onclick=function(){box.innerHTML=''};
   box.querySelector('.sv').onclick=async function(){
     var o={};box.querySelectorAll('[data-k]').forEach(function(x){o[x.dataset.k]=x.dataset.k==='desc'||x.dataset.k==='note'?x.value.replace(/\s+$/,''):x.value.trim()});
-    o.id=o.id.toUpperCase();if(!/^[A-Z0-9-]{3,20}$/.test(o.id)){msg.textContent='片號格式不對。';return}
-    if(o.link&&!/^https?:\/\//i.test(o.link)){msg.textContent='連結要以 http:// 或 https:// 開頭。';return}
+    o.id=o.id.toUpperCase();if(!/^[A-Z0-9_-]{3,20}$/.test(o.id)){msg.textContent='片號格式不對。';return}
     if(!o.dxfull){msg.textContent='請填診斷。';return}
-    if(!o.dx)o.dx=o.dxfull;if(!o.unit)o.unit='未分類';
+    if(!o.dx)o.dx=o.dxfull;
+    o.units=o.units.split(/[,，]/).map(function(s){return s.trim()}).filter(Boolean);if(!o.units.length)o.units=['未分類'];o.unit=o.units[0];
+    o.alt=o.alt.split(/[,，\s]+/).map(function(s){return s.trim().toUpperCase()}).filter(Boolean);
+    o.view=o.view.toUpperCase();o.parent=o.parent.toUpperCase();['view','parent','warn'].forEach(function(k){if(!o[k])delete o[k]});
+    if(!isNew&&d.site)o.site=d.site;
     if((isNew||o.id!==id)&&BY[o.id]){msg.textContent=o.id+' 已經存在。';return}
-    var lk=o.link;delete o.link;
-    if(lk!==(LINKS[o.id]||'')||(!isNew&&o.id!==id)){if(!isNew&&o.id!==id)delete LINKS[id];if(lk)LINKS[o.id]=lk;else delete LINKS[o.id];
-      try{await fb.fs.setDoc(D('admin','links'),{map:LINKS})}catch(e){msg.textContent='連結儲存失敗：'+(e.code||e.message);return}}
     var backup=SL.slice();
     if(isNew)SL.push(o);else SL[SL.indexOf(d)]=o;
     BY={};SL.forEach(function(x){BY[x.id]=x});
-    if(await saveSlides(msg)){renderUnits();admList();renderAll();if(isNew)admForm(o.id);else if(o.id!==id)admForm(o.id)}
+    if(await saveSlides(msg)){renderUnits();admList();renderAll();if(isNew||o.id!==id)admForm(o.id)}
     else{SL=backup;BY={};SL.forEach(function(x){BY[x.id]=x})}
   };
   var del=box.querySelector('.del');if(del)del.onclick=async function(){
@@ -649,18 +647,28 @@ function admForm(id){
 }
 
 /* ---------- chrome ---------- */
+var TABS=['draw','seen','rev','cat','exp','set','adm'];
 function showTab(t){
-  tab=t;['draw','seen','rev','adm'].forEach(function(k){$('t-'+k).setAttribute('aria-selected',k===t);$('v-'+k).hidden=k!==t});
-  if(t==='seen')listSeen();if(t==='rev')listRev();if(t==='adm')renderAdmin();
+  if(t==='adm'&&!adm)t='draw';
+  tab=t;TABS.forEach(function(k){$('t-'+k).setAttribute('aria-selected',k===t);$('v-'+k).hidden=k!==t});
+  if(t==='seen')listSeen();if(t==='rev')listRev();if(t==='adm')renderAdmin();if(t==='cat')listCat();if(t==='exp')listExp();
 }
-function renderAll(){counts();progress();if(tab==='seen')listSeen();if(tab==='rev')listRev();refreshLive()}
-['draw','seen','rev','adm'].forEach(function(k){$('t-'+k).onclick=function(){showTab(k)}});
+function renderAll(){counts();progress();if(tab==='seen')listSeen();if(tab==='rev')listRev();if(tab==='cat')listCat();if(tab==='exp')listExp();refreshLive()}
+TABS.forEach(function(k){$('t-'+k).onclick=function(){showTab(k)}});
 $('draw').onclick=draw;
 $('p-all').onclick=function(){setPool('all')};$('p-rev').onclick=function(){setPool('rev')};
+$('altc').onchange=function(){P.alt=$('altc').checked;saveP();progress()};
 $('rv-show').onclick=function(){rvHide=false;$('rv-show').setAttribute('aria-pressed',true);$('rv-hide').setAttribute('aria-pressed',false);listRev()};
 $('rv-hide').onclick=function(){rvHide=true;$('rv-show').setAttribute('aria-pressed',false);$('rv-hide').setAttribute('aria-pressed',true);listRev()};
 $('rv-key').onclick=function(){rvKey=!rvKey;$('rv-key').setAttribute('aria-pressed',rvKey);listRev()};
 $('a-q').oninput=admList;$('a-new').onclick=function(){admForm(null)};
+$('c-q').oninput=listCat;$('c-sem').onchange=listCat;
+$('x-all').onclick=function(){$('l-exp').querySelectorAll('input').forEach(function(x){x.checked=true})};
+$('x-none').onclick=function(){$('l-exp').querySelectorAll('input').forEach(function(x){x.checked=false})};
+$('x-go').onclick=doExport;
+$('admbtn').onclick=function(){setAdm(!adm);if(adm)showTab('adm')};
+$('bm').href=bmCode();$('bm').onclick=function(e){e.preventDefault();note('請把「抽號器看片」按鈕拖到瀏覽器的書籤列，不是直接點。')};
+$('bm-c').onclick=function(){copy(bmCode()).then(function(ok){$('bm-m').textContent=ok?'已複製。新增一個書籤，網址貼上這段，名稱填「抽號器看片」。':'複製失敗，請改用拖曳。'})};
 var armed=false;
 $('reset').onclick=function(){
   if(!armed){armed=true;$('reset').textContent='再按一次確認重設';setTimeout(function(){armed=false;$('reset').textContent='重設進度'},4000);return}
@@ -668,6 +676,7 @@ $('reset').onclick=function(){
   var ids=poolIds();if(pool==='all')P.seen=P.seen.filter(function(x){return ids.indexOf(x)<0});else P.rseen=P.rseen.filter(function(x){return ids.indexOf(x)<0});
   saveP();counts();setPool(pool)};
 $('login').onclick=login;$('login2').onclick=login;
+if(PANEL)document.body.classList.add('panel');
 
 try{await fbLoad()}catch(e){$('acct').textContent='';note('載入失敗（可能是網路問題或瀏覽器太舊），請重新整理或換瀏覽器。');return}
 fb.au.getRedirectResult(fb.auth).catch(function(e){note('登入失敗：'+(e.code||e.message))});
