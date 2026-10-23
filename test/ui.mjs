@@ -10,7 +10,9 @@ const VIEW = 'http://127.0.0.1:5056', LIST = 'http://127.0.0.1:5057';
 const EXE = process.env.PW_CHROMIUM || undefined;
 const log = s => { console.log(s); appendFileSync(`${OUT}/ui.log`, s + '\n'); };
 let fails = 0;
-const check = (ok, what) => { log((ok ? 'PASS ' : 'FAIL ') + what); if (!ok) fails++; };
+let last = '';
+const check = (ok, what) => { last = what; log((ok ? 'PASS ' : 'FAIL ') + what); if (!ok) fails++; };
+const step = what => { last = what; log('  .. ' + what); };
 
 const slides = JSON.parse(readFileSync('seed/slides.json', 'utf8'));
 const catalog = JSON.parse(readFileSync('seed/catalog.json', 'utf8'));
@@ -30,6 +32,8 @@ await seed();
 async function run(name, type, ctxOpts, viewer) {
   log(`\n=== ${name} ===`);
   const browser = await type.launch(type === chromium && EXE ? { executablePath: EXE } : {});
+  let dead = false;
+  const wd = setTimeout(() => { dead = true; fails++; log(`FAIL ${name}: watchdog (stuck after: ${last})`); browser.close().catch(() => {}); }, 240000);
   const ctx = await browser.newContext({ acceptDownloads: true, ...ctxOpts });
   await ctx.addInitScript(([v, l]) => { window.__EMU = true; window.__VIEW_ORIGIN = v; window.__LIST_ORIGIN = l; window.__PORTAL = l + '/list.html'; }, [VIEW, LIST]);
   const page = await ctx.newPage();
@@ -143,10 +147,12 @@ async function run(name, type, ctxOpts, viewer) {
       const vw = await pop;
       await vw.waitForLoadState();
       check(vw.url().startsWith(LIST), `${name}: 看片 opens the portal`);
+      step('list bookmarklet');
       await vw.addScriptTag({ url: BASE + 'h.js' });
       await vw.waitForURL(/viewer\.html\?GestaltViewer=1&s=PA0306/, { timeout: 15000 });
       check(true, `${name}: list bookmarklet opened PA0306 in the same tab`);
       await vw.waitForFunction(() => window.Pviewer && window.Pviewer.world.getItemCount() > 0, null, { timeout: 15000 });
+      step('viewer bookmarklet');
       const panelP = ctx.waitForEvent('page', { timeout: 20000 });
       await vw.addScriptTag({ url: BASE + 'h.js' });
       await vw.waitForSelector('#pdh-bar');
@@ -169,6 +175,7 @@ async function run(name, type, ctxOpts, viewer) {
       check(Math.abs(await iz() / want(10) - 1) < 0.03, `${name}: dragging keeps the objective`);
       await shot('4-viewer', vw);
 
+      step('waiting for answer panel');
       const panel = await panelP;
       await panel.waitForSelector('#panel .it', { timeout: 20000 });
       check((await panel.textContent('#panel')).includes('PA0306'), `${name}: answer panel shows PA0306`);
@@ -178,6 +185,7 @@ async function run(name, type, ctxOpts, viewer) {
       const c = await vw.evaluate(() => window.__pdh.state());
       check(c.obj === 40 && Math.abs(c.x - 900) < 15 && Math.abs(c.y - 300) < 15, `${name}: answer point moves viewer to (900,300) at 40× (got ${c.x},${c.y} ${c.obj}×)`);
       check(Math.abs(await iz() / want(40) - 1) < 0.03, `${name}: answer point uses the locked 40×`);
+      step('capture');
       await vw.click('#pdh-cap');
       await panel.waitForSelector('#panel .th img', { timeout: 15000 });
       check(true, `${name}: viewer capture saved into the panel notes`);
@@ -187,9 +195,11 @@ async function run(name, type, ctxOpts, viewer) {
       await vw.click('#pdh-x');
       await vw.waitForTimeout(300);
       check(await vw.isVisible('#sliderBox'), `${name}: unlocking restores the original viewer`);
+      step('closing viewer');
       await vw.close(); await panel.close();
     }
 
+    step('admin');
     // admin: same screen until the 管理 button is pressed
     await page.click('#login');
     await page.waitForSelector('#gate:not([hidden])');
@@ -221,7 +231,8 @@ async function run(name, type, ctxOpts, viewer) {
   }
   const real = errs.filter(e => !/emulator|Failed to load resource|127\.0\.0\.1:(8080|9099)|ERR_|favicon/i.test(e));
   check(real.length === 0, `${name}: no page errors ${real.length ? JSON.stringify(real.slice(0, 3)) : ''}`);
-  await browser.close();
+  clearTimeout(wd);
+  if (!dead) await Promise.race([browser.close(), new Promise(r => setTimeout(r, 20000))]);
 }
 
 async function wipe() {
