@@ -1,0 +1,237 @@
+{
+ "PA0306": {
+  "vid": "PA0306",
+  "pts": [
+   {
+    "k": "*2. Vegetation: fibrin, bacterial clumps, and inflammatory infiltrate (neutrophilic or lymphohistiocytic)",
+    "x": 140377,
+    "y": 137783,
+    "obj": 40,
+    "conf": "低",
+    "note": "淡紫色細顆粒團塊，判讀為細菌團，但也可能是鈣化，不確定"
+   },
+   {
+    "k": "4. (In chronic lesion) organization and calcification",
+    "x": 140766,
+    "y": 136401,
+    "obj": 10,
+    "conf": "中",
+    "note": "深紫色、有裂痕的團塊，判讀為鈣化"
+   }
+  ]
+ },
+ "PA0097": {
+  "vid": "PA0097",
+  "pts": [
+   {
+    "k": "*1. Tubular epithelial coagulative necrosis",
+    "x": 73034,
+    "y": 61431,
+    "obj": 40,
+    "conf": "中",
+    "note": "腎小管上皮淡染、核消失（ghost tubules）"
+   }
+  ]
+ },
+ "PA0313": {
+  "vid": "PA0313",
+  "pts": [
+   {
+    "k": "*1. Coagulative necrosis with hemorrhage — mucosal and transmural (impending perforation)",
+    "x": 140422,
+    "y": 141624,
+    "obj": 10,
+    "conf": "中",
+    "note": "左上黏膜只剩輪廓（凝固性壞死），整層腸壁出血"
+   }
+  ]
+ },
+ "PA0335": {
+  "vid": "PA0335",
+  "pts": [
+   {
+    "k": "*1. Multifocal fibrosis replacing myocytes (remote change); slightly increased mononuclear inflammatory cells",
+    "x": 127293,
+    "y": 109809,
+    "obj": 10,
+    "conf": "中",
+    "note": "淡粉紅色膠原取代心肌，中間夾著殘存的心肌島"
+   }
+  ]
+ },
+ "PA0162": {
+  "vid": "PA0162",
+  "pts": [
+   {
+    "k": "*1. Focal liquefactive necrosis: loss of the original structure → loosening of the tissue",
+    "x": 152569,
+    "y": 126189,
+    "obj": 40,
+    "conf": "低",
+    "note": "神經組織疏鬆、大量空泡（loosening）；整片都類似，邊界不明顯，也還沒找到典型的 gitter cells，請自行確認"
+   }
+  ]
+ },
+ "PA0198": {
+  "vid": "PA0198",
+  "pts": [
+   {
+    "k": "*1. Center: caseous necrosis — a structureless collection of lysed cells & amorphous granular debris (complete loss of cellular details)",
+    "x": 82906,
+    "y": 70917,
+    "obj": 40,
+    "conf": "高",
+    "note": "無細胞輪廓的粉紅色顆粒狀壞死物，夾雜核碎屑"
+   },
+   {
+    "k": "*2. Periphery: granulomatous inflammation",
+    "x": 76442,
+    "y": 69414,
+    "obj": 10,
+    "conf": "低",
+    "note": "壞死區周邊較紫的發炎細胞帶；類上皮組織球還沒在 40× 下確認"
+   }
+  ]
+ },
+ "PA0081": {
+  "vid": "PA0081",
+  "pts": [
+   {
+    "k": "*2. Basophilic calcium deposits (\"saponification\")",
+    "x": 109303,
+    "y": 147399,
+    "obj": 10,
+    "conf": "中",
+    "note": "脂肪細胞輪廓內藍紫色顆粒沉積（皂化），周圍有發炎細胞"
+   },
+   {
+    "k": "*1. Shadowy outlines of necrotic fat cells",
+    "x": 113620,
+    "y": 143622,
+    "obj": 10,
+    "conf": "中",
+    "note": "右上淡粉紅、只剩輪廓的壞死脂肪細胞"
+   }
+  ]
+ },
+ "PA0220": {
+  "vid": "PA0220",
+  "pts": [
+   {
+    "k": "*1. Nodules of cystically dilated hyperplastic glands → epithelial infoldings → papillae",
+    "x": 89500,
+    "y": 115327,
+    "obj": 10,
+    "conf": "高",
+    "note": "擴張的腺體，腔內有乳突狀內摺，周圍是纖維肌肉間質"
+   }
+  ]
+ },
+ "PA0074": {
+  "vid": "PA0074",
+  "pts": [
+   {
+    "k": "*1. Lipid droplets in hepatocytes",
+    "x": 125602,
+    "y": 134652,
+    "obj": 40,
+    "conf": "高",
+    "note": "肝細胞內大小不一的透明脂滴（大滴型會把核推到旁邊）"
+   }
+  ]
+ },
+ "PA0017": {
+  "vid": "PA0017",
+  "pts": [
+   {
+    "k": "*1. Dark black pigments in macrophages/histiocytes",
+    "x": 186882,
+    "y": 121436,
+    "obj": 40,
+    "conf": "高",
+    "note": "組織球內大量黑色顆粒（碳粉）"
+   }
+  ]
+ },
+ "PA0144": {
+  "vid": "PA0144",
+  "pts": [
+   {
+    "k": "*1. Nests & cords of proliferative melanocytes (nevus cells) in the dermis",
+    "x": 70304,
+    "y": 57527,
+    "obj": 40,
+    "conf": "高",
+    "note": "真皮內一團團大小一致的痣細胞，中間有膠原分隔"
+   }
+  ]
+ },
+ "PA0208": {
+  "vid": "PA0208",
+  "pts": [
+   {
+    "k": "*1. Yellow-brown ceroid-laden macrophages in the lamina propria",
+    "x": 177434,
+    "y": 111711,
+    "obj": 40,
+    "conf": "高",
+    "note": "腺窩之間固有層內的褐色色素巨噬細胞"
+   }
+  ]
+ },
+ "PA0211": {
+  "vid": "PA0211",
+  "pts": [
+   {
+    "k": "*1. Golden yellow-brown, refractile hemosiderin accumulation in hepatocytes (some in macrophages)",
+    "x": 64960,
+    "y": 61994,
+    "obj": 40,
+    "conf": "高",
+    "note": "肝細胞與 Kupffer 細胞內的金褐色顆粒"
+   },
+   {
+    "k": "*2. Ballooning change (hepatocytes)",
+    "x": 64724,
+    "y": 62904,
+    "obj": 40,
+    "conf": "中",
+    "note": "左下腫大、細胞質淡而透明的肝細胞"
+   }
+  ]
+ },
+ "PA0214": {
+  "vid": "PA0214",
+  "pts": [
+   {
+    "k": "*1. Green-brown bile pigments in hepatocytes and dilated canaliculi",
+    "x": 55908,
+    "y": 64121,
+    "obj": 40,
+    "conf": "中",
+    "note": "擴張的小膽管內有圓形褐綠色膽栓（bile plug），肝細胞內也有色素"
+   }
+  ]
+ },
+ "PA0216": {
+  "vid": "PA0216",
+  "pts": [
+   {
+    "k": "*1. Brown-black malaria pigments in macrophages (Kupffer cells) and hepatocytes",
+    "x": 74275,
+    "y": 63123,
+    "obj": 40,
+    "conf": "中",
+    "note": "竇狀隙內 Kupffer 細胞的褐黑色細顆粒（這張染色偏紫）"
+   },
+   {
+    "k": "*2. Sinusoid dilation",
+    "x": 74275,
+    "y": 63123,
+    "obj": 40,
+    "conf": "中",
+    "note": "同一個視野：肝細胞索之間的竇狀隙明顯變寬"
+   }
+  ]
+ }
+}
