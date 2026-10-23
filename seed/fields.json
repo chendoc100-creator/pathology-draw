@@ -233,5 +233,290 @@
     "note": "同一個視野：肝細胞索之間的竇狀隙明顯變寬"
    }
   ]
+ },
+ "PA0270": {
+  "vid": "PA0270",
+  "pts": [
+   {
+    "k": "*1. Mucosal and mural neutrophil infiltration, involving muscularis propria (± lymphocytes, plasma cells, eosinophils, histiocytes)",
+    "x": 156211,
+    "y": 138917,
+    "obj": 40,
+    "conf": "中",
+    "note": "固有肌層的平滑肌束之間有水腫和發炎細胞浸潤（多為嗜中性球）"
+   }
+  ]
+ },
+ "PA0044": {
+  "vid": "PA0044",
+  "pts": [
+   {
+    "k": "*2. Submucosal edema",
+    "x": 107411,
+    "y": 126015,
+    "obj": 40,
+    "conf": "高",
+    "note": "黏膜下疏鬆、水腫的間質，夾著漿黏液腺"
+   },
+   {
+    "k": "*1. Submucosal mixed inflammatory cell infiltrate of lymphocytes, plasma cells, and eosinophils (histiocytes and neutrophils few in this slide)",
+    "x": 159398,
+    "y": 120094,
+    "obj": 40,
+    "conf": "中",
+    "note": "呼吸道上皮下方的混合性發炎細胞；嗜酸性球在這個畫面還沒確認"
+   }
+  ]
+ },
+ "PA0143": {
+  "vid": "PA0143",
+  "pts": [
+   {
+    "k": "*1. Center: suture",
+    "x": 98797,
+    "y": 132338,
+    "obj": 40,
+    "conf": "高",
+    "note": "一顆顆圓形、灰紫色、會反光的縫線纖維橫切面（右下有縱切）"
+   },
+   {
+    "k": "*2. Periphery: granulomatous inflammation",
+    "x": 100112,
+    "y": 132473,
+    "obj": 40,
+    "conf": "中",
+    "note": "縫線旁的組織球和多核巨細胞"
+   }
+  ]
+ },
+ "PA0202": {
+  "vid": "PA0202",
+  "pts": [
+   {
+    "k": "*2. Granulation tissue: loose ECM with edema, capillary proliferation, mixed inflammatory cells (lymphocytes, plasma cells, eosinophils, histiocytes, neutrophils)",
+    "x": 95618,
+    "y": 33018,
+    "obj": 10,
+    "conf": "中",
+    "note": "疏鬆水腫的間質中有許多充血的新生微血管和發炎細胞"
+   }
+  ]
+ },
+ "PA0008": {
+  "vid": "PA0008",
+  "pts": [
+   {
+    "k": "*1. Red pulp expansion",
+    "x": 124142,
+    "y": 136490,
+    "obj": 4,
+    "conf": "中",
+    "note": "紅髓佔大部分；白髓（左下藍紫色小團）相對少而小"
+   },
+   {
+    "k": "*2. Red pulp congestion (& fibrosis — not obvious in this slide)",
+    "x": 127141,
+    "y": 129542,
+    "obj": 40,
+    "conf": "中",
+    "note": "紅髓竇內塞滿紅血球"
+   },
+   {
+    "k": "*3. Dilated sinusoids",
+    "x": 127141,
+    "y": 129542,
+    "obj": 40,
+    "conf": "低",
+    "note": "同一個視野：充滿紅血球的竇狀隙；擴張程度不一定明顯"
+   }
+  ]
+ },
+ "PA0059": {
+  "vid": "PA0059",
+  "pts": [
+   {
+    "k": "*1. Dilated and congested submucosal vessels",
+    "x": 121599,
+    "y": 103287,
+    "obj": 10,
+    "conf": "中",
+    "note": "黏膜下大片擴張、充滿紅血球的血管腔（中間層狀的部分可能是血栓，不確定）"
+   }
+  ]
+ },
+ "PA0076": {
+  "vid": "PA0076",
+  "pts": [
+   {
+    "k": "*1. Centrilobular [zone 3] congestion (main finding in this slide)",
+    "x": 124010,
+    "y": 125560,
+    "obj": 40,
+    "conf": "中",
+    "note": "竇狀隙塞滿紅血球、肝細胞索變細；左上角是保存較好的肝細胞。是否確為 zone 3 請對照中央靜脈位置"
+   },
+   {
+    "k": "2. Centrilobular [zone 3] hepatocyte necrosis (only focal in this slide)",
+    "x": 124010,
+    "y": 125560,
+    "obj": 40,
+    "conf": "低",
+    "note": "同一個視野：充血區內肝細胞減少／脫落，可能是局部壞死"
+   }
+  ]
+ },
+ "PA0215": {
+  "vid": "PA0215",
+  "pts": [
+   {
+    "k": "*2. Centrilobular [zone 3] fibrosis — key difference from nutmeg liver",
+    "x": 53393,
+    "y": 73781,
+    "obj": 10,
+    "conf": "中",
+    "note": "管壁變厚、纖維化的靜脈，周圍有纖維帶往外延伸（判讀為中央靜脈，不完全確定）"
+   },
+   {
+    "k": "*1. Centrilobular congestion (and necrosis)",
+    "x": 55912,
+    "y": 74037,
+    "obj": 10,
+    "conf": "中",
+    "note": "靜脈周圍竇狀隙內的紅血球聚集（充血）"
+   }
+  ]
+ },
+ "PA0096": {
+  "vid": "PA0096",
+  "pts": [
+   {
+    "k": "*1. Wedge-shaped coagulative necrosis (localized, clear border; glomeruli + tubules)",
+    "x": 126381,
+    "y": 121389,
+    "obj": 10,
+    "conf": "中",
+    "note": "腎小管和腎絲球都只剩輪廓、核消失（梗塞區）；邊緣有出血帶"
+   }
+  ]
+ },
+ "PA0255": {
+  "vid": "PA0255",
+  "pts": [
+   {
+    "k": "*1. Papillomatosis (papillary architecture with fibrovascular cores)",
+    "x": 163992,
+    "y": 120342,
+    "obj": 4,
+    "conf": "高",
+    "note": "低倍下整個病灶呈乳突狀，中間有纖維血管軸心"
+   },
+   {
+    "k": "*2. Koilocytosis",
+    "x": 158970,
+    "y": 98052,
+    "obj": 40,
+    "conf": "中",
+    "note": "上層細胞核皺縮、周圍有透明空暈（koilocyte）；這個視野不算很典型"
+   }
+  ]
+ },
+ "PA0271": {
+  "vid": "PA0271",
+  "pts": [
+   {
+    "k": "*3. Molluscum bodies (Henderson-Patterson bodies) in the crater: large, eosinophilic to basophilic intracytoplasmic inclusions that push aside the nucleus",
+    "x": 35141,
+    "y": 33982,
+    "obj": 40,
+    "conf": "高",
+    "note": "左上：鱗狀細胞內大型、紫紅色的包涵體（molluscum bodies）把核推到旁邊"
+   }
+  ]
+ },
+ "PA0251": {
+  "vid": "PA0251",
+  "pts": [
+   {
+    "k": "*1. Sulfur granules: clumped colonies of bacteria in center (basophilic) with eosinophilic periphery with club-like projections (Splendore-Hoeppli phenomenon)",
+    "x": 128070,
+    "y": 127538,
+    "obj": 40,
+    "conf": "中",
+    "note": "膿腔中新月形、均質藍紫色的菌落團塊，邊緣呈嗜酸性鬚狀，周圍圍繞嗜中性球"
+   },
+   {
+    "k": "*2. Acute and chronic inflammation with abscess formation",
+    "x": 132809,
+    "y": 136073,
+    "obj": 4,
+    "conf": "中",
+    "note": "整片密集的發炎細胞和膿瘍空腔"
+   }
+  ]
+ },
+ "PA0022": {
+  "vid": "PA0022",
+  "pts": [
+   {
+    "k": "*2. “Necrotizing” granulomatous inflammation — \"necrotizing\" preferred, since \"caseating\" is easily misread as tuberculosis",
+    "x": 154884,
+    "y": 132908,
+    "obj": 4,
+    "conf": "低",
+    "note": "中央大片粉紅色壞死，周圍較紫的一圈是發炎反應；肉芽腫和菌絲都還沒在高倍確認"
+   }
+  ]
+ },
+ "PA0015": {
+  "vid": "PA0015",
+  "pts": [
+   {
+    "k": "*1. Fungal hyphae with septa and acute-angle branching",
+    "x": 179724,
+    "y": 126787,
+    "obj": 40,
+    "conf": "中",
+    "note": "淡染、交織成網的菌絲團（fungal ball）；分隔和銳角分枝在這張截圖解析度下看不清，請自己放大確認"
+   }
+  ]
+ },
+ "PA0316": {
+  "vid": "PA0316",
+  "pts": [
+   {
+    "k": "*1. Numerous round to oval, refractile, thick-walled fungal yeasts (narrow-based budding)",
+    "x": 143307,
+    "y": 123521,
+    "obj": 40,
+    "conf": "中",
+    "note": "滿滿的「肥皂泡」樣透明空洞：莢膜不著色形成空暈，中間有小小的酵母菌體，多在組織球內"
+   }
+  ]
+ },
+ "PA0302": {
+  "vid": "PA0302",
+  "pts": [
+   {
+    "k": "*1. Foamy, granular, eosinophilic exudate in the alveolar spaces",
+    "x": 111805,
+    "y": 133421,
+    "obj": 40,
+    "conf": "低",
+    "note": "右上肺泡腔內泡沫狀、顆粒狀的粉紅色滲出物；和巨噬細胞混在一起，不是很典型的位置，請再找更明顯的區域"
+   }
+  ]
+ },
+ "PA0354": {
+  "vid": "PA0332",
+  "pts": [
+   {
+    "k": "*1. Cytopathic effects compatible with herpes infection (3M):",
+    "x": 25637,
+    "y": 16042,
+    "obj": 40,
+    "conf": "低",
+    "note": "（線上用 PA0332 看）表皮內水泡旁的角質細胞；多核、核互相擠壓、核質毛玻璃樣在這個截圖還無法確認，請自己在 40× 找"
+   }
+  ]
  }
 }
