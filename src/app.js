@@ -13,6 +13,7 @@ var CFG={apiKey:"AIzaSyC1V6sxv106LZcaWZ3aSxtnBhzHL6aez2U",authDomain:HOME,projec
 if(window.__EMU){CFG.authDomain=location.host;CFG.projectId="demo-pd"}
 /* microteaching: slide list (https) and slide viewer (http, port 9002) */
 var PORTAL=window.__PORTAL||'https://microteaching.ntu.edu.tw/';
+var VIEWURL=window.__VIEWURL||'http://microteaching.ntu.edu.tw:9002/EBMViewer';
 var LIST_ORIGIN=window.__LIST_ORIGIN||'https://microteaching.ntu.edu.tw';
 var VIEW_ORIGIN=window.__VIEW_ORIGIN||'http://microteaching.ntu.edu.tw:9002';
 var QS=new URLSearchParams(location.search);
@@ -38,7 +39,8 @@ var SL=[],BY={},CAT=[],CBY={};          /* quiz slides; catalog of every slide (
 var P={seen:[],review:[],rseen:[],last:'',rlast:'',units:null,alt:true};
 var U={overrides:{},notes:{}};
 var IMG={};                              /* slideId -> [{id,data,w,h,at,note,view}] */
-var REPORTS=[],FLD={};                   /* FLD: answer points {id:{pts:[{k,x,y,obj,conf,note}]}} */
+var REPORTS=[],FLD={},META={};
+var DEFGROUPS=[{name:'Micro 1',units:['Cell injury and adaption','Inflammation','Hemodynamic derangement','Infection']}];                   /* FLD: answer points {id:{pts:[{k,x,y,obj,conf,note}]}} */
 var tab='draw',pool='all',rvHide=false,rvKey=false;
 var live=[];
 
@@ -91,8 +93,10 @@ async function onUser(u){
       fb.fs.getDoc(D('users',u.uid)),
       fb.fs.getDoc(D('admin','flag')).then(function(){return true},function(){return false}),
       fb.fs.getDoc(D('content','fields')).then(function(x){return x.exists()?x.data():{}},function(){return {}}),
-      fb.fs.getDoc(D('content','catalog')).then(function(x){return x.exists()?(x.data().list||[]):[]},function(){return []})
+      fb.fs.getDoc(D('content','catalog')).then(function(x){return x.exists()?(x.data().list||[]):[]},function(){return []}),
+      fb.fs.getDoc(D('content','meta')).then(function(x){return x.exists()?x.data():{}},function(){return {}})
     ]);
+    META=r[6]||{};
     FLD=r[4]||{};CAT=r[5];CBY={};CAT.forEach(function(c){CBY[c.id]=c});
     SL=(r[0].exists()&&r[0].data().list)||[];BY={};SL.forEach(function(d){if(!d.units)d.units=[d.unit||'未分類'];BY[d.id]=d});
     P=cleanP(r[1].exists()?r[1].data():null);
@@ -119,14 +123,24 @@ function unitsOf(d){return d.units||[d.unit||'未分類']}
 function allUnits(){var a=[];SL.forEach(function(d){a=a.concat(unitsOf(d))});return uniq(a)}
 function selUnits(){var a=allUnits();if(!P.units)return a;var s=P.units.filter(function(x){return a.indexOf(x)>=0});return s.length?s:a}
 function inUnits(id){var d=BY[id];if(!d)return false;var s=selUnits();return unitsOf(d).some(function(u){return s.indexOf(u)>=0})}
+function groups(){var a=allUnits(),used=[];
+  var G=((META.groups&&META.groups.length)?META.groups:DEFGROUPS).map(function(g){return {name:g.name,units:(g.units||[]).filter(function(u){return a.indexOf(u)>=0})}}).filter(function(g){return g.units.length});
+  G.forEach(function(g){used=used.concat(g.units)});var rest=a.filter(function(u){return used.indexOf(u)<0});
+  if(rest.length)G.push({name:'其他單元',units:rest,rest:true});return G}
+function setUnits(s){var a=allUnits();s=uniq(s).filter(function(u){return a.indexOf(u)>=0});P.units=s.length&&s.length<a.length?s:null;saveP();unitsChanged()}
 function renderUnits(){
-  var a=allUnits(),box=$('units');box.innerHTML='<span class="lb">分類</span>';
-  var all=el('button',null,'全部');all.type='button';all.setAttribute('aria-pressed',!P.units);
-  all.onclick=function(){P.units=null;saveP();unitsChanged()};box.appendChild(all);
-  a.forEach(function(u){var b=el('button',null,esc(u));b.type='button';
-    b.setAttribute('aria-pressed',!!P.units&&P.units.indexOf(u)>=0);
-    b.onclick=function(){var s=P.units?P.units.slice():[];var i=s.indexOf(u);if(i>=0)s.splice(i,1);else s.push(u);
-      P.units=s.length&&s.length<a.length?s:null;saveP();unitsChanged()};box.appendChild(b)});
+  var box=$('units');box.innerHTML='';
+  var top=el('div','grp');var all=el('button','gb','全部');all.type='button';all.setAttribute('aria-pressed',!P.units);
+  all.onclick=function(){P.units=null;saveP();unitsChanged()};top.appendChild(el('span','lb','範圍'));top.appendChild(all);box.appendChild(top);
+  var cur=P.units||[];
+  groups().forEach(function(g){var row=el('div','grp');
+    var on=!!P.units&&g.units.every(function(u){return cur.indexOf(u)>=0});
+    var gb=el('button','gb',esc(g.name));gb.type='button';gb.setAttribute('aria-pressed',on);gb.title='整次 '+g.name+' 的單元一起選或取消';
+    gb.onclick=function(){var s=cur.slice();if(on)s=s.filter(function(u){return g.units.indexOf(u)<0});else s=s.concat(g.units);setUnits(s)};
+    row.appendChild(gb);
+    g.units.forEach(function(u){var b=el('button',null,esc(u));b.type='button';b.setAttribute('aria-pressed',!!P.units&&cur.indexOf(u)>=0);
+      b.onclick=function(){var s=cur.slice(),i=s.indexOf(u);if(i>=0)s.splice(i,1);else s.push(u);setUnits(s)};row.appendChild(b)});
+    box.appendChild(row)});
 }
 function unitsChanged(){renderUnits();setPool(pool);renderAll()}
 
@@ -149,8 +163,7 @@ function mk(id,opt){
   var d=info(id);if(!d){var x=el('div','it','<div class="empty">找不到 '+esc(id)+'</div>');return {el:x,id:id,upd:function(){},ans:function(){},opt:opt}}
   var vid=viewId(id),can=isOnline(vid),par=d.parent&&BY[d.parent];
   var e=el('div','it'+(opt.big?' big':''));
-  e.innerHTML='<div class="head">'+headOf(d)+(d.n?'':'<span class="badge on">線上</span>')+(par?'<span class="badge">類似 '+esc(par.id)+'</span>':'')+(opt.seen?'<span class="badge">已抽過</span>':'')+
-     ' <small class="small">'+esc(unitsOf(d).join('、'))+'</small></div>'+
+  e.innerHTML='<div class="head">'+headOf(d)+(d.n?'':'<span class="badge on">線上</span>')+(par?'<span class="badge">類似 '+esc(par.id)+'</span>':'')+(opt.seen?'<span class="badge">已抽過</span>':'')+'</div>'+
    (d.warn?'<div class="warn">'+esc(d.warn)+'</div>':'')+
    (d.alt&&d.alt.length?'<div class="small alts">線上類似：'+d.alt.map(function(a){return '<button type="button" class="lk" data-v="'+esc(a)+'">'+esc(a)+'</button>'}).join('　')+'</div>':'')+
    '<div class="row">'+(d.cat?'':'<button type="button" class="btn sm q">作答</button>')+'<button type="button" class="btn sm r">'+(opt.open?'隱藏答案':'顯示答案')+'</button>'+
@@ -189,11 +202,12 @@ function renderAns(box,id,obj){
   var h='<div class="ans ansblk"><div><span class="lab">診斷'+(a.mine?'<span class="mine">我的版本</span>':'')+(showOrig?'<span class="mine">原始答案</span>':'')+'</span>'+lineHTML(a.dx,'dx',pm)+'</div>';
   if(a.organ)h+='<div><span class="lab">器官</span>'+fmt(a.organ)+'</div>';
   if(d.site)h+='<div><span class="lab">取材部位（線上片說明）</span>'+esc(d.site)+'</div>';
+  if(!d.cat&&unitsOf(d).length)h+='<div><span class="lab">單元</span>'+esc(unitsOf(d).join('、'))+'</div>';
   if(a.desc){
     var lines=String(a.desc||'').split('\n');
     if(keyOnly)lines=lines.filter(function(l){return /^\s*\*/.test(l)||hasMark(l)});
     h+='<div><span class="lab">說明</span><div class="pre">'+(lines.map(function(l){return lineHTML(l,lineKey(l),pm)}).join('')||'<span class="small">（沒有標記的重點）</span>')+'</div></div>';
-  }else if(!d.parent&&!d.cat)h+='<div><span class="lab">說明</span><span class="small">這張的描述答案還沒有。</span></div>';
+  }else if(!d.parent&&!d.cat)h+='<div><span class="lab">說明</span><span class="small">這張的描述答案還沒有（目前只有 Micro 1 有答案，其他會陸續補上）。</span></div>';
   if(a.note&&!keyOnly)h+='<div><span class="lab">備註</span><div class="pre">'+fmt(a.note)+'</div></div>';
   h+='</div><div class="row" style="margin-top:8px"><button type="button" class="btn sm ed">編輯我的版本</button>'+
     (a.mine||showOrig?'<button type="button" class="btn sm og">'+(showOrig?'看我的版本':'看原始答案')+'</button>':'')+
@@ -333,40 +347,49 @@ function renderReport(box,id){
 var VW=null,WANT='',CAPQ={};
 function bmCode(){return 'javascript:(function(d){var s=d.createElement("script");s.src="https://'+HOME+'/h.js?"+Date.now();d.body.appendChild(s)})(document)'}
 function alive(w){try{return w&&!w.closed}catch(e){return false}}
-function openView(vid){
+function viewHref(vid,go){return VIEWURL+'?pd='+encodeURIComponent(vid)+(go&&go.x!=null?'&x='+Math.round(go.x)+'&y='+Math.round(go.y)+'&o='+(go.obj||40):'')}
+var VWIN=null;
+function openView(vid,go){
   if(!isOnline(vid)){note(vid+' 線上沒有，只能看實體片。');return}
-  WANT=vid;copy(vid);
-  if(VW&&alive(VW.win)&&VW.id===vid){try{VW.win.focus()}catch(e){}note('看片視窗已經是 '+vid+'。');return}
-  window.open(PORTAL,'pdlist');
-  note((MOBILE?'手機不適合看片（書籤在手機上不好用），建議用電腦。':'')+'已開 microteaching（片號 '+vid+' 已複製）。登入後在片子清單按書籤「抽號器看片」會自動開這張；開到看片畫面再按一次書籤，就會鎖定 4×／10×／40×。第一次用請先到「看片設定」安裝書籤。');
+  WANT=vid;
+  var msg={t:'open',id:vid};if(go&&go.x!=null){msg.x=go.x;msg.y=go.y;msg.obj=go.obj}
+  if(VW&&alive(VW.win)){sendVW(msg);try{VW.win.focus()}catch(e){}note(VW.id===vid&&!(go&&go.x!=null)?'看片視窗已經是 '+vid+'。':'看片視窗換到 '+vid+(go&&go.x!=null?'，移到 '+go.obj+'× 視野':'')+'。');return}
+  /* the viewer tab may still be open from before (e.g. after this page reloaded): ask it first, else load the slide there */
+  var w=null;try{w=window.open('','pdview')}catch(e){}
+  if(!w){note('看片視窗被瀏覽器擋住了，請允許這個網站開新視窗。');return}
+  VWIN=w;var asked=Date.now();
+  try{w.postMessage({pd:1,t:'hi'},VIEW_ORIGIN)}catch(e){}
+  setTimeout(function(){
+    if(VW&&alive(VW.win)&&VW.win===w&&VW.at>=asked){sendVW(msg);try{w.focus()}catch(e){};return}
+    try{w.location.href=viewHref(vid,go)}catch(e){window.open(viewHref(vid,go),'pdview')}
+    note((MOBILE?'手機不適合看片，建議用電腦。':'')+'已開看片分頁（要校內網路或台大 VPN）。在那個分頁按一次書籤「抽號器看片」就會開 '+vid+'，之後按「看片」或答案的視野點都會直接在那個分頁換片。第一次用請先到「看片設定」裝書籤。');
+  },700);
 }
 function sendVW(m){if(!VW||!alive(VW.win))return false;m.pd=1;try{VW.win.postMessage(m,VIEW_ORIGIN);return true}catch(e){return false}}
 function gotoPt(id,p,vidOverride){
   var vid=vidOverride||viewId(id);
-  if(!VW||!alive(VW.win)){note('先按「看片」開 '+vid+'，在看片畫面按書籤「抽號器看片」，再點一次這個點。');return}
-  if(VW.id!==vid){note('看片視窗現在是 '+VW.id+'，這個點在 '+vid+'。請按「看片」改開 '+vid+'。');return}
-  sendVW({t:'goto',x:p.x,y:p.y,obj:p.obj});try{VW.win.focus()}catch(e){}
-  note(PANEL?'':'已移到 '+p.obj+'× 視野，請切到看片視窗。');
+  if(VW&&alive(VW.win)&&VW.id===vid){sendVW({t:'goto',x:p.x,y:p.y,obj:p.obj});try{VW.win.focus()}catch(e){}note(PANEL?'':'已移到 '+p.obj+'× 視野，請切到看片分頁。');return}
+  openView(vid,{x:p.x,y:p.y,obj:p.obj});
 }
 function captureFromViewer(id,msg){
   var vid=viewId(id);
-  if(!VW||!alive(VW.win)){msg.textContent='先按「看片」開這張，在看片畫面按書籤「抽號器看片」。';return}
+  if(!VW||!alive(VW.win)){msg.textContent='先按「看片」開這張（第一次要在看片分頁按書籤「抽號器看片」）。';return}
   if(VW.id!==vid&&VW.id!==id){msg.textContent='看片視窗現在是 '+VW.id+'，不是 '+vid+'。';return}
   var req=Math.random().toString(36).slice(2);CAPQ[req]={id:id,msg:msg};msg.textContent='擷取中…';
   if(!sendVW({t:'cap',req:req}))msg.textContent='連不到看片視窗。';
-  setTimeout(function(){if(CAPQ[req]){delete CAPQ[req];msg.textContent='看片視窗沒有回應，請在看片畫面再按一次書籤。'}},8000);
+  setTimeout(function(){if(CAPQ[req]){delete CAPQ[req];msg.textContent='看片分頁沒有回應，請在看片分頁再按一次書籤。'}},8000);
 }
 /* the panel/app keeps the slide id the viewer reports, and which quiz slide it belongs to */
 function slideForView(vid){var hit=null;SL.forEach(function(d){if(!hit&&d.view===vid)hit=d.id});if(!hit&&BY[vid])hit=vid;return hit||vid}
 window.addEventListener('message',async function(ev){
   var m=ev.data;if(!m||m.pd!==1)return;
-  if(ev.origin===LIST_ORIGIN&&m.t==='want'){try{ev.source.postMessage({pd:1,t:'want-r',id:WANT},LIST_ORIGIN)}catch(e){}return}
+  if((ev.origin===LIST_ORIGIN||ev.origin===VIEW_ORIGIN)&&m.t==='want'){try{ev.source.postMessage({pd:1,t:'want-r',id:WANT},ev.origin)}catch(e){}return}
   if(ev.origin!==VIEW_ORIGIN)return;
   var vid=String(m.id||'').toUpperCase().replace(/[^A-Z0-9_]/g,'');
   if(m.t==='hello'||m.t==='view'){
     var isNew=!VW||VW.win!==ev.source||VW.id!==vid;
-    VW={win:ev.source,id:vid,x:+m.x,y:+m.y,obj:+m.obj};
-    if(m.t==='hello'&&!PANEL)note('已連上看片視窗（'+vid+'）。答案裡標「視野」的點可以直接點。');
+    VW={win:ev.source,id:vid,x:+m.x,y:+m.y,obj:+m.obj,at:Date.now()};
+    if(m.t==='hello'&&!PANEL&&isNew)note('已連上看片分頁（'+vid+'）。答案裡標「視野」的點可以直接點。');
     if(isNew&&PANEL&&user)renderPanel();
     if(PANEL){var s=$('pn-pos');if(s)s.textContent='目前：'+VW.obj+'× 視野　中心 ('+VW.x+', '+VW.y+')'}
     return;
@@ -596,6 +619,7 @@ async function loadReports(){
   $('rdot').hidden=!REPORTS.length;if(tab==='adm')renderAdmin();
 }
 function renderAdmin(){
+  var gt=$('a-grp');if(gt&&document.activeElement!==gt)gt.value=((META.groups&&META.groups.length)?META.groups:DEFGROUPS).map(function(g){return g.name+': '+g.units.join(', ')}).join('\n');
   var r=$('a-rep');r.innerHTML=REPORTS.length?'':'<div class="empty">沒有未處理的回報。</div>';
   REPORTS.forEach(function(x){var b=el('div','rep','<div><b>'+esc(x.slide)+'</b>　<span class="small">'+esc(x.name)+'・'+new Date(x.at).toLocaleString('zh-TW')+'</span></div><div class="pre">'+esc(x.text)+'</div><div class="row"><button type="button" class="btn sm go2">打開這張編輯</button><button type="button" class="btn sm warn dn">標為已處理</button></div>');
     b.querySelector('.go2').onclick=function(){if(BY[x.slide])admForm(x.slide)};
@@ -661,6 +685,10 @@ $('altc').onchange=function(){P.alt=$('altc').checked;saveP();progress()};
 $('rv-show').onclick=function(){rvHide=false;$('rv-show').setAttribute('aria-pressed',true);$('rv-hide').setAttribute('aria-pressed',false);listRev()};
 $('rv-hide').onclick=function(){rvHide=true;$('rv-show').setAttribute('aria-pressed',false);$('rv-hide').setAttribute('aria-pressed',true);listRev()};
 $('rv-key').onclick=function(){rvKey=!rvKey;$('rv-key').setAttribute('aria-pressed',rvKey);listRev()};
+$('a-grp-s').onclick=async function(){var m=$('a-grp-m'),known=allUnits(),bad=[];
+  var G=$('a-grp').value.split('\n').map(function(l){var i=l.search(/[:：]/);if(i<0)return null;var name=l.slice(0,i).trim(),u=l.slice(i+1).split(/[,，]/).map(function(x){return x.trim()}).filter(Boolean);u.forEach(function(x){if(known.indexOf(x)<0)bad.push(x)});return name&&u.length?{name:name,units:u}:null}).filter(Boolean);
+  if(bad.length){m.textContent='找不到這些單元：'+bad.join('、');return}
+  try{await fb.fs.setDoc(D('content','meta'),{groups:G},{merge:true});META.groups=G;m.textContent='已儲存。';renderUnits()}catch(e){m.textContent='儲存失敗：'+(e.code||e.message)}};
 $('a-q').oninput=admList;$('a-new').onclick=function(){admForm(null)};
 $('c-q').oninput=listCat;$('c-sem').onchange=listCat;
 $('x-all').onclick=function(){$('l-exp').querySelectorAll('input').forEach(function(x){x.checked=true})};

@@ -83,10 +83,10 @@
       <h2>看片怎麼用</h2>
       <ol class="steps">
         <li>第一次：把這個按鈕拖到瀏覽器的書籤列 → <a id="bm" class="btn sm primary" href="#">抽號器看片</a><br><span class="small">拖不了的話：<button type="button" class="reset" id="bm-c">複製書籤程式碼</button>，新增一個書籤，網址貼上。</span> <span class="small" id="bm-m"></span></li>
-        <li>在任何一張片按「看片」，會開 microteaching。用你自己的台大帳號登入（要校內網路或台大 VPN）。</li>
-        <li>到片子清單後按書籤「抽號器看片」，會自動開那張片。</li>
-        <li>到看片畫面再按一次書籤：畫面變成圓形視野，只能用 4×、10×、40× 三個倍率（實際倍率：10× 目鏡、視野數 22，視野直徑 5.5 mm／2.2 mm／0.55 mm），可以拖曳。旁邊會開答案面板。</li>
-        <li>答案裡標「視野」的點按下去，看片畫面會移到那裡。看片畫面的「擷取視野到筆記」會把目前的視野存成你的筆記圖片。</li>
+        <li>任何一張片按「看片」，會開一個 microteaching 看片分頁（要校內網路或台大 VPN）。</li>
+        <li>在那個分頁按一次書籤「抽號器看片」：會直接開這張片，圓形視野，只能用 4×、10×、40× 三個實際倍率（10× 目鏡、視野數 22，視野直徑 5.5 mm／2.2 mm／0.55 mm），可以拖曳。</li>
+        <li>之後在抽號器按別張的「看片」，或點答案裡標「視野」的點，看片分頁會直接換片、跳到那個視野，不用再按書籤（關掉分頁才要重按）。</li>
+        <li>看片分頁的「擷取視野到筆記」會把目前的圓形視野存成你這張片的筆記圖片。</li>
       </ol>
       <div class="tag">右下角原本顯示的「x 數字」是掃描倍率，不是顯微鏡倍率，所以鎖定後會跟它不一樣。手機不適合看片（書籤在手機上很難用），請用電腦；筆記、抽號在手機上都可以用。</div>
     </section>
@@ -94,6 +94,10 @@
     <section id="v-adm" class="card" hidden>
       <h2>同學回報</h2>
       <div id="a-rep" class="lst"></div>
+      <h2>Micro 分組</h2>
+      <div class="tag">一行一次 Micro，冒號後面列這次的單元（用逗號分開，名稱要跟片子的分類一樣）。沒列到的單元會放在「其他單元」。</div>
+      <textarea id="a-grp" class="inp" rows="4" style="width:100%"></textarea>
+      <div class="row"><button type="button" class="btn sm primary" id="a-grp-s">儲存分組</button><span class="msg" id="a-grp-m"></span></div>
       <h2>片子資料</h2>
       <div class="row"><input id="a-q" class="inp" placeholder="搜尋片號、診斷或分類" autocomplete="off"><button type="button" class="btn sm primary" id="a-new">新增片子</button></div>
       <div id="a-form"></div>

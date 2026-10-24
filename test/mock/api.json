@@ -1,0 +1,3 @@
+[{"scanID":"PA0306","wlGUID":"G306","Sample":[{"SNo":0,"pixelSpacingX":10,"FocalPlane":[{"FPNo":0,"imgMaxLevel":10}]}]},
+ {"scanID":"PA0097","wlGUID":"G097","Sample":[{"SNo":0,"pixelSpacingX":10,"FocalPlane":[{"FPNo":0,"imgMaxLevel":10}]}]},
+ {"scanID":"PA0002","wlGUID":"G002","Sample":[{"SNo":0,"pixelSpacingX":10,"FocalPlane":[{"FPNo":0,"imgMaxLevel":10}]}]}]
