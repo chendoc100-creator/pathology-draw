@@ -40,7 +40,7 @@ var P={seen:[],review:[],rseen:[],last:'',rlast:'',units:null,alt:true};
 var U={overrides:{},notes:{}};
 var IMG={};                              /* slideId -> [{id,data,w,h,at,note,view}] */
 var REPORTS=[],FLD={},META={};
-var DEFGROUPS=[{name:'Micro 1',units:['Cell injury and adaption','Inflammation','Hemodynamic derangement','Infection']}];                   /* FLD: answer points {id:{pts:[{k,x,y,obj,conf,note}]}} */
+var DEFGROUPS=[{"name": "Micro 1", "units": ["Cell injury and adaption", "Inflammation", "Hemodynamic derangement", "Infection"]}, {"name": "Micro 2", "units": ["Immunological disorder", "Disease of infancy and childhood", "Epithelial neoplasm", "Non-epithelial neoplasm", "Cardiovascular system"]}, {"name": "Micro 3", "units": ["Respiratory system", "Liver and biliary tract", "Head and neck", "GI tract and pancreas"]}];                   /* FLD: answer points {id:{pts:[{k,x,y,obj,conf,note}]}} */
 var tab='draw',pool='all',rvHide=false,rvKey=false;
 var live=[];
 
@@ -368,6 +368,7 @@ function openView(vid,go){
   },700);
 }
 function viewNote(vid){
+    if(!MOBILE){$('bmd-id').textContent=vid;$('bmd-m').textContent='';$('bmd').hidden=false}
     note((MOBILE?'手機不適合看片，建議用電腦。':'')+'已開看片分頁（要校內網路或台大 VPN）。在那個分頁按一次書籤「抽號器看片」就會開 '+vid+'，之後按「看片」或答案的視野點都會直接在那個分頁換片。第一次用請先到「看片設定」裝書籤。');
 }
 function sendVW(m){if(!VW||!alive(VW.win))return false;m.pd=1;try{VW.win.postMessage(m,VIEW_ORIGIN);return true}catch(e){return false}}
@@ -394,6 +395,7 @@ window.addEventListener('message',async function(ev){
   if(m.t==='hello'||m.t==='view'){
     var isNew=!VW||VW.win!==ev.source||VW.id!==vid;
     VW={win:ev.source,id:vid,x:+m.x,y:+m.y,obj:+m.obj,at:Date.now()};
+    if(m.t==='hello')$('bmd').hidden=true;
     if(m.t==='hello'&&!PANEL&&isNew)note('已連上看片分頁（'+vid+'）。答案裡標「視野」的點可以直接點。');
     if(isNew&&PANEL&&user)renderPanel();
     if(PANEL){var s=$('pn-pos');if(s)s.textContent='目前：'+VW.obj+'× 視野　中心 ('+VW.x+', '+VW.y+')'}
@@ -700,7 +702,10 @@ $('x-all').onclick=function(){$('l-exp').querySelectorAll('input').forEach(funct
 $('x-none').onclick=function(){$('l-exp').querySelectorAll('input').forEach(function(x){x.checked=false})};
 $('x-go').onclick=doExport;
 $('admbtn').onclick=function(){setAdm(!adm);if(adm)showTab('adm')};
-$('bm').href=bmCode();$('bm').onclick=function(e){e.preventDefault();note('請把「抽號器看片」按鈕拖到瀏覽器的書籤列，不是直接點。')};
+$('bm').href=bmCode();$('bmd-bm').href=bmCode();$('bmd-bm').onclick=function(e){e.preventDefault();$('bmd-m').textContent='要用拖的，拖到上方書籤列。'};
+$('bmd-x').onclick=function(){$('bmd').hidden=true};
+$('bmd-c').onclick=function(){copy(bmCode()).then(function(ok){$('bmd-m').textContent=ok?'已複製。新增書籤，網址貼上，名稱填「抽號器看片」。':'複製失敗，請改用拖曳。'})};
+$('bm').onclick=function(e){e.preventDefault();note('請把「抽號器看片」按鈕拖到瀏覽器的書籤列，不是直接點。')};
 $('bm-c').onclick=function(){copy(bmCode()).then(function(ok){$('bm-m').textContent=ok?'已複製。新增一個書籤，網址貼上這段，名稱填「抽號器看片」。':'複製失敗，請改用拖曳。'})};
 var armed=false;
 $('reset').onclick=function(){

@@ -106,6 +106,18 @@
   </div>
 </main>
 
+<div id="bmd" hidden role="dialog" aria-modal="true" aria-label="看片第一步">
+  <div class="card">
+    <h2>看片分頁已開（<span id="bmd-id"></span>）</h2>
+    <p>看片分頁現在顯示的是台大看片伺服器的清單頁，<b>要在那個分頁按書籤才會開片</b>：</p>
+    <ol class="steps">
+      <li>把這個按鈕拖到瀏覽器上方的書籤列（只要做一次）：<a id="bmd-bm" class="btn sm primary" href="#">抽號器看片</a><br><span class="small">看不到書籤列：Windows 按 Ctrl+Shift+B，Mac 按 ⌘+Shift+B。拖不了：<button type="button" class="reset" id="bmd-c">複製書籤程式碼</button>，新增書籤、網址貼上。</span></li>
+      <li>切到看片分頁，按書籤列上的「抽號器看片」。</li>
+    </ol>
+    <p class="small">之後換片、點答案的視野都會直接在那個分頁換，不用再按（關掉分頁才要重按）。這個視窗連上後會自己關掉。</p>
+    <div class="row"><button type="button" class="btn sm" id="bmd-x">關閉</button><span class="small" id="bmd-m"></span></div>
+  </div>
+</div>
 <div id="lb" hidden role="dialog" aria-modal="true" aria-label="圖片">
   <div class="sc-top"><span id="lb-t"></span><button type="button" id="lb-x" class="btn sm">關閉</button></div>
   <img id="lb-img" alt="">

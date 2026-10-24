@@ -60,7 +60,7 @@ async function run(name, type, ctxOpts, viewer) {
     await page.click('#units button:has-text("全部")');
     await page.click('#units .gb:has-text("Micro 1")');
     check((await page.textContent('#prog')).includes('Cell injury and adaption') && (await page.textContent('#prog')).includes('Infection'), `${name}: Micro 1 selects its units`);
-    check(await page.locator('#units .grp:has(.gb:has-text("Micro 1")) button[aria-pressed="true"]').count() === 5, `${name}: Micro 1 row all on`);
+    check(await page.locator('#units .grp:has(.gb:has-text("Micro 1")) button[aria-pressed="true"]').count() === 5 && (await page.textContent('#units')).includes('Micro 3'), `${name}: Micro 1 row all on`);
     await page.click('#units button:has-text("全部")');
 
     await page.click('#draw');
@@ -154,11 +154,13 @@ async function run(name, type, ctxOpts, viewer) {
       const vw = await pop;
       await vw.waitForURL(/viewer\.html\?pd=PA0306/, { timeout: 15000 });
       check(true, `${name}: 看片 opens the viewer page for PA0306`);
+      check(await page.isVisible('#bmd'), `${name}: first-use bookmarklet guide shown`);
       step('viewer bookmarklet');
       await vw.addScriptTag({ url: BASE + 'h.js' });
       await vw.waitForFunction(() => window.__pdh && window.__pdh.viewer() && window.__pdh.viewer().world.getItemCount() > 0 && window.__pdh.state().id === 'PA0306', null, { timeout: 20000 });
       await page.waitForFunction(() => document.querySelector('#notice').textContent.includes('已連上看片分頁（PA0306）'), null, { timeout: 15000 });
       check(true, `${name}: bookmarklet opened PA0306 and the app connected`);
+      check(await page.isHidden('#bmd'), `${name}: guide closes once the viewer connects`);
       const iz = () => vw.evaluate(() => { const v = window.__pdh.viewer().viewport; return v.viewportToImageZoom(v.getZoom()); });
       const D = await vw.evaluate(() => { const r = document.getElementById('pdh-v').getBoundingClientRect(); return Math.floor(Math.min(r.width, r.height) * 0.94); });
       const want = o => 10 * D / { 4: 5500, 10: 2200, 40: 550 }[o];
