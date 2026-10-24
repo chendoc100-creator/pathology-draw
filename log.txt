@@ -1,0 +1,34 @@
+content/meta merge ok
+content/meta saved out/meta.json
+{
+ "groups": [
+  {
+   "name": "Micro 1",
+   "units": [
+    "Cell injury and adaption",
+    "Inflammation",
+    "Hemodynamic derangement",
+    "Infection"
+   ]
+  },
+  {
+   "name": "Micro 2",
+   "units": [
+    "Immunological disorder",
+    "Disease of infancy and childhood",
+    "Epithelial neoplasm",
+    "Non-epithelial neoplasm",
+    "Cardiovascular system"
+   ]
+  },
+  {
+   "name": "Micro 3",
+   "units": [
+    "Respiratory system",
+    "Liver and biliary tract",
+    "Head and neck",
+    "GI tract and pancreas"
+   ]
+  }
+ ]
+}
