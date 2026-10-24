@@ -1,0 +1,223 @@
+
+=== chromium-desktop ===
+PASS chromium-desktop: content hidden before login
+PASS chromium-desktop: no admin button/tab for classmate
+PASS chromium-desktop: category chips shown
+PASS chromium-desktop: 158 slides in pool
+PASS chromium-desktop: online look-alikes can be left out
+PASS chromium-desktop: category filter (incl. review slides)
+PASS chromium-desktop: Micro 1 selects its units
+PASS chromium-desktop: Micro 1 row all on
+chromium-desktop: drew PA0168
+PASS chromium-desktop: question card does not name the unit
+PASS chromium-desktop: answer shown
+PASS chromium-desktop: highlight/bold markup inserted
+PASS chromium-desktop: highlight rendered
+PASS chromium-desktop: personal version label
+PASS chromium-desktop: image uploaded
+PASS chromium-desktop: image caption saved
+PASS chromium-desktop: report sent
+PASS chromium-desktop: review shows notes
+PASS chromium-desktop: catalog maps PA0306 to slide 4
+PASS chromium-desktop: physical-only slide listed
+PASS chromium-desktop: slide with notes pre-selected for export
+PASS chromium-desktop: .docx with 標楷體 / Times New Roman
+PASS chromium-desktop: export has answer, note, image and caption
+PASS chromium-desktop: review list persisted
+PASS chromium-desktop: 看片 opens the viewer page for PA0306
+PASS chromium-desktop: first-use bookmarklet guide shown
+  .. viewer bookmarklet
+PASS chromium-desktop: bookmarklet opened PA0306 and the app connected
+PASS chromium-desktop: guide closes once the viewer connects
+PASS chromium-desktop: 4× field = 5.5 mm (1.4491 vs 1.4491)
+PASS chromium-desktop: circular locked viewer covers the page
+PASS chromium-desktop: 40× field = 0.55 mm
+PASS chromium-desktop: wheel steps 40× → 10× (no free zoom)
+PASS chromium-desktop: dragging keeps the objective
+PASS chromium-desktop: answer point moves viewer to (900,300) at 40× (got 900,300 40×)
+PASS chromium-desktop: answer point uses the locked 40×
+  .. capture
+PASS chromium-desktop: viewer capture saved into PA0306 notes
+PASS chromium-desktop: 看片 on another slide switches the open viewer tab
+  .. closing viewer
+PASS chromium-desktop: closing removes the viewer overlay
+  .. admin
+PASS chromium-desktop: admin starts in the normal view
+PASS chromium-desktop: admin does not see Alice's progress
+PASS chromium-desktop: admin sees report
+PASS chromium-desktop: new category appears after adding slide
+PASS chromium-desktop: report marked done
+PASS chromium-desktop: leaving admin hides admin tab
+PASS chromium-desktop: no page errors 
+
+=== firefox-desktop ===
+PASS firefox-desktop: content hidden before login
+PASS firefox-desktop: no admin button/tab for classmate
+PASS firefox-desktop: category chips shown
+PASS firefox-desktop: 158 slides in pool
+PASS firefox-desktop: online look-alikes can be left out
+PASS firefox-desktop: category filter (incl. review slides)
+PASS firefox-desktop: Micro 1 selects its units
+PASS firefox-desktop: Micro 1 row all on
+firefox-desktop: drew PA0280
+PASS firefox-desktop: question card does not name the unit
+PASS firefox-desktop: answer shown
+PASS firefox-desktop: highlight/bold markup inserted
+PASS firefox-desktop: highlight rendered
+PASS firefox-desktop: personal version label
+PASS firefox-desktop: image uploaded
+PASS firefox-desktop: image caption saved
+PASS firefox-desktop: report sent
+PASS firefox-desktop: review shows notes
+PASS firefox-desktop: catalog maps PA0306 to slide 4
+PASS firefox-desktop: physical-only slide listed
+PASS firefox-desktop: slide with notes pre-selected for export
+PASS firefox-desktop: .docx with 標楷體 / Times New Roman
+PASS firefox-desktop: export has answer, note, image and caption
+PASS firefox-desktop: review list persisted
+PASS firefox-desktop: 看片 opens the viewer page for PA0306
+PASS firefox-desktop: first-use bookmarklet guide shown
+  .. viewer bookmarklet
+PASS firefox-desktop: bookmarklet opened PA0306 and the app connected
+PASS firefox-desktop: guide closes once the viewer connects
+PASS firefox-desktop: 4× field = 5.5 mm (1.4491 vs 1.4491)
+PASS firefox-desktop: circular locked viewer covers the page
+PASS firefox-desktop: 40× field = 0.55 mm
+PASS firefox-desktop: wheel steps 40× → 10× (no free zoom)
+PASS firefox-desktop: dragging keeps the objective
+PASS firefox-desktop: answer point moves viewer to (900,300) at 40× (got 900,300 40×)
+PASS firefox-desktop: answer point uses the locked 40×
+  .. capture
+PASS firefox-desktop: viewer capture saved into PA0306 notes
+PASS firefox-desktop: 看片 on another slide switches the open viewer tab
+  .. closing viewer
+PASS firefox-desktop: closing removes the viewer overlay
+  .. admin
+PASS firefox-desktop: admin starts in the normal view
+PASS firefox-desktop: admin does not see Alice's progress
+PASS firefox-desktop: admin sees report
+PASS firefox-desktop: new category appears after adding slide
+PASS firefox-desktop: report marked done
+PASS firefox-desktop: leaving admin hides admin tab
+PASS firefox-desktop: no page errors 
+
+=== webkit-desktop ===
+PASS webkit-desktop: content hidden before login
+PASS webkit-desktop: no admin button/tab for classmate
+PASS webkit-desktop: category chips shown
+PASS webkit-desktop: 158 slides in pool
+PASS webkit-desktop: online look-alikes can be left out
+PASS webkit-desktop: category filter (incl. review slides)
+PASS webkit-desktop: Micro 1 selects its units
+PASS webkit-desktop: Micro 1 row all on
+webkit-desktop: drew PA0049
+PASS webkit-desktop: question card does not name the unit
+PASS webkit-desktop: answer shown
+PASS webkit-desktop: highlight/bold markup inserted
+PASS webkit-desktop: highlight rendered
+PASS webkit-desktop: personal version label
+PASS webkit-desktop: image uploaded
+PASS webkit-desktop: image caption saved
+PASS webkit-desktop: report sent
+PASS webkit-desktop: review shows notes
+PASS webkit-desktop: catalog maps PA0306 to slide 4
+PASS webkit-desktop: physical-only slide listed
+PASS webkit-desktop: slide with notes pre-selected for export
+PASS webkit-desktop: .docx with 標楷體 / Times New Roman
+PASS webkit-desktop: export has answer, note, image and caption
+PASS webkit-desktop: review list persisted
+PASS webkit-desktop: 看片 opens the viewer page for PA0306
+PASS webkit-desktop: first-use bookmarklet guide shown
+  .. viewer bookmarklet
+PASS webkit-desktop: bookmarklet opened PA0306 and the app connected
+PASS webkit-desktop: guide closes once the viewer connects
+PASS webkit-desktop: 4× field = 5.5 mm (1.4491 vs 1.4491)
+PASS webkit-desktop: circular locked viewer covers the page
+PASS webkit-desktop: 40× field = 0.55 mm
+PASS webkit-desktop: wheel steps 40× → 10× (no free zoom)
+PASS webkit-desktop: dragging keeps the objective
+PASS webkit-desktop: answer point moves viewer to (900,300) at 40× (got 900,300 40×)
+PASS webkit-desktop: answer point uses the locked 40×
+  .. capture
+PASS webkit-desktop: viewer capture saved into PA0306 notes
+PASS webkit-desktop: 看片 on another slide switches the open viewer tab
+  .. closing viewer
+PASS webkit-desktop: closing removes the viewer overlay
+  .. admin
+PASS webkit-desktop: admin starts in the normal view
+PASS webkit-desktop: admin does not see Alice's progress
+PASS webkit-desktop: admin sees report
+PASS webkit-desktop: new category appears after adding slide
+PASS webkit-desktop: report marked done
+PASS webkit-desktop: leaving admin hides admin tab
+PASS webkit-desktop: no page errors 
+
+=== webkit-iphone ===
+PASS webkit-iphone: content hidden before login
+PASS webkit-iphone: no admin button/tab for classmate
+PASS webkit-iphone: category chips shown
+PASS webkit-iphone: 158 slides in pool
+PASS webkit-iphone: online look-alikes can be left out
+PASS webkit-iphone: category filter (incl. review slides)
+PASS webkit-iphone: Micro 1 selects its units
+PASS webkit-iphone: Micro 1 row all on
+webkit-iphone: drew PA0285
+PASS webkit-iphone: question card does not name the unit
+PASS webkit-iphone: answer shown
+PASS webkit-iphone: highlight/bold markup inserted
+PASS webkit-iphone: highlight rendered
+PASS webkit-iphone: personal version label
+PASS webkit-iphone: image uploaded
+PASS webkit-iphone: image caption saved
+PASS webkit-iphone: report sent
+PASS webkit-iphone: review shows notes
+PASS webkit-iphone: catalog maps PA0306 to slide 4
+PASS webkit-iphone: physical-only slide listed
+PASS webkit-iphone: slide with notes pre-selected for export
+PASS webkit-iphone: .docx with 標楷體 / Times New Roman
+PASS webkit-iphone: export has answer, note, image and caption
+PASS webkit-iphone: review list persisted
+  .. admin
+PASS webkit-iphone: admin starts in the normal view
+PASS webkit-iphone: admin does not see Alice's progress
+PASS webkit-iphone: admin sees report
+PASS webkit-iphone: new category appears after adding slide
+PASS webkit-iphone: report marked done
+PASS webkit-iphone: leaving admin hides admin tab
+PASS webkit-iphone: no page errors 
+
+=== chromium-android ===
+PASS chromium-android: content hidden before login
+PASS chromium-android: no admin button/tab for classmate
+PASS chromium-android: category chips shown
+PASS chromium-android: 158 slides in pool
+PASS chromium-android: online look-alikes can be left out
+PASS chromium-android: category filter (incl. review slides)
+PASS chromium-android: Micro 1 selects its units
+PASS chromium-android: Micro 1 row all on
+chromium-android: drew PA0074
+PASS chromium-android: question card does not name the unit
+PASS chromium-android: answer shown
+PASS chromium-android: highlight/bold markup inserted
+PASS chromium-android: highlight rendered
+PASS chromium-android: personal version label
+PASS chromium-android: image uploaded
+PASS chromium-android: image caption saved
+PASS chromium-android: report sent
+PASS chromium-android: review shows notes
+PASS chromium-android: catalog maps PA0306 to slide 4
+PASS chromium-android: physical-only slide listed
+PASS chromium-android: slide with notes pre-selected for export
+PASS chromium-android: .docx with 標楷體 / Times New Roman
+PASS chromium-android: export has answer, note, image and caption
+PASS chromium-android: review list persisted
+  .. admin
+PASS chromium-android: admin starts in the normal view
+PASS chromium-android: admin does not see Alice's progress
+PASS chromium-android: admin sees report
+PASS chromium-android: new category appears after adding slide
+PASS chromium-android: report marked done
+PASS chromium-android: leaving admin hides admin tab
+PASS chromium-android: no page errors 
+
+TOTAL FAILS: 0
