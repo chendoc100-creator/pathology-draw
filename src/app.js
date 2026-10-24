@@ -704,9 +704,9 @@ $('x-go').onclick=doExport;
 $('admbtn').onclick=function(){setAdm(!adm);if(adm)showTab('adm')};
 $('bm').href=bmCode();$('bmd-bm').href=bmCode();$('bmd-bm').onclick=function(e){e.preventDefault();$('bmd-m').textContent='要用拖的，拖到上方書籤列。'};
 $('bmd-x').onclick=function(){$('bmd').hidden=true};
-$('bmd-c').onclick=function(){copy(bmCode()).then(function(ok){$('bmd-m').textContent=ok?'已複製。新增書籤，網址貼上，名稱填「抽號器看片」。':'複製失敗，請改用拖曳。'})};
+$('bmd-c').onclick=function(){copy(bmCode()).then(function(ok){$('bmd-m').textContent=ok?'已複製。書籤列按右鍵「新增網頁」，網址貼上，確認開頭是 javascript:。':'複製失敗，請改用拖曳。'})};
 $('bm').onclick=function(e){e.preventDefault();note('請把「抽號器看片」按鈕拖到瀏覽器的書籤列，不是直接點。')};
-$('bm-c').onclick=function(){copy(bmCode()).then(function(ok){$('bm-m').textContent=ok?'已複製。新增一個書籤，網址貼上這段，名稱填「抽號器看片」。':'複製失敗，請改用拖曳。'})};
+$('bm-c').onclick=function(){copy(bmCode()).then(function(ok){$('bm-m').textContent=ok?'已複製。書籤列按右鍵「新增網頁」，名稱填「抽號器看片」，網址貼上，確認開頭是 javascript:。':'複製失敗，請改用拖曳。'})};
 var armed=false;
 $('reset').onclick=function(){
   if(!armed){armed=true;$('reset').textContent='再按一次確認重設';setTimeout(function(){armed=false;$('reset').textContent='重設進度'},4000);return}

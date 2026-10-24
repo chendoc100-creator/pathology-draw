@@ -82,7 +82,7 @@
     <section id="v-set" class="card" hidden>
       <h2>看片怎麼用</h2>
       <ol class="steps">
-        <li>第一次：把這個按鈕拖到瀏覽器的書籤列 → <a id="bm" class="btn sm primary" href="#">抽號器看片</a><br><span class="small">拖不了的話：<button type="button" class="reset" id="bm-c">複製書籤程式碼</button>，新增一個書籤，網址貼上。</span> <span class="small" id="bm-m"></span></li>
+        <li>第一次：把這個按鈕拖到瀏覽器的書籤列 → <a id="bm" class="btn sm primary" href="#">抽號器看片</a><br><span class="small">拖不了的話：<button type="button" class="reset" id="bm-c">複製書籤程式碼</button>，在書籤列按右鍵「新增網頁」，網址欄貼上。<b>網址一定要以 javascript: 開頭</b>（Chrome 有時會把它吃掉，按了變成 Google 搜尋就是這個原因）。</span> <span class="small" id="bm-m"></span></li>
         <li>任何一張片按「看片」，會開一個 microteaching 看片分頁（要校內網路或台大 VPN）。</li>
         <li>在那個分頁按一次書籤「抽號器看片」：會直接開這張片，圓形視野，只能用 4×、10×、40× 三個實際倍率（10× 目鏡、視野數 22，視野直徑 5.5 mm／2.2 mm／0.55 mm），可以拖曳。</li>
         <li>之後在抽號器按別張的「看片」，或點答案裡標「視野」的點，看片分頁會直接換片、跳到那個視野，不用再按書籤（關掉分頁才要重按）。</li>
@@ -111,7 +111,7 @@
     <h2>看片分頁已開（<span id="bmd-id"></span>）</h2>
     <p>看片分頁現在顯示的是台大看片伺服器的清單頁，<b>要在那個分頁按書籤才會開片</b>：</p>
     <ol class="steps">
-      <li>把這個按鈕拖到瀏覽器上方的書籤列（只要做一次）：<a id="bmd-bm" class="btn sm primary" href="#">抽號器看片</a><br><span class="small">看不到書籤列：Windows 按 Ctrl+Shift+B，Mac 按 ⌘+Shift+B。拖不了：<button type="button" class="reset" id="bmd-c">複製書籤程式碼</button>，新增書籤、網址貼上。</span></li>
+      <li>把這個按鈕拖到瀏覽器上方的書籤列（只要做一次）：<a id="bmd-bm" class="btn sm primary" href="#">抽號器看片</a><br><span class="small">看不到書籤列：Windows 按 Ctrl+Shift+B，Mac 按 ⌘+Shift+B。拖不了：<button type="button" class="reset" id="bmd-c">複製書籤程式碼</button>，在書籤列按右鍵「新增網頁」，網址欄貼上。<b>網址一定要以 javascript: 開頭</b>，Chrome 有時會把它吃掉，請檢查。</span></li>
       <li>切到看片分頁，按書籤列上的「抽號器看片」。</li>
     </ol>
     <p class="small">之後換片、點答案的視野都會直接在那個分頁換，不用再按（關掉分頁才要重按）。這個視窗連上後會自己關掉。</p>
