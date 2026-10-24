@@ -574,7 +574,7 @@
    "Immunological disorder"
   ],
   "unit": "Immunological disorder",
-  "warn": "講義寫 (69)，但實體 69 號是 PA0342 Alcoholic steatohepatitis，所以本片當作線上片。",
+  "warn": "（講義：(69)；實體 69 號是 PA0342）",
   "alt": [
    "PA0086"
   ]
@@ -1403,40 +1403,40 @@
   "alt": []
  },
  {
-  "id": "PA0280",
+  "id": "PA0328",
   "n": "35",
-  "dxfull": "Crohn's disease, small intestine",
+  "dxfull": "Crohn's disease, large intestine/colon",
   "dx": "Crohn's disease",
-  "organ": "small intestine",
+  "organ": "large intestine/colon",
   "desc": "",
   "note": "",
   "units": [
    "GI tract and pancreas"
   ],
   "unit": "GI tract and pancreas",
-  "warn": "講義寫 PA0280 (35)；實體 35 號片單寫 PA0328（Crohn's disease, large intestine/colon, 26F）。兩張都可以看。",
+  "warn": "（講義：PA0280）",
   "alt": [
    "PA0054",
-   "PA0328"
+   "PA0280"
   ]
  },
  {
-  "id": "PA0310",
+  "id": "PA0329",
   "n": "40",
-  "dxfull": "Ulcerative colitis, large intestine",
+  "dxfull": "Ulcerative colitis, large intestine/colon",
   "dx": "Ulcerative colitis",
-  "organ": "large intestine",
+  "organ": "large intestine/colon",
   "desc": "",
   "note": "",
   "units": [
    "GI tract and pancreas"
   ],
   "unit": "GI tract and pancreas",
-  "warn": "講義寫 PA0310 (40)；實體 40 號片單寫 PA0329（Ulcerative colitis, large intestine/colon, 65M）。兩張都可以看。",
+  "warn": "（講義：PA0310）",
   "alt": [
-   "PA0329",
    "PA0250",
-   "PA0180"
+   "PA0180",
+   "PA0310"
   ]
  },
  {
@@ -2410,7 +2410,7 @@
   "note": "",
   "n": "",
   "site": "small intestine",
-  "parent": "PA0280",
+  "parent": "PA0328",
   "units": [
    "GI tract and pancreas"
   ],
@@ -2418,15 +2418,15 @@
   "alt": []
  },
  {
-  "id": "PA0328",
+  "id": "PA0280",
   "dxfull": "Crohn's disease",
   "dx": "Crohn's disease",
   "organ": "",
   "desc": "",
   "note": "",
-  "n": "35",
-  "site": "large intestine/colon",
-  "parent": "PA0280",
+  "n": "",
+  "site": "small intestine",
+  "parent": "PA0328",
   "units": [
    "GI tract and pancreas"
   ],
@@ -2434,15 +2434,15 @@
   "alt": []
  },
  {
-  "id": "PA0329",
+  "id": "PA0310",
   "dxfull": "Ulcerative colitis",
   "dx": "Ulcerative colitis",
   "organ": "",
   "desc": "",
   "note": "",
-  "n": "40",
-  "site": "large intestine/colon",
-  "parent": "PA0310",
+  "n": "",
+  "site": "large intestine",
+  "parent": "PA0329",
   "units": [
    "GI tract and pancreas"
   ],
@@ -2458,7 +2458,7 @@
   "note": "",
   "n": "",
   "site": "",
-  "parent": "PA0310",
+  "parent": "PA0329",
   "units": [
    "GI tract and pancreas"
   ],
@@ -2474,7 +2474,7 @@
   "note": "",
   "n": "",
   "site": "descending colon",
-  "parent": "PA0310",
+  "parent": "PA0329",
   "units": [
    "GI tract and pancreas"
   ],
