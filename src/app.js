@@ -357,13 +357,18 @@ function openView(vid,go){
   /* the viewer tab may still be open from before (e.g. after this page reloaded): ask it first, else load the slide there */
   var w=null;try{w=window.open('','pdview')}catch(e){}
   if(!w){note('看片視窗被瀏覽器擋住了，請允許這個網站開新視窗。');return}
-  VWIN=w;var asked=Date.now();
+  VWIN=w;var asked=Date.now(),fresh=false;
+  try{fresh=w.location.href==='about:blank'}catch(e){}
+  if(fresh){w.location.href=viewHref(vid,go);viewNote(vid);return}
   try{w.postMessage({pd:1,t:'hi'},VIEW_ORIGIN)}catch(e){}
   setTimeout(function(){
     if(VW&&alive(VW.win)&&VW.win===w&&VW.at>=asked){sendVW(msg);try{w.focus()}catch(e){};return}
     try{w.location.href=viewHref(vid,go)}catch(e){window.open(viewHref(vid,go),'pdview')}
-    note((MOBILE?'手機不適合看片，建議用電腦。':'')+'已開看片分頁（要校內網路或台大 VPN）。在那個分頁按一次書籤「抽號器看片」就會開 '+vid+'，之後按「看片」或答案的視野點都會直接在那個分頁換片。第一次用請先到「看片設定」裝書籤。');
+    viewNote(vid);
   },700);
+}
+function viewNote(vid){
+    note((MOBILE?'手機不適合看片，建議用電腦。':'')+'已開看片分頁（要校內網路或台大 VPN）。在那個分頁按一次書籤「抽號器看片」就會開 '+vid+'，之後按「看片」或答案的視野點都會直接在那個分頁換片。第一次用請先到「看片設定」裝書籤。');
 }
 function sendVW(m){if(!VW||!alive(VW.win))return false;m.pd=1;try{VW.win.postMessage(m,VIEW_ORIGIN);return true}catch(e){return false}}
 function gotoPt(id,p,vidOverride){
