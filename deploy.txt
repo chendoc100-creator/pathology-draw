@@ -1,0 +1,10 @@
+== https://pathology-draw.firebaseapp.com/
+HTTP/2 200 
+content-security-policy: default-src 'self'; script-src 'self' https://www.gstatic.com https://apis.google.com; connect-src 'self' https://*.googleapis.com https://www.gstatic.com https://apis.google.com; frame-src 'self' https://accounts.google.com https://apis.google.com; img-src 'self' data: blob: https://*.googleusercontent.com; style-src 'self' 'unsafe-inline'; font-src 'self'; object-src 'none'; base-uri 'none'; form-action 'none'; frame-ancestors 'none'
+x-frame-options: DENY
+== https://pathology-draw.web.app/
+HTTP/2 200 
+content-security-policy: default-src 'self'; script-src 'self' https://www.gstatic.com https://apis.google.com; connect-src 'self' https://*.googleapis.com https://www.gstatic.com https://apis.google.com; frame-src 'self' https://accounts.google.com https://apis.google.com; img-src 'self' data: blob: https://*.googleusercontent.com; style-src 'self' 'unsafe-inline'; font-src 'self'; object-src 'none'; base-uri 'none'; form-action 'none'; frame-ancestors 'none'
+x-frame-options: DENY
+live html references a.e10e6f69c0.js
+js 200
